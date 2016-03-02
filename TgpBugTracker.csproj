@@ -1,0 +1,1077 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FEED8114-75AE-468C-9407-E1925AE43180}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TgpBugTracker</RootNamespace>
+    <AssemblyName>TgpBugTracker</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.0.1011, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.1.2.3\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.1.2.3\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.1.2.3\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.1.2.3\lib\net45\Microsoft.AI.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.1.2.3\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=1.2.3.490, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.1.2.3\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IssueTypesController.cs" />
+    <Compile Include="Controllers\LogsController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NoticesController.cs" />
+    <Compile Include="Controllers\PrioritiesController.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\StagesController.cs" />
+    <Compile Include="Controllers\TicketsController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\UserRolesHelper.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Code_First\Comment.cs" />
+    <Compile Include="Models\Code_First\Log.cs" />
+    <Compile Include="Models\Code_First\Notice.cs" />
+    <Compile Include="Models\Code_First\Priority.cs" />
+    <Compile Include="Models\Code_First\Project.cs" />
+    <Compile Include="Models\Code_First\Stage.cs" />
+    <Compile Include="Models\Code_First\Ticket.cs" />
+    <Compile Include="Models\Code_First\IssueType.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bower_components\font-awesome\css\font-awesome.css" />
+    <Content Include="Content\bower_components\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\bower_components\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\bower_components\material-design-iconic-font\dist\css\material-design-iconic-font.css" />
+    <Content Include="Content\bower_components\material-design-iconic-font\dist\css\material-design-iconic-font.min.css" />
+    <Content Include="Content\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Font.svg" />
+    <Content Include="Content\bower_components\weather-icons\css\weather-icons-wind.css" />
+    <Content Include="Content\bower_components\weather-icons\css\weather-icons-wind.min.css" />
+    <Content Include="Content\bower_components\weather-icons\css\weather-icons.css" />
+    <Content Include="Content\bower_components\weather-icons\css\weather-icons.min.css" />
+    <Content Include="Content\bower_components\weather-icons\font\weathericons-regular-webfont.svg" />
+    <Content Include="Content\styles\bootstrap.css" />
+    <Content Include="Content\styles\main.css" />
+    <Content Include="Content\styles\ui.css" />
+    <Content Include="Content\styles\ui\images\flags-s1545c92c32.png" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\font-awesome\css\font-awesome.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\material-design-iconic-font\dist\css\material-design-iconic-font.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\material-design-iconic-font\dist\css\material-design-iconic-font.min.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Font.svg" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\weather-icons\css\weather-icons-wind.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\weather-icons\css\weather-icons-wind.min.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\weather-icons\css\weather-icons.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\weather-icons\css\weather-icons.min.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\weather-icons\font\weathericons-regular-webfont.svg" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\favicon.ico" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\assets\600_400-1.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\assets\600_400-2.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\assets\600_400-3.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\assets\600_400-4.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\assets\600_400-5.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\assets\600_400-6.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\assets\style_typography_roboto1.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\background\1.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\background\2.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\background\3.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\background\4.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\bg-pattern\bg-pattern1.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\bg-pattern\bg-pattern10.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\bg-pattern\bg-pattern11.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\bg-pattern\bg-pattern12.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\bg-pattern\bg-pattern2.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\bg-pattern\bg-pattern3.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\bg-pattern\bg-pattern4.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\bg-pattern\bg-pattern5.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\bg-pattern\bg-pattern6.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\bg-pattern\bg-pattern7.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\bg-pattern\bg-pattern8.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\bg-pattern\bg-pattern9.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\images\g1.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\index.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\scripts\app.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\scripts\ui.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\scripts\vendor.js" />
+    <Content Include="Scripts\MaterialDesignScripts\app.js" />
+    <Content Include="Scripts\MaterialDesignScripts\ui.js" />
+    <Content Include="Scripts\MaterialDesignScripts\vendor.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\styles\bootstrap.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\styles\main.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\styles\ui.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\styles\ui\images\flags-s1545c92c32.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\charts\chartjs.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\charts\charts.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\charts\flot.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\dashboard.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\forms\elements.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\forms\layouts.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\forms\validation.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\forms\wizard.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\header.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\pages\404.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\pages\500.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\pages\blank.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\pages\features.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\pages\forgot-password.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\pages\invoice.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\pages\profile.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\pages\signin.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\pages\signup.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\sidebar.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\tables\dynamic.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\tables\responsive.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\tables\static.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\ui\buttons.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\ui\calendar.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\ui\cards.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\ui\components.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\ui\grids.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\ui\icons.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\ui\lists.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\ui\maps.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\ui\pricing-tables.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\ui\timeline.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\views\ui\typography.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\css\bootstrap.min.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\css\docs.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\css\main.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\css\pygments-manni.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\img\bg_header.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\img\contact_me.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\img\features-bordered.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\img\grid-baseline-20px.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\js\application.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\js\bootstrap.min.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\js\google-code-prettify\prettify.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\js\google-code-prettify\prettify.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\js\holder.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\js\html5shiv.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\js\jquery.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\assets\js\jquery.smooth-scroll.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\documentation\index.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\css\main.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\images\1.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\images\2.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\index.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\scripts\loader.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\scripts\main.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\scripts\modernizr.custom.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\vendors\bootstrap\dist\js\bootstrap.min.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\vendors\jquery-smooth-scroll\jquery.smooth-scroll.min.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\vendors\jquery.stellar\jquery.stellar.min.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\vendors\jquery\dist\jquery.min.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\vendors\material-design-iconic-font\css\material-design-iconic-font.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\vendors\material-design-iconic-font\css\material-design-iconic-font.min.css" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\vendors\material-design-iconic-font\fonts\Material-Design-Iconic-Font.svg" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\vendors\wow\dist\wow.min.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\favicon.ico" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\assets\600_400-1.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\assets\600_400-2.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\assets\600_400-3.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\assets\600_400-4.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\assets\600_400-5.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\assets\600_400-6.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\assets\style_typography_roboto1.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\background\1.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\background\2.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\background\3.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\background\4.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\bg-pattern\bg-pattern1.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\bg-pattern\bg-pattern10.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\bg-pattern\bg-pattern11.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\bg-pattern\bg-pattern12.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\bg-pattern\bg-pattern2.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\bg-pattern\bg-pattern3.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\bg-pattern\bg-pattern4.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\bg-pattern\bg-pattern5.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\bg-pattern\bg-pattern6.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\bg-pattern\bg-pattern7.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\bg-pattern\bg-pattern8.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\bg-pattern\bg-pattern9.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\images\g1.jpg" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\index.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\app.module.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\chart\chart.controller.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\chart\chart.directive.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\chart\chart.module.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\core\app.controller.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\core\config.route.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\core\i18n.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\form\form.controller.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\form\form.directive.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\form\form.module.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\form\formValidation.controller.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\form\formValidation.module.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\layout\nav.directive.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\layout\nav.module.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\page\page.controller.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\page\page.directive.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\page\page.module.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\table\table.controller.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\table\table.module.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\ui\map.controller.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\ui\map.directive.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\ui\map.module.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\ui\material.controller.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\ui\ui.controller.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\ui\ui.directive.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\ui\ui.module.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\ui\ui.service.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\vendors\jquery-jvectormap-1.2.2.min.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\vendors\jquery-jvectormap-world-mill-en.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\vendors\jquery.flot.animator.min.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\vendors\jquery.flot.orderBars.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\scripts\vendors\jquery.sparkline.min.js" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\images\flags\american.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\images\flags\china.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\images\flags\france.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\images\flags\germany.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\images\flags\italy.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\images\flags\japan.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\images\flags\korea.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\images\flags\portugal.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\images\flags\russia.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\images\flags\spain.png" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\charts\chartjs.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\charts\charts.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\charts\flot.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\dashboard.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\forms\elements.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\forms\layouts.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\forms\validation.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\forms\wizard.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\header.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\pages\404.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\pages\500.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\pages\blank.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\pages\features.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\pages\forgot-password.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\pages\invoice.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\pages\profile.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\pages\signin.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\pages\signup.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\sidebar.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\tables\dynamic.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\tables\responsive.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\tables\static.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\ui\buttons.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\ui\calendar.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\ui\cards.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\ui\components.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\ui\grids.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\ui\icons.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\ui\lists.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\ui\maps.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\ui\pricing-tables.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\ui\timeline.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\views\ui\typography.html" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\Gruntfile.js" />
+    <Content Include="Scripts\ai.0.15.0-build58334.js" />
+    <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\font-awesome\css\font-awesome.css.map" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Font.eot" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Font.ttf" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Font.woff" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Font.woff2" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\weather-icons\font\weathericons-regular-webfont.eot" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\weather-icons\font\weathericons-regular-webfont.ttf" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\weather-icons\font\weathericons-regular-webfont.woff" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\bower_components\weather-icons\font\weathericons-regular-webfont.woff2" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\fonts\.DS_Store" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\i18n\en.json" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\i18n\es.json" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\i18n\ja.json" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\i18n\pt.json" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\i18n\ru.json" />
+    <Content Include="Material-Admin-Full-Package v1.5\dist\i18n\zh.json" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\.bowerrc" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\bower.json" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_alerts.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_background-variant.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_border-radius.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_buttons.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_center-block.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_clearfix.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_forms.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_gradients.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_grid-framework.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_grid.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_hide-text.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_image.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_labels.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_list-group.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_nav-divider.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_nav-vertical-align.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_opacity.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_pagination.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_panels.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_progress-bar.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_reset-filter.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_resize.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_responsive-visibility.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_size.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_tab-focus.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_table-row.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_text-emphasis.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_text-overflow.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\mixins\_vendor-prefixes.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_alerts.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_badges.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_breadcrumbs.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_button-groups.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_buttons.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_carousel.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_close.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_code.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_component-animations.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_dropdowns.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_forms.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_glyphicons.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_grid.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_input-groups.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_jumbotron.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_labels.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_list-group.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_media.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_mixins.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_modals.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_navbar.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_navs.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_normalize.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_pager.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_pagination.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_panels.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_popovers.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_print.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_progress-bars.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_responsive-embed.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_responsive-utilities.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_scaffolding.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_tables.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_theme.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_thumbnails.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_tooltip.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_type.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_utilities.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_variables.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\bootstrap\_wells.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\_bootstrap-compass.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\_bootstrap-mincer.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\_bootstrap-sprockets.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bootstrap\_bootstrap.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_border-color.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_border-radius.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_border-style.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_border-width.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_buttons.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_clearfix.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_ellipsis.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_font-stacks.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_hide-text.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_margin.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_padding.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_position.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_prefixer.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_retina-image.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_size.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_text-inputs.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_timing-functions.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_triangle.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\addons\_word-wrap.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_animation.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_appearance.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_backface-visibility.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_background-image.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_background.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_border-image.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_calc.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_columns.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_filter.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_flex-box.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_font-face.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_font-feature-settings.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_hidpi-media-query.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_hyphens.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_image-rendering.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_keyframes.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_linear-gradient.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_perspective.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_placeholder.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_radial-gradient.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_selection.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_text-decoration.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_transform.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_transition.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\css3\_user-select.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_assign-inputs.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_contains-falsy.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_contains.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_is-length.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_is-light.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_is-number.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_is-size.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_modular-scale.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_px-to-em.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_px-to-rem.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_shade.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_strip-units.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_tint.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_transition-property-name.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\functions\_unpack.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\helpers\_convert-units.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\helpers\_directional-values.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\helpers\_font-source-declaration.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\helpers\_gradient-positions-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\helpers\_linear-angle-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\helpers\_linear-gradient-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\helpers\_linear-positions-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\helpers\_linear-side-corner-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\helpers\_radial-arg-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\helpers\_radial-gradient-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\helpers\_radial-positions-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\helpers\_render-gradients.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\helpers\_shape-size-stripper.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\helpers\_str-to-num.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\settings\_asset-pipeline.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\settings\_prefixer.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\settings\_px-to-em.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\_bourbon-deprecated-upcoming.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\bourbon\_bourbon.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\global\_var-landing.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\global\_var.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\main.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\page\_header.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\page\_landing.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\page\_loader.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\styles\page\_ui.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\vendors\material-design-iconic-font\fonts\Material-Design-Iconic-Font.eot" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\vendors\material-design-iconic-font\fonts\Material-Design-Iconic-Font.ttf" />
+    <Content Include="Material-Admin-Full-Package v1.5\landing\vendors\material-design-iconic-font\fonts\Material-Design-Iconic-Font.woff" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\.bowerrc" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\.editorconfig" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\.gitattributes" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\.gitignore" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\.jshintrc" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\bower.json" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\CHANGELOG.md" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\.buildignore" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\.DS_Store" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\._.DS_Store" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\fonts\.DS_Store" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\fonts\._.DS_Store" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\i18n\en.json" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\i18n\es.json" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\i18n\ja.json" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\i18n\pt.json" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\i18n\ru.json" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\i18n\zh.json" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_alerts.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_background-variant.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_border-radius.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_buttons.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_center-block.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_clearfix.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_forms.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_gradients.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_grid-framework.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_grid.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_hide-text.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_image.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_labels.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_list-group.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_nav-divider.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_nav-vertical-align.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_opacity.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_pagination.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_panels.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_progress-bar.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_reset-filter.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_resize.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_responsive-visibility.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_size.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_tab-focus.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_table-row.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_text-emphasis.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_text-overflow.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\mixins\_vendor-prefixes.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_alerts.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_badges.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_breadcrumbs.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_button-groups.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_buttons.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_carousel.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_close.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_code.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_component-animations.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_dropdowns.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_forms.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_glyphicons.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_grid.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_input-groups.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_jumbotron.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_labels.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_list-group.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_media.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_mixins.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_modals.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_navbar.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_navs.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_normalize.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_pager.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_pagination.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_panels.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_popovers.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_print.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_progress-bars.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_responsive-embed.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_responsive-utilities.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_scaffolding.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_tables.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_theme.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_thumbnails.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_tooltip.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_type.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_utilities.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_variables.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\bootstrap\_wells.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\_bootstrap-compass.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\_bootstrap-mincer.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\_bootstrap-sprockets.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bootstrap\_bootstrap.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_border-color.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_border-radius.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_border-style.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_border-width.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_buttons.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_clearfix.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_ellipsis.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_font-stacks.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_hide-text.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_margin.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_padding.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_position.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_prefixer.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_retina-image.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_size.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_text-inputs.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_timing-functions.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_triangle.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\addons\_word-wrap.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_animation.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_appearance.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_backface-visibility.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_background-image.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_background.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_border-image.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_calc.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_columns.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_filter.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_flex-box.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_font-face.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_font-feature-settings.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_hidpi-media-query.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_hyphens.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_image-rendering.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_keyframes.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_linear-gradient.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_perspective.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_placeholder.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_radial-gradient.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_selection.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_text-decoration.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_transform.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_transition.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\css3\_user-select.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_assign-inputs.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_contains-falsy.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_contains.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_is-length.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_is-light.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_is-number.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_is-size.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_modular-scale.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_px-to-em.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_px-to-rem.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_shade.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_strip-units.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_tint.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_transition-property-name.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\functions\_unpack.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\helpers\_convert-units.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\helpers\_directional-values.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\helpers\_font-source-declaration.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\helpers\_gradient-positions-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\helpers\_linear-angle-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\helpers\_linear-gradient-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\helpers\_linear-positions-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\helpers\_linear-side-corner-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\helpers\_radial-arg-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\helpers\_radial-gradient-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\helpers\_radial-positions-parser.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\helpers\_render-gradients.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\helpers\_shape-size-stripper.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\helpers\_str-to-num.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\settings\_asset-pipeline.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\settings\_prefixer.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\settings\_px-to-em.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\_bourbon-deprecated-upcoming.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\bourbon\_bourbon.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\global\_shared.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\global\_var-extra.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\global\_var-pages.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\global\_var.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\layout\_body.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\layout\_header.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\layout\_layouts.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\layout\_nav-color.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\layout\_nav-horizontal.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\layout\_nav-min.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\layout\_nav-off-canvas.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\layout\_nav.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\main.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\pages\_auth.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\pages\_dashboard.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\pages\_demo-material.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\pages\_demo.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\pages\_error.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\pages\_features.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\pages\_invoice.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\pages\_pages.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\pages\_profile.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\pages\_ui.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_angular-chartjs.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_angular-loading-bar.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_angular-material.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_angular-ui-tree.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_bootstrap-slider.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_easypiecharts.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_intro.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_jquery-jvectormap.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_jquery-nestable.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_jquery-steps.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_morris.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_ng-tags-input.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_responsive-tables.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_sparkline.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\plugins\_toastr.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_accordion.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_animation.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_badges.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_breadcrumbs.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_buttons.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_callout.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_charts.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_dropdowns.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_form-checkbox-radio.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_form-editor.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_form-elements.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_form-input.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_form-select.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_form-switch.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_form-validation.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_grid.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_hover.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_image-size.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_labels.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_list-group.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_lists.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_map.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_material-button.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_material-cards.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_material-form.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_material-shadow.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_media.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_navs.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_pagination.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_panels.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_popovers.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_pricing-tables.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_progress-bars.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_ribbons.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_scaffolding.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_sprites.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_tab.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_tables-responsive.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_tables.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_timeline.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_tooltip.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_type.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\components\_wave.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\client\styles\ui\_ui.scss" />
+    <Content Include="Material-Admin-Full-Package v1.5\material\package.json" />
+    <Content Include="Content\bower_components\font-awesome\css\font-awesome.css.map" />
+    <Content Include="Content\bower_components\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\bower_components\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\bower_components\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\bower_components\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\bower_components\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Content\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Font.eot" />
+    <Content Include="Content\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Font.ttf" />
+    <Content Include="Content\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Font.woff" />
+    <Content Include="Content\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Font.woff2" />
+    <Content Include="Content\bower_components\weather-icons\font\weathericons-regular-webfont.eot" />
+    <Content Include="Content\bower_components\weather-icons\font\weathericons-regular-webfont.ttf" />
+    <Content Include="Content\bower_components\weather-icons\font\weathericons-regular-webfont.woff" />
+    <Content Include="Content\bower_components\weather-icons\font\weathericons-regular-webfont.woff2" />
+    <Content Include="privateConnection.config" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\SendCode.cshtml" />
+    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Priorities\Create.cshtml" />
+    <Content Include="Views\Priorities\Delete.cshtml" />
+    <Content Include="Views\Priorities\Details.cshtml" />
+    <Content Include="Views\Priorities\Edit.cshtml" />
+    <Content Include="Views\Priorities\Index.cshtml" />
+    <Content Include="Views\Stages\Create.cshtml" />
+    <Content Include="Views\Stages\Delete.cshtml" />
+    <Content Include="Views\Stages\Details.cshtml" />
+    <Content Include="Views\Stages\Edit.cshtml" />
+    <Content Include="Views\Stages\Index.cshtml" />
+    <Content Include="Views\IssueTypes\Create.cshtml" />
+    <Content Include="Views\IssueTypes\Delete.cshtml" />
+    <Content Include="Views\IssueTypes\Details.cshtml" />
+    <Content Include="Views\IssueTypes\Edit.cshtml" />
+    <Content Include="Views\IssueTypes\Index.cshtml" />
+    <Content Include="Views\Notices\Create.cshtml" />
+    <Content Include="Views\Notices\Delete.cshtml" />
+    <Content Include="Views\Notices\Details.cshtml" />
+    <Content Include="Views\Notices\Edit.cshtml" />
+    <Content Include="Views\Notices\Index.cshtml" />
+    <Content Include="Views\Comments\Create.cshtml" />
+    <Content Include="Views\Comments\Delete.cshtml" />
+    <Content Include="Views\Comments\Details.cshtml" />
+    <Content Include="Views\Comments\Edit.cshtml" />
+    <Content Include="Views\Comments\Index.cshtml" />
+    <Content Include="Views\Logs\Create.cshtml" />
+    <Content Include="Views\Logs\Delete.cshtml" />
+    <Content Include="Views\Logs\Details.cshtml" />
+    <Content Include="Views\Logs\Edit.cshtml" />
+    <Content Include="Views\Logs\Index.cshtml" />
+    <Content Include="Views\Projects\Create.cshtml" />
+    <Content Include="Views\Projects\Delete.cshtml" />
+    <Content Include="Views\Projects\Details.cshtml" />
+    <Content Include="Views\Projects\Edit.cshtml" />
+    <Content Include="Views\Projects\Index.cshtml" />
+    <Content Include="Views\Tickets\Create.cshtml" />
+    <Content Include="Views\Tickets\Delete.cshtml" />
+    <Content Include="Views\Tickets\Details.cshtml" />
+    <Content Include="Views\Tickets\Edit.cshtml" />
+    <Content Include="Views\Tickets\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Content\styles\ui\images\flags\" />
+    <Folder Include="Material-Admin-Full-Package v1.5\dist\styles\ui\images\flags\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config" />
+    <None Include="Project_Readme.html" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>63090</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:63090/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>
