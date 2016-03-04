@@ -10,6 +10,7 @@ using TgpBugTracker.Models;
 
 namespace TgpBugTracker.Controllers
 {
+    [RequireHttps]
     public class PrioritiesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

@@ -13,6 +13,7 @@ using TgpBugTracker.Models;
 namespace TgpBugTracker.Controllers
 {
     [Authorize]
+    [RequireHttps]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;

@@ -17,6 +17,8 @@ namespace TgpBugTracker.Models
 
         public string DisplayName { get; set; }
 
+        public bool IsGuest { get; set; }
+
         public virtual ICollection<Project> Projects { get; set; }
 
         public string Team { get; set; }

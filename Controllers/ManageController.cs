@@ -8,13 +8,17 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TgpBugTracker.Models;
 
+
+
 namespace TgpBugTracker.Controllers
 {
     [Authorize]
+    [RequireHttps]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        
 
         public ManageController()
         {

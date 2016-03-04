@@ -17,33 +17,31 @@ namespace TgpBugTracker.Migrations
 
         // protected override void Seed(TgpBugTracker.Models.ApplicationDbContext context)
         //{
-            //  This method will be called after migrating to the latest version.
+        //  This method will be called after migrating to the latest version.
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+        //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
+        //  to avoid creating duplicate seed data. E.g.
+        //
+        //    context.People.AddOrUpdate(
+        //      p => p.FullName,
+        //      new Person { FullName = "Andrew Peters" },
+        //      new Person { FullName = "Brice Lambson" },
+        //      new Person { FullName = "Rowan Miller" }
+        //    );
+        //
         // }
 
-        
+
         protected override void Seed(TgpBugTracker.Models.ApplicationDbContext context)
         {
             var roleManager = new RoleManager<IdentityRole>(
             new RoleStore<IdentityRole>(context));
 
             // For Administrator
-
-            if (!context.Roles.Any(r => r.Name == "Admin"))
+            if (!context.Roles.Any(r => r.Name == "Administrator"))
             {
                 roleManager.Create(new IdentityRole { Name = "Admin" });
             }
-
             var userManager = new UserManager<Models.ApplicationUser>(
                 new UserStore<ApplicationUser>(context));
 
@@ -53,33 +51,62 @@ namespace TgpBugTracker.Migrations
                 {
                     UserName = "tpeara@gmail.com",
                     Email = "tpeara@gmail.com",
-                    DisplayName = "Timbo"
+                    DisplayName = "Andy Brown"
                 }, "Password-1");
             }
-
             var userId = userManager.FindByEmail("tpeara@gmail.com").Id;
             userManager.AddToRole(userId, "Admin");
 
-            // For Moderator
-
-            if (!context.Roles.Any(r => r.Name == "Moderator"))
+            // For Project Manager
+            if (!context.Roles.Any(r => r.Name == "Project Manager"))
             {
-                roleManager.Create(new IdentityRole { Name = "Moderator" });
+                roleManager.Create(new IdentityRole { Name = "Project Manager" });
             }
-
-
-            if (!context.Users.Any(u => u.Email == "moderator@coderfoundry.com"))
+            if (!context.Users.Any(u => u.Email == "tim@peara.com"))
             {
                 userManager.Create(new ApplicationUser
                 {
-                    UserName = "moderator@coderfoundry.com",
-                    Email = "moderator@coderfoundry.com",
-                    DisplayName = "Moderator"
+                    UserName = "tim@peara.com",
+                    Email = "tim@peara.com",
+                    DisplayName = "Paul Mann"
                 }, "Password-1");
             }
+            userId = userManager.FindByEmail("tim@peara.com").Id;
+            userManager.AddToRole(userId, "Project Manager");
 
-            userId = userManager.FindByEmail("moderator@coderfoundry.com").Id;
-            userManager.AddToRole(userId, "Moderator");
+            // For Developer
+            if (!context.Roles.Any(r => r.Name == "Developer"))
+            {
+                roleManager.Create(new IdentityRole { Name = "Developer" });
+            }
+            if (!context.Users.Any(u => u.Email == "tim@theionizer.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "tim@theionizer.com",
+                    Email = "tim@theionizer.com",
+                    DisplayName = "Dong Da-Xai"
+                }, "Password-1");
+            }
+            userId = userManager.FindByEmail("tim@theionizer.com").Id;
+            userManager.AddToRole(userId, "Developer");
+
+            // For Submitter
+            if (!context.Roles.Any(r => r.Name == "Submitter"))
+            {
+                roleManager.Create(new IdentityRole { Name = "Submitter" });
+            }
+            if (!context.Users.Any(u => u.Email == "timpeara@altenergyfin.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "timpeara@altenergyfin.com",
+                    Email = "timpeara@altenergyfin.com",
+                    DisplayName = "Saburo Saito"
+                }, "Password-1");
+            }
+            userId = userManager.FindByEmail("timpeara@altenergyfin.com").Id;
+            userManager.AddToRole(userId, "Submitter");
 
         }
 
