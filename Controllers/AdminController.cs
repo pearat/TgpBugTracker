@@ -16,16 +16,17 @@ namespace TgpBugTracker.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        //
         // GET: Admin
         public ActionResult Index()
         {
-            var fullStaff = new List<StaffRoles>();
+            var fullStaff = new List<UserRolesVM>();
             var helper = new UserRolesHelper();
             var allRoles = db.Roles.OrderBy(r => r.Name).Select(r => r.Name).ToArray();
             var numAllRoles = allRoles.Count();
             foreach (var u in db.Users)
             {
-                var staff = new StaffRoles();
+                var staff = new UserRolesVM();
                 staff.UserId = u.Id;
                 staff.DisplayName = u.DisplayName;
                 staff.IsGuest = u.IsGuest;
@@ -49,8 +50,8 @@ namespace TgpBugTracker.Controllers
 
 
         //
-        // GET: /Manage/AssignRoles
-        public ActionResult AssignRoles(string UserId)
+        // GET: /Manage/AssignRolesToUser to Users
+        public ActionResult AssignRolesToUser(string UserId)
         {
             if (UserId == null)
                 UserId = User.Identity.GetUserId();
@@ -61,7 +62,7 @@ namespace TgpBugTracker.Controllers
                 ModelState.AddModelError("", "User Id not found.");
                 return RedirectToAction("Index");
             }
-            var staff = new StaffRoles();
+            var staff = new UserRolesVM();
             staff.UserId = UserId;
             staff.IsGuest = user.IsGuest;
             staff.DisplayName = user.DisplayName;
@@ -73,10 +74,10 @@ namespace TgpBugTracker.Controllers
         }
 
         //
-        // POST: /Manage/AssignRoles
+        // POST: /Manage/AssignRolesToUser to Users
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AssignRoles([Bind(Include = "UserId,DisplayName,IsGuest,Roles,Selected")] StaffRoles staff)
+        public ActionResult AssignRolesToUser([Bind(Include = "UserId,DisplayName,IsGuest,Roles,Selected")] UserRolesVM staff)
         {
             if (!ModelState.IsValid)
             {

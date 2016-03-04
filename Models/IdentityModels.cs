@@ -15,13 +15,18 @@ namespace TgpBugTracker.Models
             this.Projects = new HashSet<Project>();
         }
 
-        public string DisplayName { get; set; }
+        //public string FirstName { get; set; }
+        //public string LastName { get; set; }
 
+        public string DisplayName { get; set; }
+        //{
+        //    get { return FirstName + " " + LastName; }
+        //}
         public bool IsGuest { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }
 
-        public string Team { get; set; }
+        // public string Team { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -51,5 +56,6 @@ namespace TgpBugTracker.Models
         public DbSet<Project> Projects { get; set; }
         public DbSet<Stage> Stages { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        // public DbSet<UserProject> UserProjects { get; set; }
     }
 }

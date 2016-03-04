@@ -4,10 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using TgpBugTracker.Models;
 
 namespace TgpBugTracker.Helpers
 {
+    [RequireHttps]
     public class UserRolesHelper
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -46,7 +48,7 @@ namespace TgpBugTracker.Helpers
 
         public IList<ApplicationUser> UsersInRole(string roleName)
         {
-            // var db = new ApplicationDbContext();
+            var db = new ApplicationDbContext();
             var usersList = new List<ApplicationUser>();
             var roleId = db.Roles.FirstOrDefault(n => n.Name == roleName).Id;
             usersList = (from u in db.Users

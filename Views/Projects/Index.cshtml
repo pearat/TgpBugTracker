@@ -1,63 +1,97 @@
-﻿@model IEnumerable<TgpBugTracker.Models.Project>
+﻿@model IEnumerable<TgpBugTracker.Models.ProjectUsersVM>
 
 @{
     ViewBag.Title = "Index";
 }
+<aside class="">
+    <h2>Projects Index Page</h2>
+    @if (User.IsInRole("Admin"))
+    {
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+    }
+    <table class="table">
+        <thead>
+            <tr>
+                <td width="20%" style="text-align:">
+                    @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                    {
+                        @:Assign|Edit|
+                        
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        @: Delete
+                    }
+                </td>
+                <th width="5%">
+                    @Html.DisplayNameFor(m => m.ProjectId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProjectName)
+                </th>
+                <th width="12%">
+                    @Html.DisplayNameFor(model => model.Usrs[0])
+                    </th>
+                <th width="12%">
+                    @Html.DisplayNameFor(model => model.Usrs[1])
+                </th>
+                <th width="12%">
+                    @Html.DisplayNameFor(model => model.Usrs[2])
+                </th>
+                <th width="12%">
+                    @Html.DisplayNameFor(model => model.Usrs[3])
+                </th>
+                <th width="12%">
+                    @Html.DisplayNameFor(model => model.Usrs[4])
+                </th>
+            </tr>
+        </thead>
+        <tbody>
 
-<h2>Index</h2>
+            @foreach (var item in Model)
+            {
+                <tr width="inherit">
+                    <td>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                        {
+                            @Html.ActionLink("Staffing", "AssignUsersToProject", new { ProjectId = item.ProjectId })
+                            @:|
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ProjectId })
+                            @:|
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ProjectId })
+                        }
+                    </td>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.AuthorId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Deadline)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Started)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Version)
-        </th>
-        <th></th>
-    </tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProjectId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProjectName)
+                    </td>
+                    @for (int i = 0; i < Math.Min(5,ViewBag.NumUsers); i++)
+                    {
+                    <td>
+                        @if (i < item.Usrs.Count())
+                        {
+                            @Html.DisplayFor(modelItem => item.Usrs[i])
+                        }
+                        else
+                        {
+                            <text>......</text>
+                        }
+                    </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        @Html.ActionLink("Return Home", "Index", "Home")
+    </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.AuthorId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Deadline)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Started)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Version)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
+</aside>

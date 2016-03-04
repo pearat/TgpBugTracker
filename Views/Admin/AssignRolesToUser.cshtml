@@ -1,6 +1,6 @@
-﻿@model TgpBugTracker.Models.StaffRoles
+﻿@model TgpBugTracker.Models.UserRolesVM
 @{
-    ViewBag.Title = "AssignRoles";
+    ViewBag.Title = "AssignRolesToUser";
 }
 <aside class="right-side">
     <h2>Assign Roles to Staff Members</h2>
@@ -46,7 +46,7 @@
     }
 
     <div>
-        @*@Html.ActionLink("Back to List", "Index", new { period = "currentMonth" })*@
+        @Html.ActionLink("Back to List", "Index", new { period = "currentMonth" })
     </div>
 </aside>
 @section Scripts {

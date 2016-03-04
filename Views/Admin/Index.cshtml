@@ -1,9 +1,9 @@
-﻿@model IEnumerable<TgpBugTracker.Models.StaffRoles>
+﻿@model IEnumerable<TgpBugTracker.Models.UserRolesVM>
 
 @{
     ViewBag.Title = "Index";
 }
-<aside class="right-side">
+<aside class="">
     <h2>Admin Index</h2>
 
     <p>
@@ -14,9 +14,9 @@
     <table class="table" id="myTable">
         <thead>
             <tr>
-                <th width="20%">
+                @*<th width="20%">
                     @Html.DisplayNameFor(m => m.UserId)
-                </th>
+                </th>*@
                 <th width="12%">
                     @Html.DisplayNameFor(m => m.DisplayName)
                 </th>
@@ -44,9 +44,9 @@
             @foreach (var item in Model)
             {
                 <tr width="inherit">
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.UserId)
-                    </td>
+                    </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.DisplayName)
                     </td>
@@ -69,7 +69,7 @@
                         @Html.DisplayFor(modelItem => item.IsGuest)
                     </td>
                     <td>
-                        @Html.ActionLink("Assign", "AssignRoles", new { UserId = item.UserId }) |
+                        @Html.ActionLink("Assign", "AssignRolesToUser", new { UserId = item.UserId }) |
                         <button data-id="@item.UserId" class="del" data-toggle="modal" data-target="#delDealModal">
                             <span>Delete</span>
                         </button>
