@@ -24,6 +24,9 @@ namespace TgpBugTracker.Models
     {
         public string ProjectName { get; set; }
         public string[] Usrs { get; set; }
+        public string[] PjtMgrs { get; set; }
+        public string[] Developers { get; set; }
+        public string[] Submitters { get; set; }
         public int ProjectId { get; set; }
         public MultiSelectList Selected { get; set; }
 

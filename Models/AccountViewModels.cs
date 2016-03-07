@@ -3,6 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TgpBugTracker.Models
 {
+    public class IdDisplayName
+    {
+        public IdDisplayName()
+        {
+            Id = "";
+            DisplayName = "";
+        }
+        public string Id { get; set; }
+        public string DisplayName { get; set; }
+    }
     public class ExternalLoginConfirmationViewModel
     {
         [Required]

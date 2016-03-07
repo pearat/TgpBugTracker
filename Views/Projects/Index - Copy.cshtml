@@ -4,7 +4,7 @@
     ViewBag.Title = "Projects Index Page";
 }
 <aside class="">
-    
+    < div class="container">
 
     <h2>@ViewBag.Title</h2>
     @if (User.IsInRole("Admin"))
@@ -14,35 +14,38 @@
         </p>
     }
     @{
+
         int j = 0;
         foreach (var item in Model)
         {
-            string collapseNumber = "collapse" + j.ToString();
-            string collapseId = "#" + collapseNumber;
-            <div class="panel-group" id="accordion">
+            var collapseNumber = "#collapse" + j;
+            <div class="panel-group">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <div class="panel-title">
-                            <span style="text-align:left; font-weight:bold" width="30%" >
-                                <a data-toggle="collapse" data-parent="#accordion"
-                                   href="@collapseId">@Html.DisplayFor(modelItem => item.ProjectName)</a>
-                            </span>
-                            <span style="text-align:right" width="40%">
-                                @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
-                                {
-                                    @Html.ActionLink("Assign", "AssignUsersToProject", new { ProjectId = item.ProjectId })
-                                }
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    @:|
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.ProjectId })
-                                    @:|
-                                    @Html.ActionLink("Delete", "Delete", new { id = item.ProjectId })
-                                }
-                            </span>
-                        </div>
+                        <table class="table">
+                            <tbody>
+                                <tr width="inherit">
+                                    <td class="panel-title">
+                                        <a data-toggle="collapse" href=@collapseNumber>@Html.DisplayFor(modelItem => item.ProjectName)</a>
+
+                                        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                                        {
+                                            @Html.ActionLink("Assign", "AssignUsersToProject", new { ProjectId = item.ProjectId })
+
+                                        }
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            @:|
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.ProjectId })
+                                            @:|
+                                            @Html.ActionLink("Delete", "Delete", new { id = item.ProjectId })
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div id="@collapseNumber" class="panel-collapse collapse">
+                    <div id="collapse1" class="panel-collapse collapse">
                         <table>
                             <thead>
                                 <tr style="text-decoration-line:underline; font-weight:bold">
@@ -99,12 +102,14 @@
 
                             </tbody>
                         </table>
+                        <div class="panel-footer">Footer</div>
                     </div>
                 </div>
             </div>
             j++;
         }
     }
+
 
     <div>
         @Html.ActionLink("Return Home", "Index", "Home")

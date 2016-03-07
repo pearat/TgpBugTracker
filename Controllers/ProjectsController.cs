@@ -20,23 +20,47 @@ namespace TgpBugTracker.Controllers
         public ActionResult Index()
         {
             var assignedProjects = new List<ProjectUsersVM>();
-            var helper = new ProjectUsersHelper();
+            var uHelper = new ProjectUsersHelper();
+            var rHelper = new UserRolesHelper();
             var allUsers = db.Users.OrderBy(r => r.DisplayName).Select(r => r.DisplayName).ToArray();
             var numAllUsers = allUsers.Count();
+
             foreach (var p in db.Projects)
             {
                 var projectVM = new ProjectUsersVM();
-                
+
                 projectVM.ProjectId = p.Id;
                 projectVM.ProjectName = p.Name;
-                projectVM.Usrs = new string[numAllUsers];
 
-                var projectTeam = helper.ListProjectUsers(p.Id).ToArray();
-                var teamSize = projectTeam.Count();
-                int teamCount;
-                for (int i = 0; i < teamSize; i++)
+                var teamMembers = uHelper.ListProjectUsersIds(p.Id);
+                if (teamMembers != null)
                 {
-                    projectVM.Usrs[i] = projectTeam[i];
+                    ViewBag.TeamCount = teamMembers.Count();
+                    int pmCount = 0;
+                    int devCount = 0;
+                    int subCount = 0;
+                    projectVM.PjtMgrs = new string[ViewBag.TeamCount];
+                    projectVM.Developers = new string[ViewBag.TeamCount];
+                    projectVM.Submitters = new string[ViewBag.TeamCount];
+
+                    for (int k = 0; k < ViewBag.TeamCount; k++)
+                    {
+                        if (rHelper.IsUserInRole(teamMembers[k].Id, "Project Manager"))
+                        {
+                            // var temp = db.Users.Find(teamMembers[k]);
+                            projectVM.PjtMgrs[pmCount++] = teamMembers[k].DisplayName;
+                        }
+                        if (rHelper.IsUserInRole(teamMembers[k].Id, "Developer"))
+                        {
+                            //var temp = db.Users.Find(teamMembers[k]);
+                            projectVM.Developers[devCount++] = teamMembers[k].DisplayName;
+                        }
+                        if (rHelper.IsUserInRole(teamMembers[k].Id, "Submitter"))
+                        {
+                            // var temp = db.Users.Find(teamMembers[k]);
+                            projectVM.Submitters[subCount++] = teamMembers[k].DisplayName;
+                        }
+                    }
                 }
                 assignedProjects.Add(projectVM);
             }
@@ -44,7 +68,7 @@ namespace TgpBugTracker.Controllers
             return View(assignedProjects);
         }
 
-        
+
 
         //
         // GET: /Manage/AssignUsersToProject

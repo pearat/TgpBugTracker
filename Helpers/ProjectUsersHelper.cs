@@ -29,8 +29,7 @@ namespace TgpBugTracker.Helpers
             return (project.Users.FirstOrDefault(u => u.Id == userId) != null) ? true : false;
         }
 
-        //public IList<UserWithId> ListProjectUsers(int ProjectId)
-            public IList<string> ListProjectUsers(int ProjectId)
+        public IList<IdDisplayName> ListProjectUsersIds(int ProjectId)
         {
             var project = db.Projects.Find(ProjectId);
             if (project == null)
@@ -38,11 +37,39 @@ namespace TgpBugTracker.Helpers
                 Debug.WriteLine("ListProjectUsers() error: Users not found!");
                 return null;
             }
-            //var users = (IList<UserWithId>)project.Users.OrderBy(p => p.DisplayName).Select(p => new { p.Id, p.DisplayName }).ToList();
-            var users = project.Users.OrderBy(p => p.DisplayName).Select(p => p.DisplayName ).ToList();
+            // var users = project.Users.OrderBy(p => p.DisplayName).Select(p => new { p.Id, p.DisplayName } ).ToArray();
+            var users = project.Users.OrderBy(p => p.DisplayName).ToArray();
+
             if (users == null)
             {
                 Debug.WriteLine("ListProjectUsers() error: Project has no Users!"); 
+                return null;
+            }
+            IList<IdDisplayName> userList = new List<IdDisplayName>();
+            
+            foreach (var item in users)
+            {
+                var u = new IdDisplayName();
+                u.Id = item.Id;
+                u.DisplayName = item.DisplayName;
+                userList.Add(u);
+                
+            }
+            return userList;
+        }
+
+        public IList<string> ListProjectUsers(int ProjectId)
+        {
+            var project = db.Projects.Find(ProjectId);
+            if (project == null)
+            {
+                Debug.WriteLine("ListProjectUsers() error: Users not found!");
+                return null;
+            }
+            var users = project.Users.OrderBy(p => p.DisplayName).Select(p => p.DisplayName).ToList();
+            if (users == null)
+            {
+                Debug.WriteLine("ListProjectUsers() error: Project has no Users!");
                 return null;
             }
             return users;

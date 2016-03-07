@@ -24,7 +24,7 @@ namespace TgpBugTracker.Helpers
 
         public IList<string> ListUserRoles(string userId)
         {
-            return manager.GetRoles(userId);
+            return manager.GetRoles(userId).ToArray();
         }
 
         public bool AddUserToRole(string userId, string roleName)
