@@ -11,6 +11,10 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using TgpBugTracker.Models;
+using System.Configuration;
+using SendGrid;
+using System.Net.Mail;
+using System.Net;
 
 namespace TgpBugTracker
 {
@@ -19,6 +23,26 @@ namespace TgpBugTracker
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
+            var username = ConfigurationManager.AppSettings["SendGridUserName"];
+            var password = ConfigurationManager.AppSettings["SendGridPassword"];
+            var from = ConfigurationManager.AppSettings["ContactEmail"];
+
+            SendGridMessage myMessage = new SendGridMessage();
+
+            myMessage.AddTo(message.Destination);
+            myMessage.From = new MailAddress(from);
+            myMessage.Subject = message.Subject;
+            myMessage.Text = message.Body;
+            myMessage.Html = message.Body;
+
+            // Create credentials, specifying your user name and password.
+            var credentials = new NetworkCredential(username, password);
+
+            //Create a Web transport for sending email.
+            var transportWeb = new Web(credentials);
+
+            //Send the email.
+            transportWeb.DeliverAsync(myMessage);
             return Task.FromResult(0);
         }
     }

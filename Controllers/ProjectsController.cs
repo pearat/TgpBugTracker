@@ -31,15 +31,12 @@ namespace TgpBugTracker.Controllers
                 projectVM.ProjectName = p.Name;
                 projectVM.Usrs = new string[numAllUsers];
 
-                var sProjects = helper.ListProjectUsers(p.Id).ToArray();
-                var sRc = sProjects.Count();
-                for (int i = 0; i < sRc; i++)
+                var projectTeam = helper.ListProjectUsers(p.Id).ToArray();
+                var teamSize = projectTeam.Count();
+                int teamCount;
+                for (int i = 0; i < teamSize; i++)
                 {
-                    for (int n = 0; n < numAllUsers; n++)
-                    {
-                        if (sProjects[i].Equals(allUsers[n], StringComparison.Ordinal))
-                            projectVM.Usrs[n] = allUsers[n];
-                    }
+                    projectVM.Usrs[i] = projectTeam[i];
                 }
                 assignedProjects.Add(projectVM);
             }
@@ -47,9 +44,7 @@ namespace TgpBugTracker.Controllers
             return View(assignedProjects);
         }
 
-
-
-
+        
 
         //
         // GET: /Manage/AssignUsersToProject
@@ -93,8 +88,13 @@ namespace TgpBugTracker.Controllers
             var project = db.Projects.Find(Pjt.ProjectId);
             project.Users.Clear();
             db.SaveChanges();
+            int ctr = 0;
+            if (Pjt.Usrs == null)
+                ctr = 0;
+            else
+                ctr = Pjt.Usrs.Count();
 
-            for (int i = 0; i < Pjt.Usrs.Count(); i++)
+            for (int i = 0; i < ctr; i++)
             {
                 helper.AddUserToProject(Pjt.ProjectName, Pjt.Usrs[i]);
             }
@@ -102,8 +102,6 @@ namespace TgpBugTracker.Controllers
 
             return RedirectToAction("Index", "Projects");
         }
-
-
 
 
 

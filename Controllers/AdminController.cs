@@ -31,16 +31,14 @@ namespace TgpBugTracker.Controllers
                 staff.DisplayName = u.DisplayName;
                 staff.IsGuest = u.IsGuest;
                 staff.Roles = new string[numAllRoles];
-
                 var sRoles = helper.ListUserRoles(u.Id).ToArray();
                 var sRc = sRoles.Count();
                 for (int i = 0; i < sRc; i++)
                 {
-                    for (int n = 0; n < numAllRoles; n++)
-                    {
-                        if (sRoles[i].Equals(allRoles[n], StringComparison.Ordinal))
-                            staff.Roles[n] = allRoles[n];
-                    }
+                    if (sRoles[i].Equals("Admin", StringComparison.Ordinal)) staff.Roles[0] = "A";
+                    if (sRoles[i].Equals("Project Manager", StringComparison.Ordinal)) staff.Roles[1] = "P";
+                    if (sRoles[i].Equals("Developer", StringComparison.Ordinal)) staff.Roles[2] = "D";
+                    if (sRoles[i].Equals("Submitter", StringComparison.Ordinal)) staff.Roles[3] = "S";
                 }
                 fullStaff.Add(staff);
             }

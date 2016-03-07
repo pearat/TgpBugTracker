@@ -14,29 +14,31 @@
     <table class="table" id="myTable">
         <thead>
             <tr>
-                @*<th width="20%">
-                    @Html.DisplayNameFor(m => m.UserId)
-                </th>*@
-                <th width="12%">
+
+                <th width="20%">
                     @Html.DisplayNameFor(m => m.DisplayName)
                 </th>
-                <th width="10%">
-                    @Html.DisplayNameFor(m => m.Roles[0])
+
+                <th width="13%">
+                    Administrator
                 </th>
 
-                <th width="10%">
-                    @Html.DisplayNameFor(m => m.Roles[1])
+                <th width="13%">
+                    Project Mgr
                 </th>
 
-                <th width="10%">
-                    @Html.DisplayNameFor(m => m.Roles[2])
+                <th width="11%">
+                    Developer
                 </th>
 
-                <th width="10%">
-                    @Html.DisplayNameFor(m => m.Roles[3])
+                <th width="11%">
+                    Submitter
                 </th>
-                <th width="10">
-                    @Html.DisplayNameFor(m => m.IsGuest)
+                <th width="8%">
+                    Guest?
+                </th>
+                <th width="15%">
+                    Actions
                 </th>
             </tr>
         </thead>
@@ -44,16 +46,14 @@
             @foreach (var item in Model)
             {
                 <tr width="inherit">
-                    @*<td>
-                        @Html.DisplayFor(modelItem => item.UserId)
-                    </td>*@
+
                     <td>
                         @Html.DisplayFor(modelItem => item.DisplayName)
                     </td>
                     @for (int i = 0; i < ViewBag.NumRoles; i++)
                     {
-                        <td>
-                            @if (i < item.Roles.Count())
+                        <td align="center">
+                            @if (i < 4) 
                             {  
                                 @Html.DisplayFor(modelItem => item.Roles[i])
                             }
@@ -123,9 +123,10 @@
 @section scripts{
     <script>
         $(window).load(function () {
-            $('.table').DataTable({
-                "order": [0, 'desc']
+            $('#myTable').DataTable({
+                "order": [0, 'asc']
             });
+
             var categoryId = 0;
             $('#delDealModal').on('shown.bs.modal', function (e) {
                 var j = $(e.relatedTarget).data('id');

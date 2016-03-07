@@ -51,7 +51,8 @@ namespace TgpBugTracker.Migrations
                 {
                     UserName = "tpeara@gmail.com",
                     Email = "tpeara@gmail.com",
-                    DisplayName = "Andy Brown"
+                    FirstName = "Andy",
+                    LastName = "Brown",
                 }, "Password-1");
             }
             var userId = userManager.FindByEmail("tpeara@gmail.com").Id;
@@ -68,7 +69,8 @@ namespace TgpBugTracker.Migrations
                 {
                     UserName = "tim@peara.com",
                     Email = "tim@peara.com",
-                    DisplayName = "Paul Mann"
+                    FirstName = "Paul",
+                    LastName = "Mann",
                 }, "Password-1");
             }
             userId = userManager.FindByEmail("tim@peara.com").Id;
@@ -85,7 +87,8 @@ namespace TgpBugTracker.Migrations
                 {
                     UserName = "tim@theionizer.com",
                     Email = "tim@theionizer.com",
-                    DisplayName = "Dong Da-Xai"
+                    FirstName = "Da-Xai",
+                    LastName = "Dong," 
                 }, "Password-1");
             }
             userId = userManager.FindByEmail("tim@theionizer.com").Id;
@@ -102,7 +105,8 @@ namespace TgpBugTracker.Migrations
                 {
                     UserName = "timpeara@altenergyfin.com",
                     Email = "timpeara@altenergyfin.com",
-                    DisplayName = "Saburo Saito"
+                    FirstName = "Saburo",
+                    LastName = "Saito"
                 }, "Password-1");
             }
             userId = userManager.FindByEmail("timpeara@altenergyfin.com").Id;

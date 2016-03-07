@@ -14,22 +14,22 @@
     <table class="table">
         <thead>
             <tr>
-                <td width="20%" style="text-align:">
+                <td width="15%" style="text-align:">
                     @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
                     {
-                        @:Assign|Edit|
+                        @:Assign|Edit
                         
                     }
                     @if (User.IsInRole("Admin"))
                     {
-                        @: Delete
+                        @:|Delete
                     }
                 </td>
                 <th width="5%">
-                    @Html.DisplayNameFor(m => m.ProjectId)
+                    Id#
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProjectName)
+                <th width="12%">
+                    Project Name
                 </th>
                 <th width="12%">
                     @Html.DisplayNameFor(model => model.Usrs[0])
@@ -56,7 +56,7 @@
                     <td>
                         @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
                         {
-                            @Html.ActionLink("Staffing", "AssignUsersToProject", new { ProjectId = item.ProjectId })
+                            @Html.ActionLink("Assign", "AssignUsersToProject", new { ProjectId = item.ProjectId })
                             @:|
                             @Html.ActionLink("Edit", "Edit", new { id = item.ProjectId })
                             @:|
