@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -12,62 +13,73 @@ using TgpBugTracker.Models;
 namespace TgpBugTracker.Controllers
 {
     [RequireHttps]
+    [Authorize(Roles = "Admin, 'Project Manager',Developer")]
     public class ProjectsController : Controller
     {
+
         private ApplicationDbContext db = new ApplicationDbContext();
+        private enum AuthLevel
+        {
+            None = 0,
+            Admin = 100,
+            PjtMgr = 80,
+            Developer = 40,
+            Submitter = 20
+        }
 
         // GET: Projects
+
         public ActionResult Index()
         {
             var assignedProjects = new List<ProjectUsersVM>();
-            var uHelper = new ProjectUsersHelper();
-            var rHelper = new UserRolesHelper();
+            var pjtHelper = new ProjectUsersHelper();
+            var usrHelper = new UserRolesHelper();
             var allUsers = db.Users.OrderBy(r => r.DisplayName).Select(r => r.DisplayName).ToArray();
             var numAllUsers = allUsers.Count();
+            var currentUserId = User.Identity.GetUserId();
+            var authLevel = usrHelper.GetUsersAuthorizationLevel(currentUserId);
 
             foreach (var p in db.Projects)
             {
-                var projectVM = new ProjectUsersVM();
-
-                projectVM.ProjectId = p.Id;
-                projectVM.ProjectName = p.Name;
-
-                var teamMembers = uHelper.ListProjectUsersIds(p.Id);
-                if (teamMembers != null)
+                if (authLevel > (int)AuthLevel.PjtMgr || pjtHelper.DoesProjectIncludeUser(currentUserId,p.Name))
                 {
-                    ViewBag.TeamCount = teamMembers.Count();
-                    int pmCount = 0;
-                    int devCount = 0;
-                    int subCount = 0;
-                    projectVM.PjtMgrs = new string[ViewBag.TeamCount];
-                    projectVM.Developers = new string[ViewBag.TeamCount];
-                    projectVM.Submitters = new string[ViewBag.TeamCount];
+                    var projectVM = new ProjectUsersVM();
+                    projectVM.ProjectId = p.Id;
+                    projectVM.ProjectName = p.Name;
 
-                    for (int k = 0; k < ViewBag.TeamCount; k++)
+                    var teamMembers = pjtHelper.ListProjectUsersIds(p.Id);
+                    if (teamMembers != null)
                     {
-                        if (rHelper.IsUserInRole(teamMembers[k].Id, "Project Manager"))
+                        projectVM.TeamCount = teamMembers.Count();
+                        int pmCount = 0;
+                        int devCount = 0;
+                        int subCount = 0;
+                        projectVM.PjtMgrs = new string[projectVM.TeamCount];
+                        projectVM.Developers = new string[projectVM.TeamCount];
+                        projectVM.Submitters = new string[projectVM.TeamCount];
+
+                        for (int k = 0; k < projectVM.TeamCount; k++)
                         {
-                            // var temp = db.Users.Find(teamMembers[k]);
-                            projectVM.PjtMgrs[pmCount++] = teamMembers[k].DisplayName;
-                        }
-                        if (rHelper.IsUserInRole(teamMembers[k].Id, "Developer"))
-                        {
-                            //var temp = db.Users.Find(teamMembers[k]);
-                            projectVM.Developers[devCount++] = teamMembers[k].DisplayName;
-                        }
-                        if (rHelper.IsUserInRole(teamMembers[k].Id, "Submitter"))
-                        {
-                            // var temp = db.Users.Find(teamMembers[k]);
-                            projectVM.Submitters[subCount++] = teamMembers[k].DisplayName;
+                            if (usrHelper.IsUserInRole(teamMembers[k].Id, "Project Manager"))
+                            {
+                                projectVM.PjtMgrs[pmCount++] = teamMembers[k].DisplayName;
+                            }
+                            if (usrHelper.IsUserInRole(teamMembers[k].Id, "Developer"))
+                            {
+                                projectVM.Developers[devCount++] = teamMembers[k].DisplayName;
+                            }
+                            if (usrHelper.IsUserInRole(teamMembers[k].Id, "Submitter"))
+                            {
+                                projectVM.Submitters[subCount++] = teamMembers[k].DisplayName;
+                            }
                         }
                     }
+                    assignedProjects.Add(projectVM);
                 }
-                assignedProjects.Add(projectVM);
             }
             ViewBag.NumUsers = numAllUsers;
             return View(assignedProjects);
         }
-
 
 
         //
@@ -148,7 +160,10 @@ namespace TgpBugTracker.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
-            return View();
+            var project = new Project();
+            project.Started = System.DateTimeOffset.Now;
+            project.Deadline = project.Started.AddMonths(6);
+            return View(project);
         }
 
         // POST: Projects/Create

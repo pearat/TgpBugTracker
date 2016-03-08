@@ -6,7 +6,7 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <!-- font Awesome -->
     <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
@@ -17,11 +17,11 @@
     <!-- jvectormap -->
     <link href="~/Content/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
     <!-- Date Picker -->
-    <link href="~/Content/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
+    @*<link href="~/Content/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />*@
     <!-- fullCalendar -->
     <!-- <link href="css/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" /> -->
     <!-- Daterange picker -->
-    <link href="~/Content/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+    @*<link href="~/Content/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />*@
     <!-- iCheck for checkboxes and radio inputs -->
     <link href="~/Content/iCheck/all.css" rel="stylesheet" type="text/css" />
     <!-- bootstrap wysihtml5 - text editor -->
@@ -32,30 +32,10 @@
     <!-- Bootstrap Multiselect list -->
     <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/dt-1.10.11/datatables.min.css" />
+
     <!-- Site CSS (if any) follows -->
     <link href="~/Content/Site.css" rel="stylesheet" />
 </head>
-@*<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    </ul>
-                    @Html.Partial("_LoginPartial")
-                </div>
-            </div>
-        </div>*@
 
 
 <body class="skin-black" style="padding-top:0">
@@ -318,18 +298,40 @@
                         </a>
                     </li>
                     <li>
-                        @*<a href="general.html">*@
                         <a href=@Url.Action("Index", "Admin")>
-                            <i class="fa fa-gavel"></i> <span>User Roles</span>
+                            <i class="fa fa-share-alt"></i> <span>User Roles</span>
                         </a>
                     </li>
                     <li>
-                        @*<a href="general.html">*@
                         <a href=@Url.Action("Index", "Projects")>
-                            <i class="fa fa-tasks"></i> <span>Project Staffing</span>
+                            <i class="fa fa-sitemap"></i> <span>Projects &amp Staffing</span>
                         </a>
                     </li>
 
+                    <li>
+                        <a href=@Url.Action("Index", "Tickets")>
+                            <i class="fa fa-ticket"></i> <span>Tickets</span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href=@Url.Action("Index", "IssueTypes")>
+                            <i class="fa fa-cogs"></i> <span>Types of Issues</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href=@Url.Action("Index", "Stages")>
+                            <i class="fa fa-line-chart"></i> <span>Project Stages</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href=@Url.Action("Index", "Priorities")>
+                            <i class="fa fa-hourglass-start"></i> <span>Priority Levels</span>
+                        </a>
+                    </li>
 
                     <li>
                         <a href="basic_form.html">
@@ -357,122 +359,52 @@
             </footer>
         </aside>
     </div>
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript" src="https://cdn.datatables.net/t/dt/dt-1.10.11/datatables.min.js"></script>
+
+    <!-- datepicker
+    <script src="js/plugins/datepicker/bootstrap-datepicker.js" type="text/javascript"></script>-->
+    <!-- Bootstrap WYSIHTML5
+    <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>-->
+    <!-- daterangepicker -->
+    @*<script src="~/Director-free/js/plugins/daterangepicker/daterangepicker.js"></script>*@
+    <script src="~/Director-free/js/plugins/chart.js"></script>
+
+    <!-- iCheck -->
+    <script src="~/js/plugins/iCheck/icheck.min.js"></script>
+    <!-- calendar -->
+    @*<script src="~/js/plugins/fullcalendar/fullcalendar.min.js"></script>*@
+    <!-- Director App -->
+    <script src="~/js/Director/app.js"></script>
+
+    <!-- Director dashboard demo (This is only for demo purposes) -->
+    @*<script src="~/Director-free/js/Director/dashboard.js" type="text/javascript"></script>*@
+    <!-- Bootstrap Multiselect list -->
+    <script src="~/Scripts/bootstrap-multiselect.js"></script>
+
+    <!-- Director for demo purposes -->
+    <script type="text/javascript">
+        //$('input').on('ifChecked', function (event) {
+        //    // var element = $(this).parent().find('input:checkbox:first');
+        //    // element.parent().parent().parent().addClass('highlight');
+        //    $(this).parents('li').addClass("task-done");
+        //    console.log('ok');
+        //});
+        //$('input').on('ifUnchecked', function (event) {
+        //    // var element = $(this).parent().find('input:checkbox:first');
+        //    // element.parent().parent().parent().removeClass('highlight');
+        //    $(this).parents('li').removeClass("task-done");
+        //    console.log('not');
+        //});
+
+    </script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <!-- Site JS (if any) follows -->
+    @RenderSection("scripts", required: false)
 </body>
 </html>
-
-
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-<script type="text/javascript" src="https://cdn.datatables.net/t/dt/dt-1.10.11/datatables.min.js"></script>
-
-<!-- jQuery UI 1.10.3 -->
-<script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>>
-
-<!-- daterangepicker -->
-<script src="~/js/plugins/daterangepicker/daterangepicker.js"></script>
-<script src="~/js/plugins/chart.js"></script>
-
-<!-- datepicker
-<script src="js/plugins/datepicker/bootstrap-datepicker.js" type="text/javascript"></script>-->
-<!-- Bootstrap WYSIHTML5
-<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>-->
-<!-- iCheck -->
-<script src="~/js/plugins/iCheck/icheck.min.js"></script>
-<!-- calendar -->
-<script src="~/js/plugins/fullcalendar/fullcalendar.min.js"></script>
-<!-- Director App -->
-<script src="~/js/Director/app.js"></script>
-
-<!-- jQuery 2.0.2 -->
-@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-    <script src="js/jquery.min.js" type="text/javascript"></script>*@
-
-<!-- jQuery UI 1.10.3 -->
-<script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>
-
-<!-- daterangepicker -->
-<script src="~/Director-free/js/plugins/daterangepicker/daterangepicker.js"></script>
-<script src="~/Director-free/js/plugins/chart.js"></script>
-
-
-<!-- iCheck -->
-<script src="~/Director-free/js/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
-<!-- calendar -->
-<script src="~/Director-free/js/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>
-
-<!-- Director App -->
-<script src="~/Director-free/js/Director/app.js" type="text/javascript"></script>
-
-<!-- Director dashboard demo (This is only for demo purposes) -->
-<script src="~/Director-free/js/Director/dashboard.js" type="text/javascript"></script>
-<!-- Bootstrap Multiselect list -->
-<script src="~/Scripts/bootstrap-multiselect.js"></script>
-
-<!-- Director for demo purposes -->
-<script type="text/javascript">
-    $('input').on('ifChecked', function (event) {
-        // var element = $(this).parent().find('input:checkbox:first');
-        // element.parent().parent().parent().addClass('highlight');
-        $(this).parents('li').addClass("task-done");
-        console.log('ok');
-    });
-    $('input').on('ifUnchecked', function (event) {
-        // var element = $(this).parent().find('input:checkbox:first');
-        // element.parent().parent().parent().removeClass('highlight');
-        $(this).parents('li').removeClass("task-done");
-        console.log('not');
-    });
-
-</script>
-<script>
-    //$('#noti-box').slimScroll({
-    //    height: '400px',
-    //    size: '5px',
-    //    BorderRadius: '5px'
-    //});
-
-    //$('input[type="checkbox"].flat-grey, input[type="radio"].flat-grey').iCheck({
-    //    checkboxClass: 'icheckbox_flat-grey',
-    //    radioClass: 'iradio_flat-grey'
-    //});
-</script>
-<script type="text/javascript">
-    //$(function () {
-    //    "use strict";
-    //    //BAR CHART
-    //    var data = {
-    //        labels: ["January", "February", "March", "April", "May", "June", "July"],
-    //        datasets: [
-    //            {
-    //                label: "My First dataset",
-    //                fillColor: "rgba(220,220,220,0.2)",
-    //                strokeColor: "rgba(220,220,220,1)",
-    //                pointColor: "rgba(220,220,220,1)",
-    //                pointStrokeColor: "#fff",
-    //                pointHighlightFill: "#fff",
-    //                pointHighlightStroke: "rgba(220,220,220,1)",
-    //                data: [65, 59, 80, 81, 56, 55, 40]
-    //            },
-    //            {
-    //                label: "My Second dataset",
-    //                fillColor: "rgba(151,187,205,0.2)",
-    //                strokeColor: "rgba(151,187,205,1)",
-    //                pointColor: "rgba(151,187,205,1)",
-    //                pointStrokeColor: "#fff",
-    //                pointHighlightFill: "#fff",
-    //                pointHighlightStroke: "rgba(151,187,205,1)",
-    //                data: [28, 48, 40, 19, 86, 27, 90]
-    //            }
-    //        ]
-    //    };
-    //    new Chart(document.getElementById("linechart").getContext("2d")).Line(data, {
-    //        responsive: true,
-    //        maintainAspectRatio: false,
-    //    });
-
-    //});
-    // Chart.defaults.global.responsive = true;
-</script>
-
-<!-- Site JS (if any) follows -->
-@RenderSection("scripts", required: false)

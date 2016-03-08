@@ -7,10 +7,10 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Project</h4>
         <hr />
@@ -23,11 +23,17 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Deadline, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Deadline, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Deadline, "", new { @class = "text-danger" })
+
+        <div class="form-group row" style="padding:0px 5px;">
+            <div style="display:inline">
+                <label for="date-picker-1" class="control-label col-md-2" style="display:inline; padding-top:10px">
+                    Deadline
+                </label>
+                <div class="controls col-md-10" style="padding:0px 15px">
+                    <input class="datepicker" data-date-format="mm/dd/yyyy" name="Deadline" style="padding:8px 12px; border:1px"
+                           value="@Model.Deadline.ToString("MM/dd/yyyy")">
+                    @Html.ValidationMessageFor(model => model.Deadline, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
@@ -47,11 +53,16 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Started, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Started, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Started, "", new { @class = "text-danger" })
+        <div class="form-group row" style="padding:0px 5px;">
+            <div style="display:inline">
+                <label for="date-picker-2" class="control-label col-md-2" style="display:inline; padding-top:10px">
+                    Deadline
+                </label>
+                <div class="controls col-md-10" style="padding:0px 15px">
+                    <input class="datepicker" data-date-format="mm/dd/yyyy" name="Started" style="padding:8px 12px; border:1px"
+                           value="@Model.Started.ToString("MM/dd/yyyy")">
+                    @Html.ValidationMessageFor(model => model.Started, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
@@ -76,5 +87,22 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+  
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('.datepicker').datepicker({
+                format: 'dd MMM yyyy'
+            });
+
+            $(".date-picker").on("change", function () {
+                var id = $(this).attr("id");
+                var val = $("label[for='" + id + "']").text();
+                $("#msg").text(val + " changed");
+            });
+        });
+    </script>
 }
+

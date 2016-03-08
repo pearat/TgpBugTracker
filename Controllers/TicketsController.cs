@@ -11,6 +11,7 @@ using TgpBugTracker.Models;
 namespace TgpBugTracker.Controllers
 {
     [RequireHttps]
+    [Authorize]
     public class TicketsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -39,7 +40,10 @@ namespace TgpBugTracker.Controllers
         // GET: Tickets/Create
         public ActionResult Create()
         {
-            return View();
+            var tkt = new Ticket();
+            tkt.Date = System.DateTimeOffset.Now;
+            tkt.Deadline = tkt.Date.AddMonths(1);
+            return View(tkt);
         }
 
         // POST: Tickets/Create

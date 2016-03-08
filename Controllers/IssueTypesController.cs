@@ -11,6 +11,7 @@ using TgpBugTracker.Models;
 namespace TgpBugTracker.Controllers
 {
     [RequireHttps]
+    [Authorize(Roles = "Admin")]
     public class IssueTypesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
