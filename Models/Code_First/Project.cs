@@ -15,8 +15,7 @@ namespace TgpBugTracker.Models
         }
         [Required]
         public int Id { get; set; }
-        [Required]
-        public int AuthorId { get; set; }
+
         public DateTimeOffset Deadline { get; set; }
         public string Description { get; set; }
         [Required]

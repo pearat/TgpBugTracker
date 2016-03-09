@@ -1,36 +1,86 @@
 ﻿@model TgpBugTracker.Models.Ticket
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create A New Ticket";
 }
 
-<h2>Create</h2>
+<h2>@ViewBag.Title</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Ticket</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(m => m.Date)
+        @Html.HiddenFor(m => m.AuthorId)
 
 
-        <div class="form-group row" style="padding:0px 5px;">
-            <div style="display:inline">
-                <label for="date-picker-1" class="control-label col-md-2" style="display:inline; padding-top:10px">
-                    Ticket Date
-                </label>
-                <div class="controls col-md-10" style="padding:0px 15px">
-                    <input class="datepicker" data-date-format="mm/dd/yyyy" name="Deadline" style="padding:8px 12px; border:1px"
-                           value="@Model.Date.ToString("mm/dd/yyyy")">
-                    @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
-                </div>
+        <div class="form-group" style="margin-bottom:0; padding-top:5px">
+            @Html.LabelFor(m => m.ProjectId, "Project Id", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10" style="padding-left:15px">
+                @Html.DropDownList("ProjectId", null, htmlAttributes: new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(m => m.ProjectId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0; padding-top:5px">
+            @Html.LabelFor(m => m.IssueTypeId, "Type of Issue", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10" style="padding-left:15px">
+                @Html.DropDownList("IssueTypeId", null, htmlAttributes: new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(m => m.IssueTypeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0; padding-top:5px">
+            @Html.LabelFor(m => m.PriorityId, "Priority Level", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10" style="padding-left:15px">
+                @Html.DropDownList("PriorityId", null, htmlAttributes: new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(m => m.PriorityId, "", new { @class = "text-danger" })
             </div>
         </div>
 
 
+        <div class="form-group">
+            @Html.LabelFor(m => m.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-sm-9">
+                @Html.TextAreaFor(m => m.Description, 5, 50, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0; padding-top:5px">
+            @Html.LabelFor(m => m.StageId, "Ticket Stage", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10" style="padding-left:15px">
+                @Html.DropDownList("StageId", null, htmlAttributes: new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(m => m.StageId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0; padding-top:5px">
+            @Html.LabelFor(m => m.LeaderId, "Tkt Leader", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10" style="padding-left:15px">
+                @Html.DropDownList("LeaderId", null, htmlAttributes: new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(m => m.LeaderId, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group row" style="padding:0px 5px;">
             <div style="display:inline">
@@ -38,87 +88,29 @@
                     Deadline
                 </label>
                 <div class="controls col-md-10" style="padding:0px 15px">
-                    <input class="datepicker" data-date-format="mm/dd/yyyy" name="Deadline" style="padding:8px 12px; border:1px"
-                           value="@Model.Deadline.ToString("mm/dd/yyyy")">
-                    @Html.ValidationMessageFor(model => model.Deadline, "", new { @class = "text-danger" })
+                    @if (Model.Description == null)
+                    {
+                        <input class="datepicker" data-date-format="yyyy/MM/dd" name="Deadline" style="padding:8px 12px; border:1px">
+                    }
+                    else
+                    {
+                        <input class="datepicker" data-date-format="yyyy/MM/dd" name="Deadline" style="padding:8px 12px; border:1px"
+                               value="@Model.Deadline.Value.ToString("yyyy/MM/dd")">
+                    }
+
                 </div>
             </div>
         </div>
 
 
-
-
         <div class="form-group">
-            @Html.LabelFor(model => model.Issue, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(m => m.RepositoryURL, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Issue, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Issue, "", new { @class = "text-danger" })
+                @Html.EditorFor(m => m.RepositoryURL, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.RepositoryURL, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.RepositoryURL, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RepositoryURL, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RepositoryURL, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.AuthorId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AuthorId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AuthorId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IssueTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IssueTypeId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.IssueTypeId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LeaderId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LeaderId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LeaderId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PriorityId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PriorityId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PriorityId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ProjectId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ProjectId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ProjectId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.StageId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.StageId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StageId, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -138,14 +130,14 @@
         $(document).ready(function () {
 
             $('.datepicker').datepicker({
-                format: 'mm/dd/yyyy', changeYear: true
+                format: 'yyyy/MM/dd'
             });
 
-            $(".date-picker").on("change", function () {
-                var id = $(this).attr("id");
-                var val = $("label[for='" + id + "']").text();
-                $("#msg").text(val + " changed");
-            });
+            //$(".date-picker").on("change", function () {
+            //    var id = $(this).attr("id");
+            //    var val = $("label[for='" + id + "']").text();
+            //    $("#msg").text(val + " changed");
+            //});
         });
     </script>
     @Scripts.Render("~/bundles/jqueryval")

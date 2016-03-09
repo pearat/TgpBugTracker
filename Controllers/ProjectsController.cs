@@ -172,7 +172,7 @@ namespace TgpBugTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Project Manager")]
-        public ActionResult Create([Bind(Include = "Id,AuthorId,Deadline,Description,Name,Started,Version")] Project project)
+        public ActionResult Create([Bind(Include = "Id,UserId,Deadline,Description,Name,Started,Version")] Project project)
         {
             if (ModelState.IsValid)
             {
@@ -206,7 +206,7 @@ namespace TgpBugTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit([Bind(Include = "Id,AuthorId,Deadline,Description,Name,Started,Version")] Project project)
+        public ActionResult Edit([Bind(Include = "Id,UserId,Deadline,Description,Name,Started,Version")] Project project)
         {
             if (ModelState.IsValid)
             {

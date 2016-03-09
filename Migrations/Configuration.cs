@@ -15,23 +15,6 @@ namespace TgpBugTracker.Migrations
             AutomaticMigrationsEnabled = true;
         }
 
-        // protected override void Seed(TgpBugTracker.Models.ApplicationDbContext context)
-        //{
-        //  This method will be called after migrating to the latest version.
-
-        //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-        //  to avoid creating duplicate seed data. E.g.
-        //
-        //    context.People.AddOrUpdate(
-        //      p => p.FullName,
-        //      new Person { FullName = "Andrew Peters" },
-        //      new Person { FullName = "Brice Lambson" },
-        //      new Person { FullName = "Rowan Miller" }
-        //    );
-        //
-        // }
-
-
         protected override void Seed(TgpBugTracker.Models.ApplicationDbContext context)
         {
             var roleManager = new RoleManager<IdentityRole>(
@@ -53,6 +36,8 @@ namespace TgpBugTracker.Migrations
                     Email = "tpeara@gmail.com",
                     FirstName = "Andy",
                     LastName = "Brown",
+                    DisplayName = "Brown, Andy",
+                    Active = true
                 }, "Password-1");
             }
             var userId = userManager.FindByEmail("tpeara@gmail.com").Id;
@@ -71,6 +56,8 @@ namespace TgpBugTracker.Migrations
                     Email = "tim@peara.com",
                     FirstName = "Paul",
                     LastName = "Mann",
+                    DisplayName = "Mann, Paul",
+                    Active = true
                 }, "Password-1");
             }
             userId = userManager.FindByEmail("tim@peara.com").Id;
@@ -88,7 +75,9 @@ namespace TgpBugTracker.Migrations
                     UserName = "tim@theionizer.com",
                     Email = "tim@theionizer.com",
                     FirstName = "Da-Xai",
-                    LastName = "Dong," 
+                    LastName = "Dong",
+                    DisplayName = "Dong, Da-Xai",
+                    Active = true
                 }, "Password-1");
             }
             userId = userManager.FindByEmail("tim@theionizer.com").Id;
@@ -106,13 +95,35 @@ namespace TgpBugTracker.Migrations
                     UserName = "timpeara@altenergyfin.com",
                     Email = "timpeara@altenergyfin.com",
                     FirstName = "Saburo",
-                    LastName = "Saito"
+                    LastName = "Saito",
+                    DisplayName = "Saito, Saburo",
+                    Active = true
+                }, "Password-1");
+            }
+            userId = userManager.FindByEmail("timpeara@altenergyfin.com").Id;
+            userManager.AddToRole(userId, "Submitter");
+
+            // For None
+            if (!context.Roles.Any(r => r.Name == "Submitter"))
+            {
+                roleManager.Create(new IdentityRole { Name = "None" });
+            }
+            if (!context.Users.Any(u => u.Email == "still@unassigned.com"))
+            {
+                userManager.Create(new ApplicationUser
+                {
+                    UserName = "still@unassigned.com",
+                    Email = "still@unassigned.com",
+                    FirstName = "Still",
+                    LastName = "Unassigned",
+                    DisplayName = "Unassigned, Still",
+                    IsGuest = true,
+                    Active = true
                 }, "Password-1");
             }
             userId = userManager.FindByEmail("timpeara@altenergyfin.com").Id;
             userManager.AddToRole(userId, "Submitter");
 
         }
-
     }
 }

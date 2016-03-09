@@ -1,15 +1,49 @@
 ﻿@model TgpBugTracker.Models.Ticket
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Ticket Details";
 }
 
-<h2>Details</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
-    <h4>Ticket</h4>
+    @*<h4>Ticket</h4>*@
     <hr />
     <dl class="dl-horizontal">
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Project.Name)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IssueTypeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IssueType.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PriorityId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Priority.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StageId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Stage.Name)
+        </dd>
+        
         <dt>
             @Html.DisplayNameFor(model => model.Date)
         </dt>
@@ -18,20 +52,42 @@
             @Html.DisplayFor(model => model.Date)
         </dd>
 
+
         <dt>
-            @Html.DisplayNameFor(model => model.Deadline)
+            @Html.DisplayNameFor(model => model.Title)
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Deadline)
+        <dd style="font-weight:bold">
+            @Html.DisplayFor(model => model.Title)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Issue)
+            @Html.DisplayNameFor(model => model.Description)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Issue)
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthorId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Author.DisplayName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LeaderId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Leader.DisplayName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Deadline)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Deadline)
         </dd>
 
         <dt>
@@ -41,63 +97,6 @@
         <dd>
             @Html.DisplayFor(model => model.RepositoryURL)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AuthorId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AuthorId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IssueTypeId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IssueTypeId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LeaderId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LeaderId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PriorityId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PriorityId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ProjectId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProjectId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.StageId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.StageId)
-        </dd>
-
     </dl>
 </div>
 <p>

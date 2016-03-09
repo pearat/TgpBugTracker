@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TgpBugTracker.Models.Notice>
+﻿@model IEnumerable<TgpBugTracker.Models.Ticket>
 
 @{
     ViewBag.Title = "Index";
@@ -12,28 +12,44 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Date)
+            @Html.DisplayNameFor(model => model.ProjectId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Detail)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MediaURL)
+            @Html.DisplayNameFor(model => model.IssueTypeId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Deadline)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.UserId)
         </th>
+
         <th>
             @Html.DisplayNameFor(model => model.LeaderId)
         </th>
+
+        
+
+        
         <th>
-            @Html.DisplayNameFor(model => model.LogId)
+            @Html.DisplayNameFor(model => model.PriorityId)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.StageId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TicketId)
+            @Html.DisplayNameFor(model => model.RepositoryURL)
         </th>
         <th></th>
     </tr>
@@ -44,10 +60,13 @@
             @Html.DisplayFor(modelItem => item.Date)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Detail)
+            @Html.DisplayFor(modelItem => item.Deadline)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.MediaURL)
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RepositoryURL)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Title)
@@ -56,13 +75,19 @@
             @Html.DisplayFor(modelItem => item.UserId)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.IssueTypeId)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.LeaderId)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.LogId)
+            @Html.DisplayFor(modelItem => item.PriorityId)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.TicketId)
+            @Html.DisplayFor(modelItem => item.ProjectId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StageId)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

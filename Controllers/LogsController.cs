@@ -47,7 +47,7 @@ namespace TgpBugTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Date,NewValue,OldValue,Property,AuthorId,TicketId")] Log log)
+        public ActionResult Create([Bind(Include = "Id,Date,NewValue,OldValue,Property,UserId,TicketId")] Log log)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace TgpBugTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Date,NewValue,OldValue,Property,AuthorId,TicketId")] Log log)
+        public ActionResult Edit([Bind(Include = "Id,Date,NewValue,OldValue,Property,UserId,TicketId")] Log log)
         {
             if (ModelState.IsValid)
             {

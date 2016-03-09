@@ -15,18 +15,24 @@
         <h4>Project</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.AuthorId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AuthorId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AuthorId, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
 
         <div class="form-group row" style="padding:0px 5px;">
             <div style="display:inline">
                 <label for="date-picker-1" class="control-label col-md-2" style="display:inline; padding-top:10px">
+                    Started On
+                </label>
+                <div class="controls col-md-10" style="padding:0px 15px">
+                    <input class="datepicker" data-date-format="mm/dd/yyyy" name="Started" style="padding:8px 12px; border:1px"
+                           value="@Model.Started.ToString("MM/dd/yyyy")">
+                    @Html.ValidationMessageFor(model => model.Started, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row" style="padding:0px 5px;">
+            <div style="display:inline">
+                <label for="date-picker-2" class="control-label col-md-2" style="display:inline; padding-top:10px">
                     Deadline
                 </label>
                 <div class="controls col-md-10" style="padding:0px 15px">
@@ -53,18 +59,6 @@
             </div>
         </div>
 
-        <div class="form-group row" style="padding:0px 5px;">
-            <div style="display:inline">
-                <label for="date-picker-2" class="control-label col-md-2" style="display:inline; padding-top:10px">
-                    Deadline
-                </label>
-                <div class="controls col-md-10" style="padding:0px 15px">
-                    <input class="datepicker" data-date-format="mm/dd/yyyy" name="Started" style="padding:8px 12px; border:1px"
-                           value="@Model.Started.ToString("MM/dd/yyyy")">
-                    @Html.ValidationMessageFor(model => model.Started, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Version, htmlAttributes: new { @class = "control-label col-md-2" })

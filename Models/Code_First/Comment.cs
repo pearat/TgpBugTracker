@@ -14,8 +14,10 @@ namespace TgpBugTracker.Models
         public string MediaURL { get; set; }
         public string Title { get; set; }
         [Required]
-        public int AuthorId { get; set; }
+        public string AuthorId { get; set; }
         [Required]
         public int TicketId { get; set; }
+
+        public virtual Ticket Ticket { get; set; }
     }
 }

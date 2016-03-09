@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -41,8 +42,29 @@ namespace TgpBugTracker.Controllers
         public ActionResult Create()
         {
             var tkt = new Ticket();
+            tkt.AuthorId = User.Identity.GetUserId();
             tkt.Date = System.DateTimeOffset.Now;
             tkt.Deadline = tkt.Date.AddMonths(1);
+            //tkt.Description = "";
+
+            ViewBag.ProjectId = new SelectList(db.Projects.OrderBy(n=>n.Name), "Id", "Name");
+
+            var defaultIssue = (int)db.IssueTypes.
+                Where(z => z.Name == "Not Categorized").
+                Select(p => p.Id).FirstOrDefault();     // note: Where() returns a list, so need FirstOrDefault() to get 1 object
+            ViewBag.IssueTypeId = new SelectList(db.IssueTypes, "Id", "Name", defaultIssue);
+
+            var defaultLeader = db.Users.Where(z => z.LastName == "Unassigned").Select(p => p.Id).FirstOrDefault();
+            var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName });
+            ViewBag.LeaderId = new SelectList(users, "Id", "DisplayName",defaultLeader);
+
+            var defaultPriority = (int)db.Priorities.Where(z => z.Name == "Unassessed").Select(p => p.Id).FirstOrDefault();
+            ViewBag.PriorityId = new SelectList(db.Priorities, "Id", "Name", defaultPriority);
+
+
+            var defaultStage = (int)db.Stages.Where(z => z.Name == "Unassigned").Select(p => p.Id).FirstOrDefault();
+            ViewBag.StageId = new SelectList(db.Stages, "Id", "Name", defaultStage);
+
             return View(tkt);
         }
 
@@ -51,7 +73,7 @@ namespace TgpBugTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Date,Deadline,Issue,RepositoryURL,Title,AuthorId,IssueTypeId,LeaderId,PriorityId,ProjectId,StageId")] Ticket ticket)
+        public ActionResult Create([Bind(Include = "Id,Date,Deadline,Description,RepositoryURL,Title,AuthorId,IssueTypeId,LeaderId,PriorityId,ProjectId,StageId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -59,6 +81,25 @@ namespace TgpBugTracker.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            ViewBag.ProjectId = new SelectList(db.Projects.OrderBy(n => n.Name), "Id", "Name");
+
+            var defaultIssue = (int)db.IssueTypes.
+                Where(z => z.Name == "Unassigned").
+                Select(p => p.Id).FirstOrDefault();     // note: Where() returns a list, so need FirstOrDefault() to get 1 object
+
+            ViewBag.IssueTypeId = new SelectList(db.IssueTypes, "Id", "Name", defaultIssue);
+
+            var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName });
+            ViewBag.LeaderId = new SelectList(users, "Id", "DisplayName");
+
+            var defaultPriority = (int)db.Priorities.Where(z => z.Name == "Unassessed").Select(p => p.Id).FirstOrDefault();
+            ViewBag.PriorityId = new SelectList(db.Priorities, "Id", "Name", defaultPriority);
+
+
+            var defaultStage = (int)db.Stages.Where(z => z.Name == "Unassigned").Select(p => p.Id).FirstOrDefault();
+            ViewBag.StageId = new SelectList(db.Stages, "Id", "Name", defaultStage);
+
 
             return View(ticket);
         }
@@ -75,6 +116,17 @@ namespace TgpBugTracker.Controllers
             {
                 return HttpNotFound();
             }
+
+            
+            ViewBag.IssueTypeId = new SelectList(db.IssueTypes, "Id", "Name", ticket.IssueTypeId);
+
+            var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName });
+            ViewBag.LeaderId = new SelectList(users, "Id", "DisplayName", ticket.LeaderId);
+
+            ViewBag.PriorityId = new SelectList(db.Priorities, "Id", "Name", ticket.PriorityId);
+            
+            ViewBag.StageId = new SelectList(db.Stages, "Id", "Name", ticket.StageId);
+            
             return View(ticket);
         }
 
@@ -83,7 +135,7 @@ namespace TgpBugTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Date,Deadline,Issue,RepositoryURL,Title,AuthorId,IssueTypeId,LeaderId,PriorityId,ProjectId,StageId")] Ticket ticket)
+        public ActionResult Edit([Bind(Include = "Id,Date,Deadline,Description,RepositoryURL,Title,AuthorId,IssueTypeId,LeaderId,PriorityId,ProjectId,StageId")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -91,6 +143,16 @@ namespace TgpBugTracker.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            ViewBag.IssueTypeId = new SelectList(db.IssueTypes, "Id", "Name", ticket.IssueTypeId);
+
+            var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName });
+            ViewBag.LeaderId = new SelectList(users, "Id", "DisplayName", ticket.LeaderId);
+
+            ViewBag.PriorityId = new SelectList(db.Priorities, "Id", "Name", ticket.PriorityId);
+
+            ViewBag.StageId = new SelectList(db.Stages, "Id", "Name", ticket.StageId);
+
             return View(ticket);
         }
 
