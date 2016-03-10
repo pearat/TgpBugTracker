@@ -226,51 +226,51 @@
         $(document).ready(function () {
             var table = $('#table-tickets').DataTable({
                 initComplete: function () {
-                    this.api().columns().every(function () {
+                    this.api().columns().every( function () {
                         var column = this;
                         var select = $('<select><option value=""></option></select>')
-                            .appendTo($(column.footer()).empty())
-                            .on('change', function () {
+                            .appendTo( $(column.footer()).empty() )
+                            .on( 'change', function () {
                                 var val = $.fn.dataTable.util.escapeRegex(
                                     $(this).val()
                                 );
-
+ 
                                 column
-                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .search( val ? '^'+val+'$' : '', true, false )
                                     .draw();
-                            });
-
-                        column.data().unique().sort().each(function (d, j) {
-                            select.append('<option value="' + d + '">' + d + '</option>')
-                        });
-                    });
+                            } );
+ 
+                        column.data().unique().sort().each( function ( d, j ) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        } );
+                    } );
                 }
             });
-            //$('#container').css('display', 'block');
-            //table.columns.adjust().draw();
+            $('#container').css('display', 'block');
+            table.columns.adjust().draw();
 
-            //});
-            // var table = $('#table-tickets').DataTable();
-
-            //$('#container').css('display', 'block');
-            //table.columns.adjust().draw();
-
-            //table({
-
-            //    "columnDefs": [
-            //          { "width": "10%", "targets": 0 },
-            //          { "width": "10%", "targets": 0 },
-            //          { "width": "10%", "targets": 0 },
-            //          { "width": "10%", "targets": 0 },
-            //          { "width": "10%", "targets": 0 },
-            //          { "width": "10%", "targets": 0 },
-            //          { "width": "10%", "targets": 0 },
-            //          { "width": "10%", "targets": 0 },
-            //          { "width": "10%", "targets": 0 },
-            //          { "width": "10%", "targets": 0 }
-            //    ]
-            //});
         });
+        //var table = $('#table-tickets').DataTable();
+
+        //$('#container').css('display', 'block');
+        //table.columns.adjust().draw();
+        
+        //table({
+            
+        //    "columnDefs": [
+        //          { "width": "10%", "targets": 0 },
+        //          { "width": "10%", "targets": 0 },
+        //          { "width": "10%", "targets": 0 },
+        //          { "width": "10%", "targets": 0 },
+        //          { "width": "10%", "targets": 0 },
+        //          { "width": "10%", "targets": 0 },
+        //          { "width": "10%", "targets": 0 },
+        //          { "width": "10%", "targets": 0 },
+        //          { "width": "10%", "targets": 0 },
+        //          { "width": "10%", "targets": 0 }
+        //    ]
+        //});
+
             
         $(":radio").click(function () {
             var SelectedValue = $(this).val();

@@ -17,12 +17,12 @@ namespace TgpBugTracker.Models
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Tkt Date")]
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd}", ApplyFormatInEditMode = true)]
         public DateTimeOffset Date { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Deadline")]
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd}", ApplyFormatInEditMode = true)]
         public DateTimeOffset? Deadline { get; set; }
 
         [Required]

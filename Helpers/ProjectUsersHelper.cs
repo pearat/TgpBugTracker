@@ -65,7 +65,7 @@ namespace TgpBugTracker.Helpers
                 Debug.WriteLine("ListProjectUsers() error: Users not found!");
                 return null;
             }
-            var users = project.Users.OrderBy(p => p.DisplayName).Select(p => p.DisplayName).ToList();
+            var users = (List<string>)project.Users.OrderBy(q => q.DisplayName).Select(p=>p.DisplayName).ToList();
             if (users == null)
             {
                 Debug.WriteLine("ListProjectUsers() error: Project has no Users!");
@@ -117,112 +117,120 @@ namespace TgpBugTracker.Helpers
             var rHelper = new UserRolesHelper();
             var UserLevel = rHelper.GetUsersAuthorizationLevel(userId);
             var TicketList = new List<Ticket>();
-            if (UserLevel > (int)UserRolesHelper.AuthLevel.PjtMgr)
+            switch (UserLevel)
             {
-                TicketList = db.Tickets.OrderBy(n => n.Project.Name).ThenBy(d => d.Date).ToList();
-            }
-            else {
-                if (UserLevel > (int)UserRolesHelper.AuthLevel.Submitter)
-                {
-                    var ProjectList = ListProjectsForUser(user.Id);
-                    if (ProjectList == null || ProjectList.Count()==0)
-                    {
-                        System.Diagnostics.Debug.WriteLine("ListTicketsForUser() warn: user has no Projects");
-                        return TicketList;
-                    }
-
-                    TicketList = (List<Ticket>)user.Projects.SelectMany(p => p.Tickets).
-                       OrderBy(x => x.Project.Name).ThenBy(y => y.Date).ToList();
+                case (int)UserRolesHelper.AuthLevel.Admin:
+                    TicketList = db.Tickets.ToList();
+                    //OrderBy(n => n.Project.Name).ThenBy(d => d.Date).ToList();
+                    break;
+                case (int)UserRolesHelper.AuthLevel.PjtMgr:
+                    TicketList = (List<Ticket>)(user.Projects.SelectMany(p => p.Tickets)).ToList();
+                    // OrderBy(x => x.Project.Name).ThenBy(y => y.Date).ToList();
                     //TicketList = (List<Ticket>)ProjectList.SelectMany(p => p.Tickets).
                     //    OrderBy(x => x.Project.Name).ThenBy(y => y.Date).ToList();
+                    break;
+                case (int)UserRolesHelper.AuthLevel.Developer:
+                    TicketList = db.Tickets.Where(
+                        t => t.LeaderId == userId ||
+                        t.Project.Users.Any(i=>i.Id== userId)
+                        ).ToList();
 
-                }
-                else
-                {
+                    // t.LeaderId == userId ||
+                    //var interim = (List<int>)(user.Projects.SelectMany(i =>i.Id ).ToList());
+                    //TicketList = db.Tickets.Where(t=> t.ProjectId.Contains()
+                    //    ).ToList();
+
+                    //bool has = customers.Any(cus => names.Contains(cus.FirstName));
+                    break;
+                case (int)UserRolesHelper.AuthLevel.Submitter:
                     TicketList = db.Tickets.Where(t => t.AuthorId == userId).ToList();
-                }
+                    break;
+                default:
+                    break;
             }
+
+            TicketList = TicketList.OrderBy(n => n.Project.Name).ThenBy(d => d.Date).ToList();
             return TicketList;
         }
 
 
 
-    public bool AddUserToProject(string ProjectName, string UserDisplayName)
-    {
-        var user = db.Users.FirstOrDefault(u => u.DisplayName == UserDisplayName);
-        // var user = db.Users.Find(userId);
-        if (user == null)
+        public bool AddUserToProject(string ProjectName, string UserDisplayName)
         {
-            Debug.WriteLine("AddUserToProject() error: User not found.");
-            return false;
+            var user = db.Users.FirstOrDefault(u => u.DisplayName == UserDisplayName);
+            // var user = db.Users.Find(userId);
+            if (user == null)
+            {
+                Debug.WriteLine("AddUserToProject() error: User not found.");
+                return false;
+            }
+            var project = db.Projects.FirstOrDefault(p => p.Name == ProjectName);
+            if (project == null)
+            {
+                Debug.WriteLine("AddUserToProject() error: Project not found.");
+                return false;
+            }
+            if (DoesProjectIncludeUser(user.Id, ProjectName))
+            {
+                Debug.WriteLine("AddUserToProject() info: Project already includes this User.");
+                return true;
+            }
+            project.Users.Add(user);
+            db.SaveChanges();
+            return true;        // result.Succeeded;
         }
-        var project = db.Projects.FirstOrDefault(p => p.Name == ProjectName);
-        if (project == null)
+
+        public bool RemoveUserFromProject(string userId, string ProjectName)
         {
-            Debug.WriteLine("AddUserToProject() error: Project not found.");
-            return false;
+            if (!DoesProjectIncludeUser(userId, ProjectName))
+            {
+                Debug.WriteLine("RemoveUserFromProject() info: Project didn't include User.");
+                return true;
+            }
+            var project = db.Projects.FirstOrDefault(p => p.Name == ProjectName);
+            if (project == null)
+            {
+                Debug.WriteLine("RemoveUserFromProject() error: Project not found.");
+                return false;
+            }
+            var user = db.Users.Find(userId);
+            if (user == null)
+            {
+                Debug.WriteLine("RemoveUserFromProject() error: User not found.");
+                return false;
+            }
+            project.Users.Remove(user);
+            db.SaveChanges();
+
+            return true;        // result.Succeeded;
         }
-        if (DoesProjectIncludeUser(user.Id, ProjectName))
+
+
+        public IList<ApplicationUser> UsersInProject(string ProjectName)
         {
-            Debug.WriteLine("AddUserToProject() info: Project already includes this User.");
-            return true;
+            // var db = new ApplicationDbContext();
+            var usersList = new List<ApplicationUser>();
+            var ProjectId = db.Projects.FirstOrDefault(n => n.Name == ProjectName).Id;
+            usersList = (from u in db.Users
+                         from r in u.Projects
+                         where r.Id == ProjectId
+                         select u).
+                         ToList();
+            return usersList;
         }
-        project.Users.Add(user);
-        db.SaveChanges();
-        return true;        // result.Succeeded;
+
+
+        public IList<ApplicationUser> UsersNotInProject(string ProjectName)
+        {
+            // var db = new ApplicationDbContext();
+            var usersList = new List<ApplicationUser>();
+            var ProjectId = db.Projects.FirstOrDefault(n => n.Name == ProjectName).Id;
+            usersList = (from u in db.Users
+                         from r in u.Projects
+                         where r.Id != ProjectId
+                         select u).
+                         ToList();
+            return usersList;
+        }
     }
-
-    public bool RemoveUserFromProject(string userId, string ProjectName)
-    {
-        if (!DoesProjectIncludeUser(userId, ProjectName))
-        {
-            Debug.WriteLine("RemoveUserFromProject() info: Project didn't include User.");
-            return true;
-        }
-        var project = db.Projects.FirstOrDefault(p => p.Name == ProjectName);
-        if (project == null)
-        {
-            Debug.WriteLine("RemoveUserFromProject() error: Project not found.");
-            return false;
-        }
-        var user = db.Users.Find(userId);
-        if (user == null)
-        {
-            Debug.WriteLine("RemoveUserFromProject() error: User not found.");
-            return false;
-        }
-        project.Users.Remove(user);
-        db.SaveChanges();
-
-        return true;        // result.Succeeded;
-    }
-
-
-    public IList<ApplicationUser> UsersInProject(string ProjectName)
-    {
-        // var db = new ApplicationDbContext();
-        var usersList = new List<ApplicationUser>();
-        var ProjectId = db.Projects.FirstOrDefault(n => n.Name == ProjectName).Id;
-        usersList = (from u in db.Users
-                     from r in u.Projects
-                     where r.Id == ProjectId
-                     select u).
-                     ToList();
-        return usersList;
-    }
-
-
-    public IList<ApplicationUser> UsersNotInProject(string ProjectName)
-    {
-        // var db = new ApplicationDbContext();
-        var usersList = new List<ApplicationUser>();
-        var ProjectId = db.Projects.FirstOrDefault(n => n.Name == ProjectName).Id;
-        usersList = (from u in db.Users
-                     from r in u.Projects
-                     where r.Id != ProjectId
-                     select u).
-                     ToList();
-        return usersList;
-    }
-}
 }

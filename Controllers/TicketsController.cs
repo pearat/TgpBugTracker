@@ -34,7 +34,12 @@ namespace TgpBugTracker.Controllers
             }
 
             var uHelper = new ProjectUsersHelper();
+            var rHelper = new UserRolesHelper();
+            var UserLevel = rHelper.GetUsersAuthorizationLevel(user.Id);
+
+            ViewBag.SubmitterOnly = (UserLevel == (int)UserRolesHelper.AuthLevel.Submitter) ? true : false;
             ViewBag.UserId = user.Id;
+            
             var TicketList = uHelper.ListTicketsForUser(ViewBag.UserId);
             if (TicketList == null)
             {
@@ -169,16 +174,15 @@ namespace TgpBugTracker.Controllers
             {
                 return HttpNotFound();
             }
+            
+            ViewBag.IssueTypeId = new SelectList(db.IssueTypes.OrderBy(p => p.Name), "Id", "Name", ticket.IssueTypeId);
 
-
-            ViewBag.IssueTypeId = new SelectList(db.IssueTypes, "Id", "Name", ticket.IssueTypeId);
-
-            var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName });
+            var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName }).OrderBy(j => j.DisplayName).ToList();
             ViewBag.LeaderId = new SelectList(users, "Id", "DisplayName", ticket.LeaderId);
 
-            ViewBag.PriorityId = new SelectList(db.Priorities, "Id", "Name", ticket.PriorityId);
+            ViewBag.PriorityId = new SelectList(db.Priorities.OrderBy(p => p.Name), "Id", "Name", ticket.PriorityId);
 
-            ViewBag.StageId = new SelectList(db.Stages, "Id", "Name", ticket.StageId);
+            ViewBag.StageId = new SelectList(db.Stages.OrderBy(p => p.Name), "Id", "Name", ticket.StageId);
 
             return View(ticket);
         }
@@ -197,14 +201,14 @@ namespace TgpBugTracker.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IssueTypeId = new SelectList(db.IssueTypes, "Id", "Name", ticket.IssueTypeId);
+            ViewBag.IssueTypeId = new SelectList(db.IssueTypes.OrderBy(p => p.Name), "Id", "Name", ticket.IssueTypeId);
 
-            var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName });
+            var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName }).OrderBy(j=>j.DisplayName).ToList();
             ViewBag.LeaderId = new SelectList(users, "Id", "DisplayName", ticket.LeaderId);
 
-            ViewBag.PriorityId = new SelectList(db.Priorities, "Id", "Name", ticket.PriorityId);
+            ViewBag.PriorityId = new SelectList(db.Priorities.OrderBy(p=>p.Name), "Id", "Name", ticket.PriorityId);
 
-            ViewBag.StageId = new SelectList(db.Stages, "Id", "Name", ticket.StageId);
+            ViewBag.StageId = new SelectList(db.Stages.OrderBy(p => p.Name), "Id", "Name", ticket.StageId);
 
             return View(ticket);
         }
