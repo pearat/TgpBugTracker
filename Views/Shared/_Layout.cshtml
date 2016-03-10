@@ -32,7 +32,7 @@
     <!-- Bootstrap Multiselect list -->
     <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/dt-1.10.11/datatables.min.css" />
-
+    
     <!-- Site CSS (if any) follows -->
     <link href="~/Content/Site.css" rel="stylesheet" />
 </head>
@@ -216,7 +216,7 @@
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-user"></i>
-                            <span>Andy Brown <i class="caret"></i></span>
+                            <span>@ViewBag.FullName<i class="caret"></i></span>
                         </a>
                         <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
                             <li class="dropdown-header text-center">Account</li>
@@ -275,7 +275,7 @@
                         <img src="~/img/26115.jpg" class="img-circle" alt="User Image" />
                     </div>
                     <div class="pull-left info">
-                        <p>Hello, Andy</p>
+                        <p>@ViewBag.Greeting</p>
 
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>

@@ -20,6 +20,10 @@ namespace TgpBugTracker.Models
 
         public string DisplayName { get; set; }
 
+        public string FullName { get{ return FirstName + " " + LastName; } }
+
+        public string Greeting { get { return "Hello, "+FirstName + "!"; } }
+
         public bool IsGuest { get; set; }
         public bool Active { get; set; }
 

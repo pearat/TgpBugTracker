@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using TgpBugTracker.Helpers;
 using TgpBugTracker.Models;
 
 namespace TgpBugTracker.Controllers
@@ -20,8 +21,60 @@ namespace TgpBugTracker.Controllers
         // GET: Tickets
         public ActionResult Index()
         {
-            return View(db.Tickets.ToList());
+            var user = db.Users.Find(User.Identity.GetUserId());
+            if (user == null)
+            {
+                ViewBag.FullName = "Pls login";
+                ViewBag.Greeting = "Hi, ???";
+            }
+            else
+            {
+                ViewBag.FullName = user.FullName;
+                ViewBag.Greeting = user.Greeting;
+            }
+
+            var uHelper = new ProjectUsersHelper();
+            ViewBag.UserId = user.Id;
+            var TicketList = uHelper.ListTicketsForUser(ViewBag.UserId);
+            if (TicketList == null)
+            {
+                TicketList = new List<Ticket>();
+                return View();
+            }
+            else
+                return View(TicketList);
         }
+
+        // GET: Tickets
+        //public ActionResult Index(int? projectId)
+        //{
+        //    int AllMyProjects = 999;
+        //    var ProjectId = (projectId == null) ? AllMyProjects : projectId;
+
+        //    if (ProjectId == AllMyProjects)
+        //    {
+        //        return View(db.Tickets.ToList().OrderBy(m => m.Project.Name).ThenBy(n => n.Date));
+        //        }
+        //    else
+        //    {
+        //        // add checking to see whether user is authorized to view this project
+        //        return View(db.Tickets.Where(i => i.ProjectId == ProjectId).ToList().OrderBy(n => n.Date));
+        //    }
+        //}
+
+        // GET: Tickets
+        //public ActionResult _ChooseProject()
+        //{
+        //    var user = db.Users.Find(User.Identity.GetUserId());
+        //    var helper = new ProjectUsersHelper();
+
+        //    var ProjectList = helper.ListProjectsForUser(user.Id);
+
+        //    ViewBag.PossibleProjects = new SelectList(ProjectList, "Id", "Name");
+
+        //    return View();
+        //        // RedirectToAction("Index", new { projectId = ProjectId });
+        //}
 
         // GET: Tickets/Details/5
         public ActionResult Details(int? id)
@@ -47,16 +100,16 @@ namespace TgpBugTracker.Controllers
             tkt.Deadline = tkt.Date.AddMonths(1);
             //tkt.Description = "";
 
-            ViewBag.ProjectId = new SelectList(db.Projects.OrderBy(n=>n.Name), "Id", "Name");
+            ViewBag.ProjectId = new SelectList(db.Projects.OrderBy(n => n.Name), "Id", "Name");
 
             var defaultIssue = (int)db.IssueTypes.
-                Where(z => z.Name == "Not Categorized").
+                Where(z => z.Name == "Unassessed").
                 Select(p => p.Id).FirstOrDefault();     // note: Where() returns a list, so need FirstOrDefault() to get 1 object
             ViewBag.IssueTypeId = new SelectList(db.IssueTypes, "Id", "Name", defaultIssue);
 
             var defaultLeader = db.Users.Where(z => z.LastName == "Unassigned").Select(p => p.Id).FirstOrDefault();
             var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName });
-            ViewBag.LeaderId = new SelectList(users, "Id", "DisplayName",defaultLeader);
+            ViewBag.LeaderId = new SelectList(users, "Id", "DisplayName", defaultLeader);
 
             var defaultPriority = (int)db.Priorities.Where(z => z.Name == "Unassessed").Select(p => p.Id).FirstOrDefault();
             ViewBag.PriorityId = new SelectList(db.Priorities, "Id", "Name", defaultPriority);
@@ -117,16 +170,16 @@ namespace TgpBugTracker.Controllers
                 return HttpNotFound();
             }
 
-            
+
             ViewBag.IssueTypeId = new SelectList(db.IssueTypes, "Id", "Name", ticket.IssueTypeId);
 
             var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName });
             ViewBag.LeaderId = new SelectList(users, "Id", "DisplayName", ticket.LeaderId);
 
             ViewBag.PriorityId = new SelectList(db.Priorities, "Id", "Name", ticket.PriorityId);
-            
+
             ViewBag.StageId = new SelectList(db.Stages, "Id", "Name", ticket.StageId);
-            
+
             return View(ticket);
         }
 

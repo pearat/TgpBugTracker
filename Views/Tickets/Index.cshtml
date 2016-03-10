@@ -1,97 +1,246 @@
 ﻿@model IEnumerable<TgpBugTracker.Models.Ticket>
 
 @{
-    ViewBag.Title = "Ticket Index";
+    ViewBag.Title = "Ticket List";
 }
 
-<h2>Index</h2>
+<style>
+    tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>
 
-<p>
-    @Html.ActionLink("Create New Ticket", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ProjectId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IssueTypeId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PriorityId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StageId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>*@
+<h2>@ViewBag.Title</h2>
 
-        <th>
-            @Html.DisplayNameFor(model => model.AuthorId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LeaderId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Deadline)
-        </th>
+<div row>
+    <div class="col-md-2">
+        <p>
+            @Html.ActionLink("Create New Ticket", "Create")
+        </p>
+    </div>
+    <div class="col-md-3">
+        <p><i><b>Use boxes in table's footer to search &amp; sort </b></i> </p>
+    </div>
+    <div class="col-md-4">
+        <p><b>Press <i class="fa fa-bars" style="color:blue"></i> in upper-left-hand corner for all columns</b> </p>
+    </div>
 
-        @*<th>
-            @Html.DisplayNameFor(model => model.RepositoryURL)
-        </th>*@
-        <th></th>
-    </tr>
+</div>
+<table class="table" id="table-tickets">
+    <thead>
+        <tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Project.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IssueType.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Priority.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Stage.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.Author.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Leader.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Deadline)
-        </td>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IssueTypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriorityId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StageId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuthorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline)
+            </th>
+            <th>
+                <i><b>Actions</b></i>
+            </th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr width="inherit">
 
-        @*<td>
-            @Html.DisplayFor(modelItem => item.RepositoryURL)
-        </td>*@
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IssueTypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriorityId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StageId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuthorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline)
+            </th>
+            <th>
+                <i><b>Actions</b></i>
+            </th>
+        </tr>
+    </tfoot>
+    <tbody>
+        @foreach (var item in Model)
+            {
+            <tr width="inherit">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IssueType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Priority.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stage.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
 
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Archive", "Archive", new { id=item.Id })
-        </td>
-    </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Leader.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deadline)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || ViewBag.UserId == item.AuthorId)
+                    {
+                        <text>|</text>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <text>|</text>
+                        @Html.ActionLink("Archive", "Archive", new { id = item.Id })
+                    }
 
+                </td>
+
+            </tr>
+        }
+    </tbody>
 </table>
+
+<!-- vvvvv Start of Modal vvvvv -->
+
+<div class="modal fade" id="delDealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="max-width:800px;">
+        <div class="modal-content" style="align-content:center">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+                <h4 class="modal-title" style="text-align:center; color:#fff"
+                    id="myModalLabel">
+                    Confirm Delete
+                </h4>
+            </div>
+
+            <div class="modal-body" style="text-align:center">
+                <div class="row">
+                    <h4>Are you sure you want to delete this transaction?</h4>
+                </div>
+            </div>
+            <div class="modal-footer" style="align-items:center">
+                <button type="button" data-dismiss="modal" class="btn btn-skin xtra-btn">Dismiss</button>
+
+                <form id="deleteIdForm" action="@Url.Action("Delete", "Deals") ">
+                    @Html.AntiForgeryToken()
+                    <input id="modal-id" type="hidden" name="id" value="" />
+                    <button id="deleteConfirmed" value="true" form="deleteIdForm" type="submit"
+                            class="btn btn-danger xtra-danger-btn" data-warning="modal">
+                        Delete
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ^^^^^ Modal end ^^^^^ -->
+
+
+@section scripts{
+    <script>
+
+        var categoryId = 0;
+        $('#delDealModal').on('shown.bs.modal', function (e) {
+            var j = $(e.relatedTarget).data('id');
+            console.log(' categoryId j: ' + j);
+            categoryId = j;
+            $('.modal-backdrop').removeClass('modal-backdrop');
+            $('#modal-id').val(categoryId);
+        });
+
+
+        //$(document).ready(function () {
+        //    $('.table').DataTable({
+        //        "order": [0, 'asc']
+        //    });
+        //});
+        $(document).ready(function () {
+            $('#table-tickets').DataTable({
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        });
+
+                    });
+                }
+            });
+            $('#container').css('display', 'block');
+            table.columns.adjust().draw();
+        });
+
+        $(":radio").click(function () {
+            var SelectedValue = $(this).val();
+            console.log('SelectedValue: ' + SelectedValue);
+        });
+
+    </script>
+}
+

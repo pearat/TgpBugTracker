@@ -20,6 +20,18 @@ namespace TgpBugTracker.Controllers
         // GET: Admin
         public ActionResult Index()
         {
+            var user = db.Users.Find(User.Identity.GetUserId());
+            if (user == null)
+            {
+                ViewBag.FullName = "Pls login";
+                ViewBag.Greeting = "Hi, ???";
+            }
+            else
+            {
+                ViewBag.FullName = user.FullName;
+                ViewBag.Greeting = user.Greeting;
+            }
+
             var fullStaff = new List<UserRolesVM>();
             var helper = new UserRolesHelper();
             var allRoles = db.Roles.OrderBy(r => r.Name).Select(r => r.Name).ToArray();

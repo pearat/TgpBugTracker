@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -18,6 +19,18 @@ namespace TgpBugTracker.Controllers
         // GET: Comments
         public ActionResult Index()
         {
+            var user = db.Users.Find(User.Identity.GetUserId());
+            if (user == null)
+            {
+                ViewBag.FullName = "Pls login";
+                ViewBag.Greeting = "Hi, ???";
+            }
+            else
+            {
+                ViewBag.FullName = user.FullName;
+                ViewBag.Greeting = user.Greeting;
+            }
+
             return View(db.Comments.ToList());
         }
 

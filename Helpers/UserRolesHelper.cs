@@ -17,13 +17,13 @@ namespace TgpBugTracker.Helpers
         private UserManager<ApplicationUser> manager =
             new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
-        private enum AuthLevel
+        public enum AuthLevel
         {
             None = 0,
-            Admin = 100,
-            PjtMgr = 80,
+            Submitter = 20,
             Developer = 40,
-            Submitter = 20
+            PjtMgr = 80,
+            Admin = 100
         }
 
         public bool IsUserInRole(string userId, string roleName)
@@ -82,18 +82,18 @@ namespace TgpBugTracker.Helpers
             return usersList;
         }
 
-        public int GetUsersAuthorizationLevel(string currentUserId)
+        public int GetUsersAuthorizationLevel(string userId)
         {
-            if (IsUserInRole(currentUserId, "Admin"))
+            if (IsUserInRole(userId, "Admin"))
                 return (int)AuthLevel.Admin;
 
-            if (IsUserInRole(currentUserId,"Project Manager"))
+            if (IsUserInRole(userId,"Project Manager"))
                 return (int)AuthLevel.PjtMgr;
 
-            if (IsUserInRole(currentUserId,"Developer"))
+            if (IsUserInRole(userId,"Developer"))
                 return (int)AuthLevel.Developer;
 
-            if (IsUserInRole(currentUserId,"Submitter"))
+            if (IsUserInRole(userId,"Submitter"))
                 return (int)AuthLevel.Submitter;
 
             return (int)AuthLevel.None;

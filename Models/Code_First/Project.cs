@@ -26,4 +26,11 @@ namespace TgpBugTracker.Models
         public virtual ICollection<Ticket> Tickets { get; set; }
         public virtual ICollection<ApplicationUser> Users { get; set; }
     }
+
+    public class ProjectIdName
+    {
+        public int Id { get; set; }
+        [Display(Name = "Project Name")]
+        public string Name { get; set; }
+    }
 }

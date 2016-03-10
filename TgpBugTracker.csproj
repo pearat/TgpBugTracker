@@ -1563,6 +1563,7 @@
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Views\Projects\Index - Copy.cshtml" />
     <Content Include="Views\Tickets\IndexBck.cshtml" />
+    <Content Include="Views\Shared\_ChooseProject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

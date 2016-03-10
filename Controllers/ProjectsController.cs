@@ -31,17 +31,29 @@ namespace TgpBugTracker.Controllers
 
         public ActionResult Index()
         {
+            var user = db.Users.Find(User.Identity.GetUserId());
+            if (user == null)
+            {
+                ViewBag.FullName = "Pls login";
+                ViewBag.Greeting = "Hi, ???";
+            }
+            else
+            {
+                ViewBag.FullName = user.FullName;
+                ViewBag.Greeting = user.Greeting;
+            }
+
             var assignedProjects = new List<ProjectUsersVM>();
             var pjtHelper = new ProjectUsersHelper();
             var usrHelper = new UserRolesHelper();
             var allUsers = db.Users.OrderBy(r => r.DisplayName).Select(r => r.DisplayName).ToArray();
             var numAllUsers = allUsers.Count();
-            var currentUserId = User.Identity.GetUserId();
-            var authLevel = usrHelper.GetUsersAuthorizationLevel(currentUserId);
+            // var currentUserId = User.Identity.GetUserId();
+            var authLevel = usrHelper.GetUsersAuthorizationLevel(user.Id);
 
             foreach (var p in db.Projects)
             {
-                if (authLevel > (int)AuthLevel.PjtMgr || pjtHelper.DoesProjectIncludeUser(currentUserId,p.Name))
+                if (authLevel > (int)AuthLevel.PjtMgr || pjtHelper.DoesProjectIncludeUser(user.Id, p.Name))
                 {
                     var projectVM = new ProjectUsersVM();
                     projectVM.ProjectId = p.Id;
