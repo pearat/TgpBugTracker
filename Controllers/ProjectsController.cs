@@ -51,7 +51,7 @@ namespace TgpBugTracker.Controllers
             // var currentUserId = User.Identity.GetUserId();
             var authLevel = usrHelper.GetUsersAuthorizationLevel(user.Id);
 
-            foreach (var p in db.Projects)
+            foreach (var p in db.Projects.OrderBy(j=>j.Name))
             {
                 if (authLevel > (int)AuthLevel.PjtMgr || pjtHelper.DoesProjectIncludeUser(user.Id, p.Name))
                 {
@@ -115,7 +115,7 @@ namespace TgpBugTracker.Controllers
             var helper = new ProjectUsersHelper();
             var a = project.Users;
             team.Usrs = helper.ListProjectUsers(ProjectId).ToArray();
-            team.Selected = new MultiSelectList(db.Users, "DisplayName", "DisplayName", team.Usrs);
+            team.Selected = new MultiSelectList(db.Users.OrderBy(p=>p.DisplayName), "DisplayName", "DisplayName", team.Usrs);
 
             return View(team);
         }

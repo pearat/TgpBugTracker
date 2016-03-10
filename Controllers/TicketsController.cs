@@ -37,7 +37,7 @@ namespace TgpBugTracker.Controllers
             var rHelper = new UserRolesHelper();
             var UserLevel = rHelper.GetUsersAuthorizationLevel(user.Id);
 
-            ViewBag.SubmitterOnly = (UserLevel == (int)UserRolesHelper.AuthLevel.Submitter) ? true : false;
+            ViewBag.SubmitterOnly = (UserLevel == (int)UserRolesHelper.RoleLevel.Submitter) ? true : false;
             ViewBag.UserId = user.Id;
             
             var TicketList = uHelper.ListTicketsForUser(ViewBag.UserId);
@@ -176,9 +176,25 @@ namespace TgpBugTracker.Controllers
             }
             
             ViewBag.IssueTypeId = new SelectList(db.IssueTypes.OrderBy(p => p.Name), "Id", "Name", ticket.IssueTypeId);
+            var rHelper = new UserRolesHelper();
 
-            var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName }).OrderBy(j => j.DisplayName).ToList();
-            ViewBag.LeaderId = new SelectList(users, "Id", "DisplayName", ticket.LeaderId);
+            // !rHelper.IsUserInRole(z.Id, "Submitter")).
+            //var firstTeamCut = db.Users.Where(z => z.IsGuest == false).
+            //                            Select(p => new { p.Id, p.DisplayName }).OrderBy(j => j.DisplayName).ToList();
+            //var possibleTeamMembers = new List<ApplicationUserVM>();
+            //foreach (var item in firstTeamCut)
+            //{
+            //    if (!rHelper.IsUserInRole(item.Id, "Submitter"))
+            //    {
+            //        var member = new ApplicationUserVM();
+            //        member.Id = item.Id;
+            //        member.DisplayName = item.DisplayName;
+            //        possibleTeamMembers.Add(member);
+            //    }
+            //}
+            var possibleTeamMembers = db.Users.Where(z => z.IsGuest == false  && z.AuthLevel>(int)UserRolesHelper.RoleLevel.Submitter).
+                                        Select(p => new { p.Id, p.DisplayName }).OrderBy(j => j.DisplayName).ToList();
+            ViewBag.LeaderId = new SelectList(possibleTeamMembers, "Id", "DisplayName", ticket.LeaderId);
 
             ViewBag.PriorityId = new SelectList(db.Priorities.OrderBy(p => p.Name), "Id", "Name", ticket.PriorityId);
 
@@ -213,8 +229,8 @@ namespace TgpBugTracker.Controllers
             return View(ticket);
         }
 
-        // GET: Tickets/Delete/5
-        public ActionResult Delete(int? id)
+        // GET: Tickets/Archive/5
+        public ActionResult Archive(int? id)
         {
             if (id == null)
             {
@@ -228,14 +244,14 @@ namespace TgpBugTracker.Controllers
             return View(ticket);
         }
 
-        // POST: Tickets/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Tickets/Archive/5
+        [HttpPost, ActionName("Archive")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Ticket ticket = db.Tickets.Find(id);
-            db.Tickets.Remove(ticket);
-            db.SaveChanges();
+            //db.Tickets.Remove(ticket);
+            //db.SaveChanges();
             return RedirectToAction("Index");
         }
 

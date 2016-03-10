@@ -1,6 +1,6 @@
 ﻿@model TgpBugTracker.Models.UserRolesVM
 @{
-    ViewBag.Title = "AssignRolesToUser";
+    ViewBag.Title = "AssignRoleToUser";
 }
 <aside class="right-side">
     <h2>Assign Roles to Staff Members</h2>
@@ -25,7 +25,11 @@
 
             @Html.LabelFor(model => model.Roles, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.ListBox("Roles", Model.Selected, new { id = "role-selection", multiple = "multiple" })
+                @*@Html.ListBox("Roles", Model.Selected, new { id = "role-selection", multiple = "multiple" })*@
+                @*@Html.DropDownList("Roles", null, htmlAttributes: new { @class = "form-control" })*@
+
+                @Html.ListBox("Roles", Model.Selected, new { id = "role-selection" })
+
                 @Html.ValidationMessageFor(model => model.Selected, "", new { @class = "text-danger" })
             </div>
 

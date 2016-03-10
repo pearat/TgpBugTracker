@@ -60,8 +60,8 @@ namespace TgpBugTracker.Controllers
 
 
         //
-        // GET: /Manage/AssignRolesToUser to Users
-        public ActionResult AssignRolesToUser(string UserId)
+        // GET: /Manage/AssignRoleToUser to Users
+        public ActionResult AssignRoleToUser(string UserId)
         {
             if (UserId == null)
                 UserId = User.Identity.GetUserId();
@@ -78,33 +78,40 @@ namespace TgpBugTracker.Controllers
             staff.DisplayName = user.DisplayName;
             var helper = new UserRolesHelper();
             staff.Roles = helper.ListUserRoles(UserId).ToArray();
-            staff.Selected = new MultiSelectList(db.Roles, "Name", "Name", staff.Roles);
+            // staff.Selected = new MultiSelectList(db.Roles, "Name", "Name", staff.Roles);
+            staff.Selected = new SelectList(db.Roles, "Name", "Name", staff.Roles);
+
+
+            // ViewBag.RoleId = new SelectList(db.Roles.OrderBy(p => p.Name), "Id", "Name", ticket.StageId);
+
 
             return View(staff);
         }
 
         //
-        // POST: /Manage/AssignRolesToUser to Users
+        // POST: /Manage/AssignRoleToUser to Users
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AssignRolesToUser([Bind(Include = "UserId,DisplayName,IsGuest,Roles,Selected")] UserRolesVM staff)
+        public ActionResult AssignRoleToUser([Bind(Include = "UserId,DisplayName,IsGuest,Roles,Selected")] UserRolesVM staff)
         {
             if (!ModelState.IsValid)
             {
                 return View(staff.UserId);
             }
             // (Re-)Assign roles for this user
-            var helper = new UserRolesHelper();
+            var rHelper = new UserRolesHelper();
             foreach (var r in db.Roles)
             {
-                if (helper.IsUserInRole(staff.UserId, r.Name))
-                    helper.RemoveUserFromRole(staff.UserId, r.Name);
-            }
-            for (int i = 0; i < staff.Roles.Count(); i++)
-            {
-                helper.AddUserToRole(staff.UserId, staff.Roles[i]);
+                if (rHelper.IsUserInRole(staff.UserId, r.Name))
+                    rHelper.RemoveUserFromRole(staff.UserId, r.Name);
             }
             var user = db.Users.Find(staff.UserId);
+            
+            for (int i = 0; i < staff.Roles.Count(); i++)
+            {
+                rHelper.AddUserToRole(staff.UserId, staff.Roles[i]);
+            }
+            user.AuthLevel = rHelper.GetUsersAuthorizationLevel(user.Id);
             user.IsGuest = staff.IsGuest;
             db.Entry(user).Property(g => g.IsGuest).IsModified = true;
             db.SaveChanges();

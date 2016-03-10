@@ -65,7 +65,7 @@ namespace TgpBugTracker.Helpers
                 Debug.WriteLine("ListProjectUsers() error: Users not found!");
                 return null;
             }
-            var users = (List<string>)project.Users.OrderBy(q => q.DisplayName).Select(p=>p.DisplayName).ToList();
+            var users = (List<string>)project.Users.OrderBy(q => q.DisplayName).Select(p => p.DisplayName ).ToList();
             if (users == null)
             {
                 Debug.WriteLine("ListProjectUsers() error: Project has no Users!");
@@ -119,17 +119,17 @@ namespace TgpBugTracker.Helpers
             var TicketList = new List<Ticket>();
             switch (UserLevel)
             {
-                case (int)UserRolesHelper.AuthLevel.Admin:
+                case (int)UserRolesHelper.RoleLevel.Admin:
                     TicketList = db.Tickets.ToList();
                     //OrderBy(n => n.Project.Name).ThenBy(d => d.Date).ToList();
                     break;
-                case (int)UserRolesHelper.AuthLevel.PjtMgr:
+                case (int)UserRolesHelper.RoleLevel.PjtMgr:
                     TicketList = (List<Ticket>)(user.Projects.SelectMany(p => p.Tickets)).ToList();
                     // OrderBy(x => x.Project.Name).ThenBy(y => y.Date).ToList();
                     //TicketList = (List<Ticket>)ProjectList.SelectMany(p => p.Tickets).
                     //    OrderBy(x => x.Project.Name).ThenBy(y => y.Date).ToList();
                     break;
-                case (int)UserRolesHelper.AuthLevel.Developer:
+                case (int)UserRolesHelper.RoleLevel.Developer:
                     TicketList = db.Tickets.Where(
                         t => t.LeaderId == userId ||
                         t.Project.Users.Any(i=>i.Id== userId)
@@ -142,7 +142,7 @@ namespace TgpBugTracker.Helpers
 
                     //bool has = customers.Any(cus => names.Contains(cus.FirstName));
                     break;
-                case (int)UserRolesHelper.AuthLevel.Submitter:
+                case (int)UserRolesHelper.RoleLevel.Submitter:
                     TicketList = db.Tickets.Where(t => t.AuthorId == userId).ToList();
                     break;
                 default:

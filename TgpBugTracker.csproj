@@ -1556,7 +1556,7 @@
     <Content Include="Views\Tickets\Index.cshtml" />
     <Content Include="Views\Account\LoginBckup.cshtml" />
     <Content Include="Views\Home\IndexBckUp.cshtml" />
-    <Content Include="Views\Admin\AssignRolesToUser.cshtml" />
+    <Content Include="Views\Admin\AssignRoleToUser.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Projects\AssignUsersToProject.cshtml" />

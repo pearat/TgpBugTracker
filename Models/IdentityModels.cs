@@ -24,6 +24,8 @@ namespace TgpBugTracker.Models
 
         public string Greeting { get { return "Hello, "+FirstName + "!"; } }
 
+        public int AuthLevel { get; set; }
+
         public bool IsGuest { get; set; }
         public bool Active { get; set; }
 
@@ -38,6 +40,13 @@ namespace TgpBugTracker.Models
             // Add custom user claims here
             return userIdentity;
         }
+    }
+
+    public class ApplicationUserVM
+    {
+
+        public string Id { get; set; }
+        public string DisplayName { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
