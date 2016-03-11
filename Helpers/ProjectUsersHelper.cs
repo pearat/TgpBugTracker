@@ -115,34 +115,28 @@ namespace TgpBugTracker.Helpers
                 return null;
             }
             var rHelper = new UserRolesHelper();
-            var UserLevel = rHelper.GetUsersAuthorizationLevel(userId);
+            var UserLevel = rHelper.GetRoleRank(userId);
             var TicketList = new List<Ticket>();
             switch (UserLevel)
             {
-                case (int)UserRolesHelper.RoleLevel.Admin:
+                case (int)UserRolesHelper.RoleRank.Admin:
                     TicketList = db.Tickets.ToList();
                     //OrderBy(n => n.Project.Name).ThenBy(d => d.Date).ToList();
                     break;
-                case (int)UserRolesHelper.RoleLevel.PjtMgr:
+                case (int)UserRolesHelper.RoleRank.PjtMgr:
                     TicketList = (List<Ticket>)(user.Projects.SelectMany(p => p.Tickets)).ToList();
                     // OrderBy(x => x.Project.Name).ThenBy(y => y.Date).ToList();
                     //TicketList = (List<Ticket>)ProjectList.SelectMany(p => p.Tickets).
                     //    OrderBy(x => x.Project.Name).ThenBy(y => y.Date).ToList();
                     break;
-                case (int)UserRolesHelper.RoleLevel.Developer:
+                case (int)UserRolesHelper.RoleRank.Developer:
                     TicketList = db.Tickets.Where(
                         t => t.LeaderId == userId ||
                         t.Project.Users.Any(i=>i.Id== userId)
                         ).ToList();
-
-                    // t.LeaderId == userId ||
-                    //var interim = (List<int>)(user.Projects.SelectMany(i =>i.Id ).ToList());
-                    //TicketList = db.Tickets.Where(t=> t.ProjectId.Contains()
-                    //    ).ToList();
-
-                    //bool has = customers.Any(cus => names.Contains(cus.FirstName));
+                    
                     break;
-                case (int)UserRolesHelper.RoleLevel.Submitter:
+                case (int)UserRolesHelper.RoleRank.Submitter:
                     TicketList = db.Tickets.Where(t => t.AuthorId == userId).ToList();
                     break;
                 default:

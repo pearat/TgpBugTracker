@@ -1,105 +1,400 @@
 ﻿@model TgpBugTracker.Models.Ticket
 
+<style>
+    dl {
+        padding: 0.1em;
+    }
+
+    dt {
+        float: left;
+        clear: left;
+        width: 30%;
+        text-align: right;
+        font-weight: bold;
+        /*color: green;*/
+    }
+
+        dt:after {
+            content: ":";
+        }
+
+    dd {
+        margin: 0 0 0 110px;
+        padding: 0 0 0.5em 0;
+    }
+
+    .dl-horizontal dt {
+        /*width: 80px;*/
+        width: 24%;
+    }
+
+    .dl-horizontal dd {
+        /* margin-left: 90px;*/
+        margin-left: 27%;
+    }
+
+    .table tbody > tr > td {
+        padding: 4px;
+    }
+    .modal-body input, textarea {
+        width:95%;
+        max-width:none;
+    }
+</style>
 @{
     ViewBag.Title = "Ticket Details";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="container">
+    <div class="col-md-4">
+        <div row>
+            <h2>Ticket Detail</h2>
 
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div row>
+            <h2>Comments</h2>
+        </div>
+    </div>
+</div>
+<hr />
 <div>
-    @*<h4>Ticket</h4>*@
-    <hr />
-    <dl class="dl-horizontal">
+    <div class="container">
+        <div class="col-md-4">
+            <div row>
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ProjectId)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Project.Name)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.IssueTypeId)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.IssueType.Name)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PriorityId)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Priority.Name)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.StageId)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Stage.Name)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Date)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Date)
+                    </dd>
 
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ProjectId)
-        </dt>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Project.Name)
-        </dd>
+                    <dd width="inherit" style="font-weight:bold">
+                        @Html.DisplayFor(model => model.Title)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.AuthorId)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Author.DisplayName)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.LeaderId)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Leader.DisplayName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Deadline)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Deadline)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.RepositoryURL)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.RepositoryURL)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-md-8">
+
+            @*<form action="@Url.Action("Create","Posts")" method="post">
+                </form>*@
+            @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="TicketId" value="@Model.Id" />
+                <input type="hidden" name="AuthorId" value="@Model.AuthorId" />
+
+                <div class="form-horizontal">
+                    <h4>New Comment</h4>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-        <dt>
-            @Html.DisplayNameFor(model => model.IssueTypeId)
-        </dt>
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            Title
+                        </div>
+                        <div class="col-md-10">
+                            @Html.Editor("Title", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.IssueType.Name)
-        </dd>
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            Details
+                        </div>
+                        <div class="col-md-10">
+                            <textarea style="max-width:90%; width:90%" name="Detail" rows="2"></textarea>
+                        </div>
+                    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.PriorityId)
-        </dt>
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            Media URL
+                        </div>
+                        <div class="col-md-10">
+                            @Html.Editor("MediaURL", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Priority.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.StageId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Stage.Name)
-        </dd>
-        
-        <dt>
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Date)
-        </dd>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
 
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
+            <table class="table">
+                <tr>
+                    <th>
+                        Actions
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Details
+                    </th>
+                    <th>
+                        Media URL
+                    </th>
 
-        <dd style="font-weight:bold">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
+                </tr>
+                @if (Model != null)
+                {
+                    foreach (var item in Model.Comments.OrderByDescending(c => c.Date))
+                    {
+                        <tr>
+                            <td>
+                                @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || ViewBag.UserId == item.AuthorId)
+                                {
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+                                    @*<a data-id="@item.Id" data-toggle="modal tooltip" data-target="#editCommentModal" title="Edit" href="#"><span class="fa fa-pencil-square-o"></span></a>*@
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AuthorId)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Author.DisplayName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LeaderId)
-        </dt>
+                                    <a data-id="@item.Id" data-title="@item.Title"
+                                       data-detail="@item.Detail" data-media="@item.MediaURL"
+                                       class="btn btn-lg btn-skin xtra-btn del"
+                                       data-toggle="modal" title="Edit" data-target="#editCommentModal">
+                                        <span class="fa fa-pencil-square-o"></span>
+                                    </a>
 
-        <dd>
-            @Html.DisplayFor(model => model.Leader.DisplayName)
-        </dd>
+                                }
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <text>|</text>
+                                    <button data-toggle="modal tooltip" title="Delete" data-id="@item" class="del fa fa-trash-o" data-target="#archiveModal"></button>
+                                }
+                            </td>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Deadline)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Deadline)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.RepositoryURL)
-        </dt>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Detail)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MediaURL)
+                            </td>
 
-        <dd>
-            @Html.DisplayFor(model => model.RepositoryURL)
-        </dd>
-    </dl>
+                        </tr>
+                    }
+                }
+
+            </table>
+
+        </div>
+    </div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<!-- vvvvv Start of Modal vvvvv -->
+
+<div class="modal fade" id="editCommentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="align-content:center">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" 
+                        aria-hidden="true">
+                    ×
+                </button>
+                <h4 class="modal-title" style="text-align:center; color:#ffd800"
+                    id="myModalLabel">
+                    Edit stuff here!!!
+                </h4>
+            </div>
+            @*<form id="editCommentForm" method="post" action="@Url.Action("Edit", "Comments")  >*@
+                @using (Html.BeginForm("Edit", "Comments", FormMethod.Post,new { id = "editCommentForm" }))
+                {
+                    
+                 
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                Title
+                            </div>
+                            <div class="col-md-10">
+                                <input id="cTitle" name="Title" value="change Me" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                Details
+                            </div>
+                            <div class="col-md-10">
+                                <textarea id="cDetail" name="Detail" rows="2"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                Media URL
+                            </div>
+                            <div class="col-md-10">
+                                <input id="cMedia" name="MediaURL" value="change Me" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer" style="align-content:center">
+
+                    <button type="button" data-dismiss="modal" class="btn btn-skin xtra-btn">Dismiss</button>
+   
+                    <input id="modal-id" type="hidden" name="Id" value="" />
+                    
+                    @*<button id="deleteConfirmed" value="true" form="editCommentForm" type="submit"
+                            class="btn btn-default" data-warning="modal">Submit</button>*@
+                </div>
+            @*</form>*@
+                    <button type="submit">Submit</button>
+                }
+        </div>
+    </div>
+</div>
+<!-- ^^^^^ Modal end ^^^^^ -->
+
+
+@section scripts{
+    <script>
+        var commentId = 0;
+        $('#editCommentModal').on('shown.bs.modal', function (e) {
+            var i = $(e.relatedTarget).data('id');
+            var t = $(e.relatedTarget).data('title');
+            var d = $(e.relatedTarget).data('detail');
+            var m = $(e.relatedTarget).data('media');
+            console.log(' comment Item.Id: ' + i);
+            console.log(' comment Item.Title: ' + t);
+            console.log(' comment Item.Detail: ' + d);
+            console.log(' comment Item.Media: ' + m);
+
+            $('#modal-id').val(i);
+            $('#cTitle').val(t);
+            $('#cDetail').val(d);
+            $('#cMedia').val(m);
+
+        });
+
+        //$('#deleteConfirmed').click(function (e) {
+
+        //    $('#modal-id').val(commentId);
+        //    var testId = $('#modal-id').val();
+        //$('.del').click(function () {
+        //    // $('#editCommentModal').click(function(){
+        //    var dataId = val($(this).attr('data-id'));
+        //    console.log('data-id: ' + dataId);
+        //    $('#modal-id').val($(this).attr('data-id'));
+        //});
+
+        //var commentId = 0;
+        //$('#editCommentModal').on('shown.bs.modal', function (e) {
+        //    var j = $(e.relatedTarget).data('id');
+        //    console.log(' commentId j: '+j);
+        //    commentId = j;
+        //});
+
+        //$('#deleteConfirmed').click(function (e) {
+
+        //    var urlString = '../../Posts/DeletePostComment/' + commentId;
+        //    console.log('In $(#deleteConfirmed) urlString: ' + urlString);
+
+        //    $('#modal-id').val(commentId);
+        //    var testId = $('#modal-id').val();
+        //    alert('testId: ' + testId);
+        //});
+    </script>
+}

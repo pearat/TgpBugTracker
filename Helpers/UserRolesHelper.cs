@@ -17,10 +17,11 @@ namespace TgpBugTracker.Helpers
         private UserManager<ApplicationUser> manager =
             new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
-        public enum RoleLevel
+        public enum RoleRank
         {
             None = 0,
             Submitter = 20,
+            Unassigned = 30,
             Developer = 40,
             PjtMgr = 80,
             Admin = 100
@@ -48,12 +49,6 @@ namespace TgpBugTracker.Helpers
             return result.Succeeded;
         }
 
-        //public IList<string> ListAllRoles()
-        //{
-        //    var roles = new List<string>();
-        //    roles = (from r in db.Roles select r.Name).ToList();
-        //    return roles;
-        //}
 
         public IList<ApplicationUser> UsersInRole(string roleName)
         {
@@ -82,21 +77,68 @@ namespace TgpBugTracker.Helpers
             return usersList;
         }
 
-        public int GetUsersAuthorizationLevel(string userId)
+        public int GetRoleRank(string IdOrAuthLevel)
         {
-            if (IsUserInRole(userId, "Admin"))
-                return (int)RoleLevel.Admin;
+            if (IdOrAuthLevel.Length > 16)
+            {
+                string userId = IdOrAuthLevel;
+                if (IsUserInRole(userId, "Admin"))
+                    return (int)RoleRank.Admin;
 
-            if (IsUserInRole(userId,"Project Manager"))
-                return (int)RoleLevel.PjtMgr;
+                if (IsUserInRole(userId, "Project Manager"))
+                    return (int)RoleRank.PjtMgr;
 
-            if (IsUserInRole(userId,"Developer"))
-                return (int)RoleLevel.Developer;
+                if (IsUserInRole(userId, "Developer"))
+                    return (int)RoleRank.Developer;
 
-            if (IsUserInRole(userId,"Submitter"))
-                return (int)RoleLevel.Submitter;
+                if (IsUserInRole(userId, "Unassigned"))
+                    return (int)RoleRank.Unassigned;
 
-            return (int)RoleLevel.None;
+                if (IsUserInRole(userId, "Submitter"))
+                    return (int)RoleRank.Submitter;
+
+                return (int)RoleRank.None;
+            }
+
+            else
+            {
+                string authLevel = IdOrAuthLevel;
+                switch (authLevel)
+                {
+                    case "Admin":
+                        return (int)RoleRank.Admin;
+                    case "Developer":
+                        return (int)RoleRank.Developer;
+                    case "Project Manager":
+                        return (int)RoleRank.PjtMgr;
+                    case "Submitter":
+                        return (int)RoleRank.Submitter;
+                    case "Unassigned":
+                        return (int)RoleRank.Unassigned;
+                    default:
+                        return (int)RoleRank.None;
+                }
+            }
         }
+
+        public string GetUserAuthorizationLevel(int roleRank)
+        {
+            switch (roleRank)
+            {
+                case (int)RoleRank.Admin:
+                    return "Admin";
+                case (int)RoleRank.PjtMgr:
+                    return "Project Manager";
+                case (int)RoleRank.Developer:
+                    return "Developer";
+                case (int)RoleRank.Submitter:
+                    return "Submitter";
+                case (int)RoleRank.Unassigned:
+                    return "Unassigned";
+                default:
+                    return "None";
+            }
+        }
+
     }
 }

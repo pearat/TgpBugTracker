@@ -34,6 +34,10 @@
                 <th width="11%">
                     Submitter
                 </th>
+
+                <th width="11%">
+                    Unassigned
+                </th>
                 <th width="8%">
                     Guest?
                 </th>
@@ -53,7 +57,7 @@
                     @for (int i = 0; i < ViewBag.NumRoles; i++)
                     {
                         <td align="center">
-                            @if (i < 4) 
+                            @if (i < 5) 
                             {  
                                 @Html.DisplayFor(modelItem => item.Roles[i])
                             }

@@ -1565,6 +1565,8 @@
     <Content Include="Views\Tickets\IndexBck.cshtml" />
     <Content Include="Views\Shared\_ChooseProject.cshtml" />
     <Content Include="Views\Tickets\Index Bck2.cshtml" />
+    <Content Include="Views\Shared\_Comments.cshtml" />
+    <Content Include="Views\Comments\DetailsBckUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

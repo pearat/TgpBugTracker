@@ -104,9 +104,9 @@ namespace TgpBugTracker.Migrations
             userManager.AddToRole(userId, "Submitter");
 
             // For None
-            if (!context.Roles.Any(r => r.Name == "Submitter"))
+            if (!context.Roles.Any(r => r.Name == "Unassigned"))
             {
-                roleManager.Create(new IdentityRole { Name = "None" });
+                roleManager.Create(new IdentityRole { Name = "Unassigned" });
             }
             if (!context.Users.Any(u => u.Email == "still@unassigned.com"))
             {
@@ -121,8 +121,8 @@ namespace TgpBugTracker.Migrations
                     Active = true
                 }, "Password-1");
             }
-            userId = userManager.FindByEmail("timpeara@altenergyfin.com").Id;
-            userManager.AddToRole(userId, "Submitter");
+            userId = userManager.FindByEmail("still@unassigned.com").Id;
+            userManager.AddToRole(userId, "Unassigned");
 
         }
     }

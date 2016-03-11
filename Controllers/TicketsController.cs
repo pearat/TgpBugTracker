@@ -35,9 +35,9 @@ namespace TgpBugTracker.Controllers
 
             var uHelper = new ProjectUsersHelper();
             var rHelper = new UserRolesHelper();
-            var UserLevel = rHelper.GetUsersAuthorizationLevel(user.Id);
+            var UserRank = rHelper.GetRoleRank(user.Id);
 
-            ViewBag.SubmitterOnly = (UserLevel == (int)UserRolesHelper.RoleLevel.Submitter) ? true : false;
+            ViewBag.SubmitterOnly = (UserRank == (int)UserRolesHelper.RoleRank.Submitter) ? true : false;
             ViewBag.UserId = user.Id;
             
             var TicketList = uHelper.ListTicketsForUser(ViewBag.UserId);
@@ -192,7 +192,7 @@ namespace TgpBugTracker.Controllers
             //        possibleTeamMembers.Add(member);
             //    }
             //}
-            var possibleTeamMembers = db.Users.Where(z => z.IsGuest == false  && z.AuthLevel>(int)UserRolesHelper.RoleLevel.Submitter).
+            var possibleTeamMembers = db.Users.Where(z => z.IsGuest == false  && z.RoleRank>(int)UserRolesHelper.RoleRank.Submitter).
                                         Select(p => new { p.Id, p.DisplayName }).OrderBy(j => j.DisplayName).ToList();
             ViewBag.LeaderId = new SelectList(possibleTeamMembers, "Id", "DisplayName", ticket.LeaderId);
 

@@ -49,7 +49,7 @@ namespace TgpBugTracker.Controllers
             var allUsers = db.Users.OrderBy(r => r.DisplayName).Select(r => r.DisplayName).ToArray();
             var numAllUsers = allUsers.Count();
             // var currentUserId = User.Identity.GetUserId();
-            var authLevel = usrHelper.GetUsersAuthorizationLevel(user.Id);
+            var authLevel = usrHelper.GetRoleRank(user.Id);
 
             foreach (var p in db.Projects.OrderBy(j=>j.Name))
             {

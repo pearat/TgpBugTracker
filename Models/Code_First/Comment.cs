@@ -8,6 +8,9 @@ namespace TgpBugTracker.Models
         [Required]
         public int Id { get; set; }
         [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Tkt Date")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd}", ApplyFormatInEditMode = true)]
         public DateTimeOffset Date { get; set; }
         [Required]
         public string Detail { get; set; }

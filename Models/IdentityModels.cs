@@ -24,7 +24,7 @@ namespace TgpBugTracker.Models
 
         public string Greeting { get { return "Hello, "+FirstName + "!"; } }
 
-        public int AuthLevel { get; set; }
+        public int RoleRank { get; set; }
 
         public bool IsGuest { get; set; }
         public bool Active { get; set; }
