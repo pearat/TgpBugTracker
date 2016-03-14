@@ -118,7 +118,7 @@ namespace TgpBugTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Detail,MediaURL,Title")] Comment comment)
+        public ActionResult Edit([Bind(Include = "Id,AuthorId,Date,Detail,MediaURL,TicketId,Title")] Comment comment)
         {
             if (ModelState.IsValid)
             {
@@ -136,7 +136,7 @@ namespace TgpBugTracker.Controllers
                 //return RedirectToAction("Index");
                 return RedirectToAction("details", "Tickets", new { id = comment.TicketId });
             }
-            return View("Index");
+            return View("Index","Tickets");
         }
 
         // GET: Comments/Delete/5
