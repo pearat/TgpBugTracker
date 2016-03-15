@@ -17,19 +17,6 @@ namespace TgpBugTracker.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: _Comments
-        public ActionResult _Comments(int TktId)
-        {
-            var ticket = db.Tickets.Find(TktId);
-            var comments = ticket.Comments.OrderByDescending(c => c.Date).ToList();
-            if (comments == null)
-            {
-                comments = new List<Comment>();
-            }
-            ViewBag.TktId = TktId;
-            return PartialView("_Comments",comments);
-        }
-
         // GET: Comments
         public ActionResult Index()
         {
@@ -44,8 +31,10 @@ namespace TgpBugTracker.Controllers
                 ViewBag.FullName = user.FullName;
                 ViewBag.Greeting = user.Greeting;
             }
-
-            return View(db.Comments.ToList());
+            var comments = db.Comments.Where(x => x.AuthorId == user.Id || x.Ticket.AuthorId == user.Id).ToList();
+            //if (comments == null)
+            //    comments = new List<Comment>();
+            return View(comments);
         }
 
         // GET: Comments/Details/5
@@ -63,22 +52,6 @@ namespace TgpBugTracker.Controllers
             return View(comment);
         }
 
-        // GET: Comments/Create
-        //public ActionResult Create(int? TktId)
-        //{
-        //    if (TktId==null)
-        //    {
-        //        Debug.WriteLine("Comments/Create() error: Ticket Id is null!");
-        //        return RedirectToAction("View", "Comments");
-        //    }
-        //    Comment comment = new Comment();
-        //    var user = db.Users.Find(User.Identity.GetUserId());
-        //    comment.AuthorId = user.Id;
-        //    comment.Date= System.DateTimeOffset.Now;
-        //    comment.TicketId = (int)TktId;
-        //    return View(comment);
-        //}
-
         // POST: Comments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -89,7 +62,7 @@ namespace TgpBugTracker.Controllers
             if (ModelState.IsValid)
             {
                 comment.Date = System.DateTimeOffset.Now;
-                
+
                 db.Comments.Add(comment);
                 db.SaveChanges();
                 return RedirectToAction("Details", "Tickets", new { id = comment.TicketId });
@@ -118,7 +91,8 @@ namespace TgpBugTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AuthorId,Date,Detail,MediaURL,TicketId,Title")] Comment comment)
+        //public ActionResult Edit([Bind(Include = "Id,AuthorId,Date,Detail,MediaURL,TicketId,Title")] Comment comment)
+        public ActionResult Edit([Bind(Include = "Id,Detail,MediaURL,Title")] Comment comment)
         {
             if (ModelState.IsValid)
             {
@@ -134,9 +108,11 @@ namespace TgpBugTracker.Controllers
                 db.Entry(comment).Property(p => p.MediaURL).IsModified = true;
                 db.SaveChanges();
                 //return RedirectToAction("Index");
-                return RedirectToAction("details", "Tickets", new { id = comment.TicketId });
+                return RedirectToAction("Details", "Tickets", new { id = comment.TicketId });
             }
-            return View("Index","Tickets");
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+
+            return View("Index", "Tickets", new { archivedOnly = false });
         }
 
         // GET: Comments/Delete/5

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TgpBugTracker.Helpers;
 using TgpBugTracker.Models;
 
 namespace TgpBugTracker.Controllers
@@ -20,13 +21,14 @@ namespace TgpBugTracker.Controllers
             {
                 ViewBag.FullName = "Pls login";
                 ViewBag.Greeting = "Hi, ???";
+
             }
             else
             {
+                
                 ViewBag.FullName = user.FullName;
                 ViewBag.Greeting = user.Greeting;
             }
-
             return View();
         }
 

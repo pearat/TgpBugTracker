@@ -18,7 +18,6 @@
         @Html.HiddenFor(m => m.Date)
         @Html.HiddenFor(m => m.AuthorId)
 
-
         <div class="form-group" style="margin-bottom:0; padding-top:5px">
             @Html.LabelFor(m => m.ProjectId, "Project Id", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10" style="padding-left:15px">
@@ -27,25 +26,6 @@
                 @Html.ValidationMessageFor(m => m.ProjectId, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <div class="form-group" style="margin-bottom:0; padding-top:5px">
-            @Html.LabelFor(m => m.IssueTypeId, "Type of Issue", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10" style="padding-left:15px">
-                @Html.DropDownList("IssueTypeId", null, htmlAttributes: new { @class = "form-control" })
-
-                @Html.ValidationMessageFor(m => m.IssueTypeId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group" style="margin-bottom:0; padding-top:5px">
-            @Html.LabelFor(m => m.PriorityId, "Priority Level", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10" style="padding-left:15px">
-                @Html.DropDownList("PriorityId", null, htmlAttributes: new { @class = "form-control" })
-
-                @Html.ValidationMessageFor(m => m.PriorityId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
 
         <div class="form-group">
             @Html.LabelFor(m => m.Title, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -64,45 +44,6 @@
             </div>
         </div>
 
-        <div class="form-group" style="margin-bottom:0; padding-top:5px">
-            @Html.LabelFor(m => m.StageId, "Ticket Stage", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10" style="padding-left:15px">
-                @Html.DropDownList("StageId", null, htmlAttributes: new { @class = "form-control" })
-
-                @Html.ValidationMessageFor(m => m.StageId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group" style="margin-bottom:0; padding-top:5px">
-            @Html.LabelFor(m => m.LeaderId, "Tkt Leader", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10" style="padding-left:15px">
-                @Html.DropDownList("LeaderId", null, htmlAttributes: new { @class = "form-control" })
-
-                @Html.ValidationMessageFor(m => m.LeaderId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group row" style="padding:0px 5px;">
-            <div style="display:inline">
-                <label for="date-picker-2" class="control-label col-md-2" style="display:inline; padding-top:10px">
-                    Deadline
-                </label>
-                <div class="controls col-md-10" style="padding:0px 15px">
-                    @if (Model.Deadline == null)
-                    {
-                        <input class="datepicker" data-date-format="yyyy/MM/dd" name="Deadline" style="padding:8px 12px; border:1px">
-                    }
-                    else
-                    {
-                        <input class="datepicker" data-date-format="yyyy/MM/dd" name="Deadline" style="padding:8px 12px; border:1px"
-                               value="@Model.Deadline.Value.ToString("yyyy/MM/dd")">
-                    }
-
-                </div>
-            </div>
-        </div>
-
-
         <div class="form-group">
             @Html.LabelFor(m => m.RepositoryURL, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -112,6 +53,74 @@
         </div>
 
 
+
+
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+        {
+            <div class="form-group" style="margin-bottom:0; padding-top:5px">
+                @Html.LabelFor(m => m.IssueTypeId, "Type of Issue", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10" style="padding-left:15px">
+                    @Html.DropDownList("IssueTypeId", null, htmlAttributes: new { @class = "form-control" })
+
+                    @Html.ValidationMessageFor(m => m.IssueTypeId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:0; padding-top:5px">
+                @Html.LabelFor(m => m.PriorityId, "Priority Level", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10" style="padding-left:15px">
+                    @Html.DropDownList("PriorityId", null, htmlAttributes: new { @class = "form-control" })
+
+                    @Html.ValidationMessageFor(m => m.PriorityId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:0; padding-top:5px">
+                @Html.LabelFor(m => m.StageId, "Ticket Stage", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10" style="padding-left:15px">
+                    @Html.DropDownList("StageId", null, htmlAttributes: new { @class = "form-control" })
+
+                    @Html.ValidationMessageFor(m => m.StageId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:0; padding-top:5px">
+                @Html.LabelFor(m => m.LeaderId, "Tkt Leader", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10" style="padding-left:15px">
+                    @Html.DropDownList("LeaderId", null, htmlAttributes: new { @class = "form-control" })
+
+                    @Html.ValidationMessageFor(m => m.LeaderId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row" style="padding:0px 5px;">
+                <div style="display:inline">
+                    <label for="date-picker-2" class="control-label col-md-2" style="display:inline; padding-top:10px">
+                        Deadline
+                    </label>
+                    <div class="controls col-md-10" style="padding:0px 15px">
+                        @if (Model.Deadline == null)
+                    {
+                            <input class="datepicker" data-date-format="yyyy/MM/dd" name="Deadline" style="padding:8px 12px; border:1px">
+                        }
+                        else
+                        {
+                            <input class="datepicker" data-date-format="yyyy/MM/dd" name="Deadline" style="padding:8px 12px; border:1px"
+                                   value="@Model.Deadline.Value.ToString("yyyy/MM/dd")">
+                        }
+
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.IssueTypeId)
+            @Html.HiddenFor(m => m.PriorityId)
+            @Html.HiddenFor(m => m.StageId)
+            @Html.HiddenFor(m => m.LeaderId)
+        }
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />

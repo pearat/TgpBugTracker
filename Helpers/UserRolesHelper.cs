@@ -29,6 +29,7 @@ namespace TgpBugTracker.Helpers
 
         public bool IsUserInRole(string userId, string roleName)
         {
+            
             return manager.IsInRole(userId, roleName);
         }
 
@@ -79,7 +80,7 @@ namespace TgpBugTracker.Helpers
 
         public int GetRoleRank(string IdOrAuthLevel)
         {
-            if (IdOrAuthLevel.Length > 16)
+            if (IdOrAuthLevel.Length > 15)
             {
                 string userId = IdOrAuthLevel;
                 if (IsUserInRole(userId, "Admin"))

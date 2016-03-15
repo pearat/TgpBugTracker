@@ -7,6 +7,8 @@ using System.Web.Mvc;
 
 namespace TgpBugTracker.Models
 {
+
+
     public class UserRolesVM : IComparable<UserRolesVM>
     {
         [DataType(DataType.Text)]
@@ -14,8 +16,8 @@ namespace TgpBugTracker.Models
         public string DisplayName { get; set; }
         public bool IsGuest { get; set; }
         public string[] Roles { get; set; }
-        //public MultiSelectList Selected { get; set; }
-        public string Selected { get; set; }
+        public MultiSelectList Selected { get; set; }
+        // public string Selected { get; set; }
         public string AuthLevel { get; set; }
         public int RoleRank { get; set; }
         public string UserId { get; set; }

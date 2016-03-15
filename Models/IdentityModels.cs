@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
+using System.Security.Principal;
+using System.Linq;
 
 namespace TgpBugTracker.Models
 {
@@ -38,8 +40,23 @@ namespace TgpBugTracker.Models
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
+            userIdentity.AddClaim(new Claim("FullName", FullName.ToString()));
+            userIdentity.AddClaim(new Claim("Greeting", Greeting.ToString()));
             return userIdentity;
         }
+
+
+        public static string GetFullName(IIdentity user)
+        {
+            var claimsIdentity = (ClaimsIdentity)user;
+            var FullName = claimsIdentity.Claims.FirstOrDefault(c => c.Type == "FullName");
+            if (FullName != null)
+                return FullName.Value;
+            else
+                return null;
+        }
+
+
     }
 
     public class ApplicationUserVM

@@ -13,7 +13,7 @@ using TgpBugTracker.Models;
 namespace TgpBugTracker.Controllers
 {
     [RequireHttps]
-    [Authorize(Roles = "Admin, 'Project Manager',Developer")]
+    [Authorize]
     public class ProjectsController : Controller
     {
 
@@ -53,14 +53,14 @@ namespace TgpBugTracker.Controllers
 
             foreach (var p in db.Projects.OrderBy(j=>j.Name))
             {
-                if (authLevel > (int)AuthLevel.PjtMgr || pjtHelper.DoesProjectIncludeUser(user.Id, p.Name))
+                if (authLevel == (int)AuthLevel.Admin || pjtHelper.DoesProjectIncludeUser(user.Id, p.Name))
                 {
                     var projectVM = new ProjectUsersVM();
                     projectVM.ProjectId = p.Id;
                     projectVM.ProjectName = p.Name;
 
                     var teamMembers = pjtHelper.ListProjectUsersIds(p.Id);
-                    if (teamMembers != null)
+                    if (teamMembers != null && authLevel > (int)AuthLevel.Submitter)
                     {
                         projectVM.TeamCount = teamMembers.Count();
                         int pmCount = 0;
@@ -152,8 +152,8 @@ namespace TgpBugTracker.Controllers
         }
 
 
-
         // GET: Projects/Details/5
+        [Authorize(Roles = "Admin," + "Project Manager," + "Developer")]
         public ActionResult Details(int? id)
         {
             if (id == null)

@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using TgpBugTracker.Helpers;
 using TgpBugTracker.Models;
@@ -19,7 +17,7 @@ namespace TgpBugTracker.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Tickets
-        public ActionResult Index()
+        public ActionResult Index(bool showArchived)
         {
             var user = db.Users.Find(User.Identity.GetUserId());
             if (user == null)
@@ -39,8 +37,9 @@ namespace TgpBugTracker.Controllers
 
             ViewBag.SubmitterOnly = (UserRank == (int)UserRolesHelper.RoleRank.Submitter) ? true : false;
             ViewBag.UserId = user.Id;
+
+            var TicketList = uHelper.ListTicketsForUser(ViewBag.UserId, showArchived);
             
-            var TicketList = uHelper.ListTicketsForUser(ViewBag.UserId);
             if (TicketList == null)
             {
                 TicketList = new List<Ticket>();
@@ -50,36 +49,6 @@ namespace TgpBugTracker.Controllers
                 return View(TicketList);
         }
 
-        // GET: Tickets
-        //public ActionResult Index(int? projectId)
-        //{
-        //    int AllMyProjects = 999;
-        //    var ProjectId = (projectId == null) ? AllMyProjects : projectId;
-
-        //    if (ProjectId == AllMyProjects)
-        //    {
-        //        return View(db.Tickets.ToList().OrderBy(m => m.Project.Name).ThenBy(n => n.Date));
-        //        }
-        //    else
-        //    {
-        //        // add checking to see whether user is authorized to view this project
-        //        return View(db.Tickets.Where(i => i.ProjectId == ProjectId).ToList().OrderBy(n => n.Date));
-        //    }
-        //}
-
-        // GET: Tickets
-        //public ActionResult _ChooseProject()
-        //{
-        //    var user = db.Users.Find(User.Identity.GetUserId());
-        //    var helper = new ProjectUsersHelper();
-
-        //    var ProjectList = helper.ListProjectsForUser(user.Id);
-
-        //    ViewBag.PossibleProjects = new SelectList(ProjectList, "Id", "Name");
-
-        //    return View();
-        //        // RedirectToAction("Index", new { projectId = ProjectId });
-        //}
 
         // GET: Tickets/Details/5
         public ActionResult Details(int? id)
@@ -93,6 +62,7 @@ namespace TgpBugTracker.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.UserId = User.Identity.GetUserId();
             return View(ticket);
         }
 
@@ -103,9 +73,9 @@ namespace TgpBugTracker.Controllers
             tkt.AuthorId = User.Identity.GetUserId();
             tkt.Date = System.DateTimeOffset.Now;
             tkt.Deadline = tkt.Date.AddMonths(1);
-            //tkt.Description = "";
-
-            ViewBag.ProjectId = new SelectList(db.Projects.OrderBy(n => n.Name), "Id", "Name");
+            var user = db.Users.Find(User.Identity.GetUserId());
+            var uHelper = new ProjectUsersHelper();
+            ViewBag.ProjectId = new SelectList(uHelper.ListProjectsForUser(user.Id), "Id", "Name");
 
             var defaultIssue = (int)db.IssueTypes.
                 Where(z => z.Name == "Unassessed").
@@ -118,7 +88,6 @@ namespace TgpBugTracker.Controllers
 
             var defaultPriority = (int)db.Priorities.Where(z => z.Name == "Unassessed").Select(p => p.Id).FirstOrDefault();
             ViewBag.PriorityId = new SelectList(db.Priorities, "Id", "Name", defaultPriority);
-
 
             var defaultStage = (int)db.Stages.Where(z => z.Name == "Unassigned").Select(p => p.Id).FirstOrDefault();
             ViewBag.StageId = new SelectList(db.Stages, "Id", "Name", defaultStage);
@@ -135,11 +104,16 @@ namespace TgpBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { showArchived = false });
             }
-
+            /*
+            { "The INSERT statement conflicted with the FOREIGN KEY constraint \"FK_dbo.Tickets_dbo.IssueTypes_IssueTypeId\". 
+            The conflict occurred in database \"tpeara-bugtracker\", table \"dbo.IssueTypes\", column 'Id'.
+            \r\nThe statement has been terminated."}
+            */
             ViewBag.ProjectId = new SelectList(db.Projects.OrderBy(n => n.Name), "Id", "Name");
 
             var defaultIssue = (int)db.IssueTypes.
@@ -154,13 +128,13 @@ namespace TgpBugTracker.Controllers
             var defaultPriority = (int)db.Priorities.Where(z => z.Name == "Unassessed").Select(p => p.Id).FirstOrDefault();
             ViewBag.PriorityId = new SelectList(db.Priorities, "Id", "Name", defaultPriority);
 
-
             var defaultStage = (int)db.Stages.Where(z => z.Name == "Unassigned").Select(p => p.Id).FirstOrDefault();
             ViewBag.StageId = new SelectList(db.Stages, "Id", "Name", defaultStage);
 
 
             return View(ticket);
         }
+
 
         // GET: Tickets/Edit/5
         public ActionResult Edit(int? id)
@@ -174,27 +148,14 @@ namespace TgpBugTracker.Controllers
             {
                 return HttpNotFound();
             }
-            
-            ViewBag.IssueTypeId = new SelectList(db.IssueTypes.OrderBy(p => p.Name), "Id", "Name", ticket.IssueTypeId);
-            var rHelper = new UserRolesHelper();
 
-            // !rHelper.IsUserInRole(z.Id, "Submitter")).
-            //var firstTeamCut = db.Users.Where(z => z.IsGuest == false).
-            //                            Select(p => new { p.Id, p.DisplayName }).OrderBy(j => j.DisplayName).ToList();
-            //var possibleTeamMembers = new List<ApplicationUserVM>();
-            //foreach (var item in firstTeamCut)
-            //{
-            //    if (!rHelper.IsUserInRole(item.Id, "Submitter"))
-            //    {
-            //        var member = new ApplicationUserVM();
-            //        member.Id = item.Id;
-            //        member.DisplayName = item.DisplayName;
-            //        possibleTeamMembers.Add(member);
-            //    }
-            //}
-            var possibleTeamMembers = db.Users.Where(z => z.IsGuest == false  && z.RoleRank>(int)UserRolesHelper.RoleRank.Submitter).
-                                        Select(p => new { p.Id, p.DisplayName }).OrderBy(j => j.DisplayName).ToList();
+            var project = db.Projects.Find(ticket.ProjectId);
+            var devId = db.Roles.FirstOrDefault(r => r.Name == "Developer").Id;
+            var possibleTeamMembers = project.Users.Where(u => u.IsGuest == false && u.Roles.Any(z=>z.RoleId == devId));
+
             ViewBag.LeaderId = new SelectList(possibleTeamMembers, "Id", "DisplayName", ticket.LeaderId);
+
+            ViewBag.IssueTypeId = new SelectList(db.IssueTypes.OrderBy(p => p.Name), "Id", "Name", ticket.IssueTypeId);
 
             ViewBag.PriorityId = new SelectList(db.Priorities.OrderBy(p => p.Name), "Id", "Name", ticket.PriorityId);
 
@@ -214,15 +175,15 @@ namespace TgpBugTracker.Controllers
             {
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { showArchived = false });
             }
 
             ViewBag.IssueTypeId = new SelectList(db.IssueTypes.OrderBy(p => p.Name), "Id", "Name", ticket.IssueTypeId);
 
-            var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName }).OrderBy(j=>j.DisplayName).ToList();
+            var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName }).OrderBy(j => j.DisplayName).ToList();
             ViewBag.LeaderId = new SelectList(users, "Id", "DisplayName", ticket.LeaderId);
 
-            ViewBag.PriorityId = new SelectList(db.Priorities.OrderBy(p=>p.Name), "Id", "Name", ticket.PriorityId);
+            ViewBag.PriorityId = new SelectList(db.Priorities.OrderBy(p => p.Name), "Id", "Name", ticket.PriorityId);
 
             ViewBag.StageId = new SelectList(db.Stages.OrderBy(p => p.Name), "Id", "Name", ticket.StageId);
 
@@ -250,9 +211,10 @@ namespace TgpBugTracker.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Ticket ticket = db.Tickets.Find(id);
-            //db.Tickets.Remove(ticket);
-            //db.SaveChanges();
-            return RedirectToAction("Index");
+            ticket.IsArchived = true;
+            db.Entry(ticket).Property(p => p.IsArchived).IsModified = true;
+            db.SaveChanges();
+            return RedirectToAction("Index", new { showArchived = false });
         }
 
         protected override void Dispose(bool disposing)

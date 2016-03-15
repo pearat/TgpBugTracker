@@ -4,7 +4,6 @@
     ViewBag.Title = "Projects Index Page";
 }
 <aside class="">
-    
 
     <h2>@ViewBag.Title</h2>
     @if (User.IsInRole("Admin"))
@@ -23,7 +22,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="panel-title">
-                            <span style="text-align:left; font-weight:bold" width="30%" >
+                            <span style="text-align:left; font-weight:bold" width="30%">
                                 <a data-toggle="collapse" data-parent="#accordion"
                                    href="@collapseId">@Html.DisplayFor(modelItem => item.ProjectName)</a>
                             </span>
@@ -36,8 +35,8 @@
                                 {
                                     @:|
                                     @Html.ActionLink("Edit", "Edit", new { id = item.ProjectId })
-                                    @:|
-                                    @Html.ActionLink("Delete", "Delete", new { id = item.ProjectId })
+                                    @*@:|
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.ProjectId })*@
                                 }
                             </span>
                         </div>

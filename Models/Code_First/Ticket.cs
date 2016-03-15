@@ -14,6 +14,7 @@ namespace TgpBugTracker.Models
         }
         [Required]
         public int Id { get; set; }
+
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Tkt Date")]
@@ -25,12 +26,10 @@ namespace TgpBugTracker.Models
         [DisplayFormat(DataFormatString = "{0:MM/dd}", ApplyFormatInEditMode = true)]
         public DateTimeOffset? Deadline { get; set; }
 
-        [Required]
         [DataType(DataType.MultilineText)]
         [Display(Name = "Description")]
         public string Description { get; set; }
-
-
+        
         [Display(Name = "Is Archived?")]
         public bool IsArchived { get; set; }
 
@@ -43,23 +42,22 @@ namespace TgpBugTracker.Models
         [Display(Name = "Tkt Owner")]
         public string AuthorId { get; set; }
 
-        public string Title { get; set; }
         [Required]
+        public string Title { get; set; }
+
         [Display(Name = "Issue Type")]
         public int IssueTypeId { get; set; }
 
         [Display(Name = "Response Leader")]
         public string LeaderId { get; set; }
 
-        [Required]
         [Display(Name = "Priority")]
         public int PriorityId { get; set; }
 
         [Required]
         [Display(Name = "Project")]
         public int ProjectId { get; set; }
-
-        [Required]
+        
         [DataType(DataType.Text)]
         [Display(Name = "Tkt Stage")]
         public int StageId { get; set; }

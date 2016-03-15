@@ -32,7 +32,7 @@
     <!-- Bootstrap Multiselect list -->
     <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/dt-1.10.11/datatables.min.css" />
-    
+
     <!-- Site CSS (if any) follows -->
     <link href="~/Content/Site.css" rel="stylesheet" />
 </head>
@@ -217,6 +217,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-user"></i>
                             <span>@ViewBag.FullName<i class="caret"></i></span>
+                            @*<span>@User.Identity.GetFullName()<i class="caret"></i></span>*@
                         </a>
                         <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
                             <li class="dropdown-header text-center">Account</li>
@@ -299,47 +300,58 @@
                     </li>
 
                     <li>
-                        <a href=@Url.Action("Index", "Tickets")>
+                        <a href=@Url.Action("Index", "Tickets", new { showArchived = false })>
                             <i class="fa fa-ticket"></i> <span>Tickets</span>
                         </a>
                     </li>
-
+                    
                     <li>
                         <a href=@Url.Action("Index", "Comments")>
                             <i class="fa fa-comment-o"></i> <span>Comments</span>
                         </a>
                     </li>
 
-                    <li>
-                        <a href=@Url.Action("Index", "Admin")>
-                            <i class="fa fa-share-alt"></i> <span>User Roles</span>
+                    
+                        <li>
+                        <a href = @Url.Action("Index", "Projects") >
+                        <i class="fa fa-sitemap"></i>
+                        <span>Projects &amp Staffing</span>
                         </a>
                     </li>
-                    <li>
-                        <a href=@Url.Action("Index", "Projects")>
-                            <i class="fa fa-sitemap"></i> <span>Projects &amp Staffing</span>
-                        </a>
-                    </li>
+                    
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a href=@Url.Action("Index", "Admin")>
+                                <i class="fa fa-share-alt"></i> <span>User Roles</span>
+                            </a>
+                        </li>
 
 
+                        <li>
+                            <a href=@Url.Action("Index", "IssueTypes")>
+                                <i class="fa fa-cogs"></i> <span>Issue Types</span>
+                            </a>
+                        </li>
 
-                    <li>
-                        <a href=@Url.Action("Index", "IssueTypes")>
-                            <i class="fa fa-cogs"></i> <span>Issue Types</span>
-                        </a>
-                    </li>
+                        <li>
+                            <a href=@Url.Action("Index", "Stages")>
+                                <i class="fa fa-line-chart"></i> <span>Project Stages</span>
+                            </a>
+                        </li>
 
-                    <li>
-                        <a href=@Url.Action("Index", "Stages")>
-                            <i class="fa fa-line-chart"></i> <span>Project Stages</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href=@Url.Action("Index", "Priorities")>
-                            <i class="fa fa-hourglass-start"></i> <span>Priority Levels</span>
-                        </a>
-                    </li>
+                        <li>
+                            <a href=@Url.Action("Index", "Priorities")>
+                                <i class="fa fa-hourglass-start"></i> <span>Priority Levels</span>
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a href=@Url.Action("Index", "Tickets", new { showArchived = true })>
+                                <i class="fa fa-eye"></i> <span>Archived Tickets</span>
+                            </a>
+                        </li>
+                    }
 
                     <li>
                         <a href="basic_form.html">

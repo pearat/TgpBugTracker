@@ -65,7 +65,7 @@ namespace TgpBugTracker.Helpers
                 Debug.WriteLine("ListProjectUsers() error: Users not found!");
                 return null;
             }
-            var users = (List<string>)project.Users.OrderBy(q => q.DisplayName).Select(p => p.DisplayName ).ToList();
+            var users = (List<string>)project.Users.OrderBy(q => q.DisplayName).Select(p => p.DisplayName).ToList();
             if (users == null)
             {
                 Debug.WriteLine("ListProjectUsers() error: Project has no Users!");
@@ -89,7 +89,15 @@ namespace TgpBugTracker.Helpers
                 return null;
             }
 
-            var projects = user.Projects.OrderBy(p => p.Name).ToList();
+            var projects = new List<Project>();
+            if (user.RoleRank == (int)UserRolesHelper.RoleRank.Admin)
+            {
+                projects = db.Projects.OrderBy(p => p.Name).ToList();
+            }
+            else
+            {
+                projects = user.Projects.OrderBy(p => p.Name).ToList();
+            }
 
             if (projects == null || projects.Count() == 0)
             {
@@ -101,7 +109,7 @@ namespace TgpBugTracker.Helpers
         }
 
 
-        public IList<Ticket> ListTicketsForUser(string userId)
+        public IList<Ticket> ListTicketsForUser(string userId, bool showArchived)
         {
             if (String.IsNullOrEmpty(userId))
             {
@@ -132,9 +140,9 @@ namespace TgpBugTracker.Helpers
                 case (int)UserRolesHelper.RoleRank.Developer:
                     TicketList = db.Tickets.Where(
                         t => t.LeaderId == userId ||
-                        t.Project.Users.Any(i=>i.Id== userId)
+                        t.Project.Users.Any(i => i.Id == userId)
                         ).ToList();
-                    
+
                     break;
                 case (int)UserRolesHelper.RoleRank.Submitter:
                     TicketList = db.Tickets.Where(t => t.AuthorId == userId).ToList();
@@ -143,7 +151,7 @@ namespace TgpBugTracker.Helpers
                     break;
             }
 
-            TicketList = TicketList.OrderBy(n => n.Project.Name).ThenBy(d => d.Date).ToList();
+            TicketList = TicketList.Where(x => x.IsArchived == showArchived).OrderBy(n => n.Project.Name).ThenBy(d => d.Date).ToList();
             return TicketList;
         }
 

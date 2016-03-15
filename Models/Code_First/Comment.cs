@@ -7,7 +7,6 @@ namespace TgpBugTracker.Models
     {
         [Required]
         public int Id { get; set; }
-        [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Comment Date")]
         [DisplayFormat(DataFormatString = "{0:MM/dd}", ApplyFormatInEditMode = true)]
@@ -16,9 +15,9 @@ namespace TgpBugTracker.Models
         public string Detail { get; set; }
         public string MediaURL { get; set; }
         public string Title { get; set; }
-        [Required]
+        
         public string AuthorId { get; set; }
-        [Required]
+        
         public int TicketId { get; set; }
 
         public virtual Ticket Ticket { get; set; }

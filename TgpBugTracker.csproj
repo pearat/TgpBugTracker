@@ -227,6 +227,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Greetings.cs" />
     <Compile Include="Helpers\ProjectUsersHelper.cs" />
     <Compile Include="Helpers\UserRolesHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -1565,7 +1566,6 @@
     <Content Include="Views\Tickets\IndexBck.cshtml" />
     <Content Include="Views\Shared\_ChooseProject.cshtml" />
     <Content Include="Views\Tickets\Index Bck2.cshtml" />
-    <Content Include="Views\Shared\_Comments.cshtml" />
     <Content Include="Views\Comments\DetailsBckUp.cshtml" />
   </ItemGroup>
   <ItemGroup>

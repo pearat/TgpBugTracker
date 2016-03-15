@@ -7,6 +7,7 @@ using TgpBugTracker.Models;
 using TgpBugTracker.Helpers;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
+using System.Diagnostics;
 
 namespace TgpBugTracker.Controllers
 {
@@ -45,17 +46,31 @@ namespace TgpBugTracker.Controllers
 
                 staff.Roles = new string[numAllRoles];
 
-                switch (u.RoleRank)
+
+
+                var sRoles = helper.ListUserRoles(u.Id).ToArray();
+                var sRc = sRoles.Count();
+                for (int i = 0; i < sRc; i++)
                 {
-                    case (int)UserRolesHelper.RoleRank.Admin: staff.Roles[0] = "A"; break;
-                    case (int)UserRolesHelper.RoleRank.PjtMgr: staff.Roles[1] = "P"; break;
-                    case (int)UserRolesHelper.RoleRank.Developer: staff.Roles[2] = "D"; break;
-                    case (int)UserRolesHelper.RoleRank.Submitter: staff.Roles[3] = "S"; break;
-                    case (int)UserRolesHelper.RoleRank.Unassigned: staff.Roles[4] = "U"; break;
-                    default:
-                        staff.Roles[4] = "U";
-                        break;
+                    if (sRoles[i].Equals("Admin", StringComparison.Ordinal)) staff.Roles[0] = "A";
+                    if (sRoles[i].Equals("Project Manager", StringComparison.Ordinal)) staff.Roles[1] = "P";
+                    if (sRoles[i].Equals("Developer", StringComparison.Ordinal)) staff.Roles[2] = "D";
+                    if (sRoles[i].Equals("Submitter", StringComparison.Ordinal)) staff.Roles[3] = "S";
+                    if (sRoles[i].Equals("Unassigned", StringComparison.Ordinal)) staff.Roles[4] = "U";
                 }
+
+
+                //switch (u.RoleRank)
+                //{
+                //    case (int)UserRolesHelper.RoleRank.Admin: staff.Roles[0] = "A"; break;
+                //    case (int)UserRolesHelper.RoleRank.PjtMgr: staff.Roles[1] = "P"; break;
+                //    case (int)UserRolesHelper.RoleRank.Developer: staff.Roles[2] = "D"; break;
+                //    case (int)UserRolesHelper.RoleRank.Submitter: staff.Roles[3] = "S"; break;
+                //    case (int)UserRolesHelper.RoleRank.Unassigned: staff.Roles[4] = "U"; break;
+                //    default:
+                //        staff.Roles[4] = "U";
+                //        break;
+                //}
 
                 //if (sRoles[i].Equals("Developer", StringComparison.Ordinal)) staff.Roles[2] = "D";
                 //    if (sRoles[i].Equals("Submitter", StringComparison.Ordinal)) staff.Roles[3] = "S";
@@ -86,8 +101,12 @@ namespace TgpBugTracker.Controllers
             staff.DisplayName = user.DisplayName;
             var helper = new UserRolesHelper();
             staff.RoleRank = helper.GetRoleRank(userId);
-            staff.AuthLevel = helper.GetUserAuthorizationLevel(staff.RoleRank);
-            ViewBag.AuthLevel = new SelectList(db.Roles.OrderBy(p => p.Name), "Name", "Name", staff.AuthLevel);
+            //staff.AuthLevel = helper.GetUserAuthorizationLevel(staff.RoleRank);
+            //ViewBag.AuthLevel = new SelectList(db.Roles.OrderBy(p => p.Name), "Name", "Name", staff.AuthLevel);
+
+            staff.Roles = helper.ListUserRoles(userId).ToArray();
+            staff.Selected = new MultiSelectList(db.Roles, "Name", "Name", staff.Roles);
+
             return View(staff);
         }
 
@@ -99,19 +118,38 @@ namespace TgpBugTracker.Controllers
         {
             if (!ModelState.IsValid)
             {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                Debug.WriteLine("AssignRoleToUser() invalid model, errors:" +errors);
                 return View(staff.UserId);
             }
-
+            // (Re-)Assign roles for this user
             var rHelper = new UserRolesHelper();
-            var staffRoles = db.Roles.Find(staff.UserId);
-            if (staffRoles != null)
-                staffRoles.Users.Clear();
+            //var staffRoles = db.Roles.Find(staff.UserId);
+            //if (staffRoles != null)
+            //    staffRoles.Users.Clear();
+
+            foreach (var r in db.Roles)
+            {
+                if (rHelper.IsUserInRole(staff.UserId, r.Name))
+                    rHelper.RemoveUserFromRole(staff.UserId, r.Name);
+            }
             db.SaveChanges();
+
+            for (int i = 0; i < staff.Roles.Count(); i++)
+            {
+                rHelper.AddUserToRole(staff.UserId, staff.Roles[i]);
+            }
+
+            //var rHelper = new UserRolesHelper();
+            //var staffRoles = db.Roles.Find(staff.UserId);
+            //if (staffRoles != null)
+            //    staffRoles.Users.Clear();
+            //db.SaveChanges();
 
             var user = db.Users.Find(staff.UserId);
 
-            rHelper.AddUserToRole(staff.UserId, staff.AuthLevel);
-            user.RoleRank = rHelper.GetRoleRank(staff.AuthLevel);
+            // rHelper.AddUserToRole(staff.UserId, staff.AuthLevel);
+            user.RoleRank = rHelper.GetRoleRank(staff.UserId);
             user.IsGuest = staff.IsGuest;
             db.Entry(user).Property(g => g.IsGuest).IsModified = true;
             db.Entry(user).Property(g => g.RoleRank).IsModified = true;

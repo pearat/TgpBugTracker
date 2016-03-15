@@ -127,13 +127,13 @@ width: 100% !Important;
                         @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || ViewBag.UserId == item.AuthorId || ViewBag.UserId == item.LeaderId)
                         {
                             <text>|</text>
-                            <a data-toggle="tooltip" title="Edit" href="@Url.Action("Edit",new { id = item.Id })"><span class="fa fa-pencil-square-o"></span></a>
+                            <a data-toggle="tooltip" title="Edit/Assign" href="@Url.Action("Edit",new { id = item.Id })"><span class="fa fa-pencil-square-o"></span></a>
 
                         }
                         @if (User.IsInRole("Admin"))
                         {
                             <text>|</text>
-                            <button data-toggle="tooltip modal" title="Delete" data-id="@item.Id" class="del fa fa-trash-o" data-target="#archiveModal"></button>
+                            <button data-toggle="modal" title="Archive" data-id="@item.Id" class="del fa fa-trash-o" data-target="#archiveModal"></button>
                         }
                     </td>
                     <td>
@@ -195,7 +195,7 @@ width: 100% !Important;
             <div class="modal-body" style="text-align:center">
                 <div class="row">
                     <h4>Are you sure you want to ARCHIVE this TICKET?</h4>
-                    <p>All associated Comments, Logs and Notices will hidden.</p>
+                    <p>This Ticket and all its associated Comments, Logs and Notices will hidden.</p>
                 </div>
             </div>
             <div class="modal-footer" style="align-items:center">

@@ -42,9 +42,6 @@
         max-width: none;
     }
 </style>
-@{
-    ViewBag.Title = "Ticket Details";
-}
 
 <div class="container">
     <div class="col-md-4">
@@ -171,7 +168,7 @@
                             Title
                         </div>
                         <div class="col-md-10">
-                            @Html.Editor("Title", new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.Editor(@Model.Title, new { htmlAttributes = new { @class = "form-control" } })
                         </div>
                     </div>
 
@@ -248,7 +245,6 @@
                                     <button data-toggle="modal tooltip" title="Delete" data-id="@item" class="del fa fa-trash-o" data-target="#archiveModal"></button>
                                 }
                             </td>
-
 
                             <td>
                                 @Html.DisplayFor(modelItem => item.Date)
