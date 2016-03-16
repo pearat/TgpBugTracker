@@ -34,16 +34,17 @@ namespace TgpBugTracker.Models
         public bool IsArchived { get; set; }
 
         [DataType(DataType.Text)]
-        [Display(Name = "Repository URL")]
-        public string RepositoryURL { get; set; }
+        [Display(Name = "Media URL")]
+        public string MediaURL { get; set; }
+
+        [Required]
+        public string Title { get; set; }
+
 
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "Tkt Owner")]
         public string AuthorId { get; set; }
-
-        [Required]
-        public string Title { get; set; }
 
         [Display(Name = "Issue Type")]
         public int IssueTypeId { get; set; }

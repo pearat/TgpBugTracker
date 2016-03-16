@@ -1,0 +1,212 @@
+﻿@model TgpBugTracker.Models.Ticket
+
+<style>
+    dl {
+        padding: 0.1em;
+    }
+
+    dt {
+        float: left;
+        clear: left;
+        width: 30%;
+        text-align: right;
+        font-weight: bold;
+        /*color: green;*/
+    }
+
+        dt:after {
+            content: ":";
+        }
+
+    dd {
+        margin: 0 0 0 110px;
+        padding: 0 0 0.5em 0;
+    }
+
+    .dl-horizontal dt {
+        /*width: 80px;*/
+        width: 24%;
+    }
+
+    .dl-horizontal dd {
+        /* margin-left: 90px;*/
+        margin-left: 27%;
+    }
+
+    .table tbody > tr > td {
+        padding: 4px;
+    }
+
+    .modal-body input, textarea {
+        width: 95%;
+        max-width: none;
+    }
+</style>
+
+<div class="container">
+    <div class="col-md-4">
+        <div row>
+            <h2>Ticket Detail</h2>
+
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div row>
+            <h2>Log of Changes</h2>
+        </div>
+    </div>
+</div>
+<hr />
+<div>
+    <div class="container">
+        <div class="col-md-4">
+            <div row>
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ProjectId)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Project.Name)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.IssueTypeId)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.IssueType.Name)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PriorityId)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Priority.Name)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.StageId)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Stage.Name)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Date)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Date)
+                    </dd>
+
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </dt>
+
+                    <dd width="inherit" style="font-weight:bold">
+                        @Html.DisplayFor(model => model.Title)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.AuthorId)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Author.DisplayName)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.LeaderId)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Leader.DisplayName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Deadline)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Deadline)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.MediaURL)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.MediaURL)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-md-8">
+
+
+            <table class="table" style="table-layout:fixed">
+                <tr width="100%">
+                    <th style="width:15%">
+                        Author
+                    </th>
+                    <th style="width:20%">
+                        Date
+                    </th>
+                    <th style="width:15%">
+                        Property
+                    </th>
+                    <th style="width:25%">
+                        Old Value
+                    </th>
+                    <th style="width:25%">
+                        New Value
+                    </th>
+
+                </tr>
+                @if (Model != null)
+                {
+                    foreach (var item in Model.Logs.OrderByDescending(c => c.Date))
+                    {
+                        <tr style="width:inherit">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AuthorName)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Property)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OldValue)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NewValue)
+                            </td>
+
+                        </tr>
+                    }
+                }
+
+            </table>
+
+        </div>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index", new { showArchived = false });
+</p>
+
+
+@section scripts{
+    <script>
+    </script>
+}

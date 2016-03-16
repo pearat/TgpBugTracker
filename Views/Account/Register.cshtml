@@ -1,6 +1,6 @@
 ﻿@model TgpBugTracker.Models.RegisterViewModel
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Register a New User";
 }
 
 <h2>@ViewBag.Title.</h2>
@@ -47,6 +47,12 @@
         </div>
     </div>
 }
+
+<div class="col-md-offset-2 col-md-10">
+    <br />
+    <b><i><p>Expect an Email with confirmation instructions.</p></i></b>
+    <p>You'll need to <u>confirm</u> your email address before being able to login. </p>
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

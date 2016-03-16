@@ -13,6 +13,7 @@ namespace TgpBugTracker.Models
         public string Property { get; set; }
         [Required]
         public string AuthorId { get; set; }
+        public string AuthorName { get; set; }
         [Required]
         public int TicketId { get; set; }
 

@@ -5,16 +5,15 @@
 }
 
 <style>
-    tfoot input {
-        width: 100%;
-        padding: 3px;
-        box-sizing: border-box;
-    }
+        tfoot input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
 
-/*#table-tickets {
-width: 100% !Important;
-}*/
-
+        /*#table-tickets {
+    width: 100% !Important;
+    }*/
 </style>
 
 <h2>@ViewBag.Title</h2>
@@ -127,8 +126,12 @@ width: 100% !Important;
                         @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || ViewBag.UserId == item.AuthorId || ViewBag.UserId == item.LeaderId)
                         {
                             <text>|</text>
-                            <a data-toggle="tooltip" title="Edit/Assign" href="@Url.Action("Edit",new { id = item.Id })"><span class="fa fa-pencil-square-o"></span></a>
-
+                            <a data-toggle="tooltip" title="Edit/Assign" href="@Url.Action("Edit", new { id = item.Id })"><span class="fa fa-pencil-square-o"></span></a>
+                            if (!ViewBag.SubmitterOnly)
+                            {
+                               @:<text >|</ text>
+                            <a data - toggle = "tooltip" title = "View Changes" href = "@Url.Action("Log", new { id = item.Id })" ><span class="fa fa-history"></span></a>
+                            }
                         }
                         @if (User.IsInRole("Admin"))
                         {
@@ -264,7 +267,7 @@ width: 100% !Important;
                         });
                     });
                 },
-                authowidth:true,
+                authowidth: true,
                 "columnDefs": [
              { "width": "10%", "targets": 0 },
              { "width": "10%", "targets": 0 },

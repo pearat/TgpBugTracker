@@ -92,7 +92,7 @@ namespace TgpBugTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //public ActionResult Edit([Bind(Include = "Id,AuthorId,Date,Detail,MediaURL,TicketId,Title")] Comment comment)
-        public ActionResult Edit([Bind(Include = "Id,Detail,MediaURL,Title")] Comment comment)
+        public ActionResult Edit([Bind(Include = "Id,Detail,MediaURL,TicketId,Title")] Comment comment)
         {
             if (ModelState.IsValid)
             {
