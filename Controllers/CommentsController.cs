@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using TgpBugTracker.Helpers;
 using TgpBugTracker.Models;
 
 namespace TgpBugTracker.Controllers
@@ -57,10 +59,17 @@ namespace TgpBugTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AuthorId,Date,Detail,MediaURL,Title,TicketId")] Comment comment)
+        public ActionResult Create([Bind(Include = "Id,AuthorId,Date,Detail,MediaURL,Title,TicketId")]
+                                    Comment comment, HttpPostedFileBase upLoadFile)
         {
             if (ModelState.IsValid)
             {
+                // var tHelper = new TicketsController();
+                var fileName = Path.GetFileName(upLoadFile.FileName);
+                var fullPathName = Path.Combine(Server.MapPath("/Uploads"), fileName);
+                var fHelper = new FileUpLoadValidator();
+                comment.MediaURL = fHelper.SaveUpLoadFile(upLoadFile, fullPathName);
+
                 comment.Date = System.DateTimeOffset.Now;
 
                 db.Comments.Add(comment);
@@ -96,16 +105,11 @@ namespace TgpBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var user = db.Users.Find(User.Identity.GetUserId());
-                //comment.AuthorId = user.Id;
-                //comment.Date = System.DateTimeOffset.Now;
-                ////db.Entry(comment).State = EntityState.Modified;
-                //db.SaveChanges();
-
-                db.Comments.Attach(comment);
-                db.Entry(comment).Property(p => p.Title).IsModified = true;
-                db.Entry(comment).Property(p => p.Detail).IsModified = true;
-                db.Entry(comment).Property(p => p.MediaURL).IsModified = true;
+                db.Update(comment, "Title","Detail","MediaURL");
+                //db.Comments.Attach(comment);
+                //db.Entry(comment).Property(p => p.Title).IsModified = true;
+                //db.Entry(comment).Property(p => p.Detail).IsModified = true;
+                //db.Entry(comment).Property(p => p.MediaURL).IsModified = true;
                 db.SaveChanges();
                 //return RedirectToAction("Index");
                 return RedirectToAction("Details", "Tickets", new { id = comment.TicketId });

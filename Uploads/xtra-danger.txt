@@ -1,0 +1,29 @@
+<style>
+    .full_post_img {
+        max-width: 1140px;
+        max-height: 480px;
+    }
+
+    form input[type=text].form-control {
+        width: 600px;
+    }
+
+    .xtra-btn, .xtra-btn::after, .xtra-btn:active, .xtra-btn:visited {
+        color: #C69F73;
+    }
+
+        .xtra-btn:hover, .xtra-btn:active {
+            color: #fff;
+        }
+
+    .xtra-danger-btn, .xtra-danger-btn:hover {
+        background-color: #fff;
+        color: #d9534f;
+        border: #d9534f;
+    }
+
+        .xtra-danger-btn:active, .xtra-danger-btn:visited, .xtra-danger-btn:active, .xtra-danger-btn:after {
+            background-color: #d9534f;
+            color: #fff;
+        }
+</style>

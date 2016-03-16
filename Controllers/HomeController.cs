@@ -14,10 +14,11 @@ namespace TgpBugTracker.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+
         public ActionResult Index()
         {
-            var user = db.Users.Find(User.Identity.GetUserId());
-            if (user == null)
+            var userId = User.Identity.GetUserId();
+            if (userId == null)
             {
                 ViewBag.FullName = "Pls login";
                 ViewBag.Greeting = "Hi, ???";
@@ -25,7 +26,7 @@ namespace TgpBugTracker.Controllers
             }
             else
             {
-                
+                var user = db.Users.Find(userId);
                 ViewBag.FullName = user.FullName;
                 ViewBag.Greeting = user.Greeting;
             }

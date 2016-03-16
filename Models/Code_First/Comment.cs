@@ -11,9 +11,10 @@ namespace TgpBugTracker.Models
         [Display(Name = "Comment Date")]
         [DisplayFormat(DataFormatString = "{0:MM/dd}", ApplyFormatInEditMode = true)]
         public DateTimeOffset Date { get; set; }
-        [Required]
+        
         public string Detail { get; set; }
         public string MediaURL { get; set; }
+        [Required]
         public string Title { get; set; }
         
         public string AuthorId { get; set; }

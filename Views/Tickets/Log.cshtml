@@ -203,6 +203,15 @@
 </div>
 <p>
     @Html.ActionLink("Back to List", "Index", new { showArchived = false });
+
+    @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || ViewBag.UserId == Model.AuthorId || ViewBag.UserId == Model.LeaderId)
+    {
+        <text>|</text>
+        <a data-toggle="tooltip" title="Edit/Assign" href="@Url.Action("Edit", new { id = Model.Id })"><span class="fa fa-pencil-square-o"></span></a>
+     
+    }
+
+
 </p>
 
 

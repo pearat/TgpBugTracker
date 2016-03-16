@@ -1,0 +1,303 @@
+using Microsoft.AspNet.Identity;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using TgpBudget.Helpers;
+using TgpBudget.Models;
+
+namespace TgpBudget.Controllers
+{
+    [RequireHttps]
+
+    [AuthorizeHouseholdRequired]
+    public class DealsController : Controller
+    {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
+
+        // GET: Deals
+        public ActionResult _Index()
+        {
+            var user = db.Users.Find(User.Identity.GetUserId());
+            @ViewBag.ActiveHousehold = user.Household.Name;
+            var hh = db.Households.Find(Convert.ToInt32(User.Identity.GetHouseholdId()));
+            var deals = hh.BankAccts.SelectMany(a => a.Deals).OrderByDescending(a => a.DealDate).ToList().Take(5);
+            foreach (var d in deals)
+                if (d.Category.IsExpense)
+                    d.Amount *= -1;
+            return PartialView(deals);
+        }
+
+
+
+        // GET: Deals
+        public ActionResult Index()
+        {
+            var user = db.Users.Find(User.Identity.GetUserId());
+            @ViewBag.ActiveHousehold = user.Household.Name;
+            var hh = db.Households.Find(Convert.ToInt32(User.Identity.GetHouseholdId()));
+            var deals = hh.BankAccts.SelectMany(a => a.Deals).OrderByDescending(a => a.DealDate).ToList();
+            foreach (var d in deals)
+                if (d.Category.IsExpense)
+                    d.Amount *= -1;
+            return View(deals);
+        }
+
+
+
+
+        [HttpPost]
+        public ActionResult Index(string SortOrder)
+        {
+            var hh = db.Households.Find(Convert.ToInt32(User.Identity.GetHouseholdId()));
+            List<Deal> deals = new List<Deal>();
+            deals = hh.BankAccts.SelectMany(a => a.Deals).ToList();
+            foreach(var d in deals)
+            {
+                d.Amount *= (d.Category.IsExpense ? -1 : 1);
+            }
+            //if (SortOrder == "" || SortOrder == "byDate")
+            //{
+            //    deals = hh.BankAccts.SelectMany(a => a.Deals).OrderByDescending(a => a.DealDate).ToList();
+            //}
+            //else
+            //{
+            //    if (SortOrder == "byCategory")
+            //    {
+            //        deals = hh.BankAccts.SelectMany(a => a.Deals).OrderBy(d => d.Category).ThenByDescending(a => a.DealDate).ToList();
+            //    }
+            //    else
+            //    {
+            //        if (SortOrder == "byBankAcct")
+            //        {
+            //            deals = hh.BankAccts.SelectMany(a => a.Deals).OrderBy(a => a.BankAcct).ThenByDescending(a => a.DealDate).ToList();
+            //        }
+            //        else // by Amount
+            //        {
+            //            deals = hh.BankAccts.SelectMany(a => a.Deals).OrderBy(a => a.Amount).ToList();
+            //        }
+            //    }
+            //}
+            return View(deals);
+        }
+
+
+
+
+        // GET: Deals/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Deal deal = db.Deals.Find(id);
+            if (deal == null)
+            {
+                return HttpNotFound();
+            }
+            return View(deal);
+        }
+
+        // GET: Deals/New
+        public ActionResult New()
+        {
+            var newDeal = new DealViewModel();
+            newDeal.DealDate = System.DateTimeOffset.Now;
+
+            var user = db.Users.Find(User.Identity.GetUserId());
+
+            ViewBag.BankAcctId = new SelectList(db.BankAccts.Where(
+                b => b.HouseholdId == user.HouseholdId).OrderBy(b => b.AccountName), "Id", "AccountName");
+
+            ViewBag.XferAcctId = new SelectList(db.BankAccts.Where(
+                b => b.HouseholdId == user.HouseholdId).OrderBy(b => b.AccountName), "Id", "AccountName");
+
+
+            // ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
+
+            ViewBag.ExpenseId = new SelectList(db.Categories.Where(
+                c => c.IsExpense == true && c.HouseholdId == user.HouseholdId).OrderBy(c => c.Name), "Id", "Name");
+            ViewBag.IncomeId = new SelectList(db.Categories.Where(
+                c => c.IsExpense == false && c.HouseholdId == user.HouseholdId).OrderBy(c => c.Name), "Id", "Name");
+            return View(newDeal);
+        }
+
+        // POST: Deals/New
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult New([Bind(Include = "BankAcctId,CategoryId,ExpenseId,DealDate,IncomeToggle,IncomeId,Payee,Description,Amount,Reconciled")] DealViewModel dvm)
+        {
+            if (ModelState.IsValid)
+            {
+                Deal deal = new Deal();
+                deal.BankAcctId = dvm.BankAcctId;
+                if (dvm.IsExpense)
+                    deal.CategoryId = dvm.ExpenseId;
+                else
+                    deal.CategoryId = dvm.IncomeId;
+                deal.DealDate = dvm.DealDate;
+                deal.Payee = dvm.Payee;
+                deal.Description = dvm.Description;
+                deal.Amount = dvm.Amount;
+                deal.Reconciled = dvm.Reconciled;
+                db.Deals.Add(deal);
+                db.SaveChanges();
+                //var i = deal.Id;
+                deal = db.Deals.Include("BankAcct").Include("Category").FirstOrDefault(d => d.Id == deal.Id);
+
+                deal.BankAcct.BalanceCurrent += (deal.Category.IsExpense ? -1 : 1) * deal.Amount;
+                if (deal.Reconciled)
+                    deal.BankAcct.BalanceReconciled += (deal.Category.IsExpense ? -1 : 1) * deal.Amount;
+
+                db.SaveChanges();
+                return RedirectToAction("Index");
+
+            }
+            var user = db.Users.Find(User.Identity.GetUserId());
+            ViewBag.BankAcctId = new SelectList(db.BankAccts.Where(
+                b => b.HouseholdId == user.HouseholdId).OrderBy(b => b.AccountName), "Id", "AccountName");
+            ViewBag.ExpenseId = new SelectList(db.Categories.Where(
+                c => c.IsExpense == true && c.HouseholdId == user.HouseholdId).OrderBy(c => c.Name), "Id", "Name");
+            ViewBag.IncomeId = new SelectList(db.Categories.Where(
+                c => c.IsExpense == false && c.HouseholdId == user.HouseholdId).OrderBy(c => c.Name), "Id", "Name");
+
+            return View(dvm);
+        }
+
+        // GET: Deals/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Deal deal = db.Deals.Find(id);
+            if (deal == null)
+            {
+                return HttpNotFound();
+            }
+            var editDeal = new DealViewModel();
+            editDeal.Amount = deal.Amount;
+            editDeal.BankAcctId = (int)deal.BankAcctId;
+            editDeal.CategoryId = (int)deal.CategoryId;
+            TempData["oldCategoryId"] = deal.CategoryId ?? default(int);
+            editDeal.DealDate = deal.DealDate.Date;
+            editDeal.Description = deal.Description;
+            editDeal.Id = deal.Id;
+
+            editDeal.Payee = deal.Payee;
+            editDeal.Reconciled = deal.Reconciled;
+
+            //var user = db.Users.Find(User.Identity.GetUserId());
+            //var Household = db.Households.Find(user.HouseholdId);
+            int? HhId = Convert.ToInt32(User.Identity.GetHouseholdId());
+            var Household = db.Households.Find(HhId);
+            ViewBag.BankAcctId = new SelectList(Household.BankAccts.OrderBy(b => b.AccountName).ToList(), "Id", "AccountName");
+            if (deal.Category.IsExpense)
+            {
+                ViewBag.CategoryId = new SelectList(Household.Categories.Where(
+                    c => c.IsExpense == true).OrderBy(c => c.Name).ToList(), "Id", "Name");
+                editDeal.IsExpense = true;
+            }
+            else {
+                ViewBag.CategoryId = new SelectList(Household.Categories.Where(
+                    c => c.IsExpense == false).OrderBy(c => c.Name).ToList(), "Id", "Name");
+                editDeal.IsExpense = false;
+            }
+            return View(editDeal);
+
+        }
+
+        // POST: Deals/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Amount,BankAcctId,CategoryId,DealDate,Description,Id,IsExpense,Payee,Reconciled")] DealViewModel dvm)
+        {
+            if (ModelState.IsValid)
+            {
+                Deal deal = db.Deals.FirstOrDefault(d => d.Id == dvm.Id);
+                if (deal != null)
+                {
+                    int newCatId = dvm.CategoryId ?? default(int);
+                    int oldCatId = Convert.ToInt32(TempData["oldCategoryId"]);
+                    if (deal.Amount != dvm.Amount || newCatId != oldCatId)
+                    {
+                        // var oldDeal = db.Deals.AsNoTracking().FirstOrDefault(d => d.Id == dvm.Id);
+                        deal.BankAcct.BalanceCurrent -= (deal.Category.IsExpense ? -1 : 1) * deal.Amount;
+                        if (deal.Reconciled)
+                            deal.BankAcct.BalanceReconciled -= (deal.Category.IsExpense ? -1 : 1) * deal.Amount;
+                    }
+                    deal.Amount = dvm.Amount;
+                    deal.DealDate = dvm.DealDate;  
+                    deal.BankAcctId = dvm.BankAcctId;
+                    deal.CategoryId = dvm.CategoryId;
+                    deal.Description = dvm.Description;
+                    deal.Payee = dvm.Payee;
+                    deal.Reconciled = dvm.Reconciled;
+                    db.SaveChanges();
+                    deal = db.Deals.Include("BankAcct").Include("Category").FirstOrDefault(d => d.Id == deal.Id);
+                    deal.BankAcct.BalanceCurrent += (deal.Category.IsExpense ? -1 : 1) * deal.Amount;
+                    if (deal.Reconciled)
+                        deal.BankAcct.BalanceReconciled += (deal.Category.IsExpense ? -1 : 1) * deal.Amount;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            var user = db.Users.Find(User.Identity.GetUserId());
+            var Household = db.Households.Find(user.HouseholdId);
+            ViewBag.BankAcctId = new SelectList(Household.BankAccts.OrderBy(b => b.AccountName).ToList(), "Id", "AccountName");
+            if (dvm.IsExpense)
+            {
+                ViewBag.CategoryId = new SelectList(Household.Categories.Where(
+                    c => c.IsExpense == true).OrderBy(c => c.Name).ToList(), "Id", "Name");
+            }
+            else {
+                ViewBag.CategoryId = new SelectList(Household.Categories.Where(
+                    c => c.IsExpense == false).OrderBy(c => c.Name).ToList(), "Id", "Name");
+            }
+            return View(dvm);
+        }
+
+
+        //// POST: Deals/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int? id)
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Deal deal = db.Deals.Find(id);
+
+            deal.BankAcct.BalanceCurrent -= (deal.Category.IsExpense ? -1 : 1) * deal.Amount;
+            if (deal.Reconciled)
+                deal.BankAcct.BalanceReconciled -= (deal.Category.IsExpense ? -1 : 1) * deal.Amount;
+
+
+            db.Deals.Remove(deal);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
+}

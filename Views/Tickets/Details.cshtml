@@ -150,7 +150,8 @@
         </div>
         <div class="col-md-8">
 
-            @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
+
+            @using (Html.BeginForm("Create", "Comments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="TicketId" value="@Model.Id" />
@@ -166,7 +167,6 @@
                             Title
                         </div>
                         <div class="col-md-10">
-                            @*@Html.Editor(@Model.Title, new { htmlAttributes = new { @class = "form-control" } })*@
                             <input type="text" name="Title"class="form-control" />
                         </div>
                     </div>
@@ -185,7 +185,8 @@
                             Media URL
                         </div>
                         <div class="col-md-10">
-                            @Html.Editor("MediaURL", new { htmlAttributes = new { @class = "form-control" } })
+                            @*@Html.Editor("MediaURL", new { htmlAttributes = new { @class = "form-control" } })*@
+                            <input name="upLoadFile" type="file" class="form-control" id="fileUpload" />
                         </div>
                     </div>
 

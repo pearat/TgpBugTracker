@@ -138,32 +138,75 @@ namespace TgpBugTracker.Controllers
             return View(tkt);
         }
 
+        public string SaveUpLoadFileZ(HttpPostedFileBase upLoadFile)
+        {
+            if (upLoadFile != null)
+            {
+                var fileName = Path.GetFileName(upLoadFile.FileName);
+                var OkFileName = Regex.IsMatch(fileName, "[a-zA-Z0-9]{1,200}\\.[a-zA-Z0-9]{1,10}", RegexOptions.IgnoreCase);
+                if (OkFileName)
+                {
+                    var extension = Path.GetExtension(upLoadFile.FileName);
+                    var docFileType = (extension == ".pdf" || extension == ".doc" || extension == ".docx" ||
+                                        extension == ".rtf" || extension == ".txt");
+                    var validImage = FileUpLoadValidator.IsWebFriendlyImage(upLoadFile);
+
+                    if (validImage || docFileType)
+                    {
+                        // code for saving the image file to a physical location.
+                        var fullPathName = Path.Combine(Server.MapPath("/Uploads"), fileName);
+                        try
+                        {
+                            upLoadFile.SaveAs(fullPathName);
+                        }
+                        catch (Exception e)
+                        {
+                            fileName= "Tried to save["+fullPathName+", but this error occurred :" + e;
+                            Debug.WriteLine(fileName);
+                            return fileName;
+                            
+                        }
+
+                        if (docFileType)
+                        {
+                            // test whether extension and mimeType are consistent
+                            var mimeType = FileUpLoadValidator.getMimeFromFile(fullPathName);
+                            Debug.WriteLine("MimeType: " + mimeType);
+                        }
+                        // prepare a relative path to be stored in the database and used to display later on.
+                        // ticket.MediaURL = 
+
+
+                        return "/Uploads/" + fileName;
+                    }
+                }
+                else
+                {
+                    return "Problem with file name [[" + fileName + "]]";
+                }
+            }
+            return null;
+        }
+
+
+        
+
         // POST: Tickets/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = 
+        public ActionResult Create([Bind(Include =
                 "Id,Date,Deadline,Description,MediaURL,Title,AuthorId,IssueTypeId,LeaderId,PriorityId,ProjectId,StageId")]
-                Ticket ticket, HttpPostedFileBase image)
+                Ticket ticket, HttpPostedFileBase upLoadFile)
         {
             if (ModelState.IsValid)
             {
-                // restrict the valid file formats for images
-                // FileUpLoadValidator fileHelper = new FileUpLoadValidator();
-                if (FileUpLoadValidator.IsWebFriendlyImage(image))
-                {
-                    var fileName = Path.GetFileName(image.FileName);
-                    var r = "[a - zA - Z0 - 9]{ 1,200}\\.[a-zA-Z0-9]{1,10}";
-                    var OkFileName= Regex.IsMatch(fileName, r, RegexOptions.IgnoreCase);
-                    if (OkFileName)
-                    {
-                        image.SaveAs(Path.Combine(Server.MapPath("~/App_Data/"), fileName));
-                        ticket.MediaURL = "~/App_Data/" + fileName;
-                    }
-                    else
-                        ticket.MediaURL = "Suspect Upload File";
-                }
+                var fileName = Path.GetFileName(upLoadFile.FileName);
+                var fullPathName = Path.Combine(Server.MapPath("/Uploads"), fileName);
+                var fHelper = new FileUpLoadValidator();
+                ticket.MediaURL = fHelper.SaveUpLoadFile(upLoadFile, fullPathName);
+                    // SaveUpLoadFileZ(upLoadFile);
 
                 if (ticket.IssueTypeId == 0)
                     ticket.IssueTypeId = Convert.ToInt32(TempData["defaultIssue"]);
@@ -235,8 +278,12 @@ namespace TgpBugTracker.Controllers
 
             ViewBag.PriorityId = new SelectList(db.Priorities.OrderBy(p => p.Name), "Id", "Name", ticket.PriorityId);
 
-            ViewBag.StageId = new SelectList(db.Stages.OrderBy(p => p.Name), "Id", "Name", ticket.StageId);
 
+            ViewBag.StageId = new SelectList(db.Stages.OrderBy(p => p.Name), "Id", "Name", ticket.StageId);
+            var rHelper = new UserRolesHelper();
+            var user = db.Users.Find(User.Identity.GetUserId());
+            var UserRank = rHelper.GetRoleRank(user.Id);
+            ViewBag.SubmitterOnly = (UserRank == (int)UserRolesHelper.RoleRank.Submitter) ? true : false;
             return View(ticket);
         }
 
@@ -245,11 +292,23 @@ namespace TgpBugTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Date,Deadline,Description,MediaURL,Title,AuthorId,IssueTypeId,LeaderId,PriorityId,ProjectId,StageId")] Ticket ticket)
+        public ActionResult Edit([Bind(Include =
+            "Id,Date,Deadline,Description,MediaURL,Title,AuthorId,IssueTypeId,LeaderId,PriorityId,ProjectId,StageId")]
+            Ticket ticket, HttpPostedFileBase upLoadFile)
         {
             if (ModelState.IsValid)
             {
                 var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
+
+                if (upLoadFile != null)
+                {
+                    var fileName = Path.GetFileName(upLoadFile.FileName);
+                    var fullPathName = Path.Combine(Server.MapPath("/Uploads"), fileName);
+                    var fHelper = new FileUpLoadValidator();
+                    ticket.MediaURL = fHelper.SaveUpLoadFile(upLoadFile, fullPathName);
+                    // SaveUpLoadFileZ(upLoadFile);
+                }
+                
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
                 ticket = db.Tickets.Include("IssueType").Include("Leader").Include("Priority").Include("Project").Include("Stage").FirstOrDefault(t => t.Id == ticket.Id);

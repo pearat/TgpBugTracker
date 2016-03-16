@@ -230,6 +230,7 @@
     <Compile Include="Helpers\Greetings.cs" />
     <Compile Include="Helpers\FileUpLoadValidator.cs" />
     <Compile Include="Helpers\ProjectUsersHelper.cs" />
+    <Compile Include="Helpers\UpdateFields.cs" />
     <Compile Include="Helpers\UserRolesHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -249,6 +250,13 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\uploads\CategoriesDetail.txt" />
+    <Content Include="App_Data\uploads\Dilbert-PHB.jpg" />
+    <Content Include="App_Data\uploads\grunge-pink-blue.jpg" />
+    <Content Include="App_Data\uploads\learn-chinese.jpg" />
+    <Content Include="App_Data\uploads\New.txt" />
+    <Content Include="App_Data\uploads\persistence.jpg" />
+    <Content Include="App_Data\uploads\portraits-diagram.jpg" />
     <Content Include="Content\bootstrap-multiselect.css" />
     <Content Include="Content\bootstrap-slider\slider.css" />
     <Content Include="Content\bootstrap-wysihtml5\bootstrap3-wysihtml5.css" />
@@ -1060,6 +1068,7 @@
     <Content Include="img\sprite-skin-nice.png" />
     <Content Include="img\switch.png" />
     <Content Include="img\throbber.gif" />
+    <Content Include="img\Trend-color-neon.jpg" />
     <Content Include="img\user-bg.png" />
     <Content Include="img\user.jpg" />
     <Content Include="img\user2.jpg" />
@@ -1564,17 +1573,15 @@
     <Content Include="Views\Projects\AssignUsersToProject.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Views\Projects\Index - Copy.cshtml" />
-    <Content Include="Views\Tickets\IndexBck.cshtml" />
     <Content Include="Views\Shared\_ChooseProject.cshtml" />
-    <Content Include="Views\Tickets\Index Bck2.cshtml" />
     <Content Include="Views\Comments\DetailsBckUp.cshtml" />
     <Content Include="Views\Tickets\Log.cshtml" />
     <Content Include="Views\Account\ResendEmailConfirmation.cshtml" />
     <Content Include="Views\Account\ConfirmationSent.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Content\styles\ui\images\flags\" />
+    <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
