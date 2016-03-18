@@ -229,6 +229,7 @@
     </Compile>
     <Compile Include="Helpers\Greetings.cs" />
     <Compile Include="Helpers\FileUpLoadValidator.cs" />
+    <Compile Include="Helpers\Notifier.cs" />
     <Compile Include="Helpers\ProjectUsersHelper.cs" />
     <Compile Include="Helpers\UpdateFields.cs" />
     <Compile Include="Helpers\UserRolesHelper.cs" />
@@ -239,13 +240,14 @@
     <Compile Include="Models\Code_First\Notice.cs" />
     <Compile Include="Models\Code_First\Priority.cs" />
     <Compile Include="Models\Code_First\Project.cs" />
+    <Compile Include="Models\Code_First\Phase.cs" />
     <Compile Include="Models\Code_First\Stage.cs" />
     <Compile Include="Models\Code_First\Ticket.cs" />
     <Compile Include="Models\Code_First\IssueType.cs" />
     <Compile Include="Models\Code_First\UserProjects.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Code_First\ProjectStaffRoles.cs" />
+    <Compile Include="Models\Code_First\ViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1578,6 +1580,9 @@
     <Content Include="Views\Tickets\Log.cshtml" />
     <Content Include="Views\Account\ResendEmailConfirmation.cshtml" />
     <Content Include="Views\Account\ConfirmationSent.cshtml" />
+    <Content Include="Views\Tickets\DetailsBckup.cshtml" />
+    <Content Include="Views\Tickets\DetailsHalfway.cshtml" />
+    <Content Include="Views\Tickets\DetailsWorking.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\styles\ui\images\flags\" />

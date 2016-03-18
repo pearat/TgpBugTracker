@@ -294,13 +294,13 @@
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
                     <li class="active">
-                        <a href="index.html">
+                        <a href=@Url.Action("Dashboard", "Home")>
                             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                         </a>
                     </li>
 
                     <li>
-                        <a href=@Url.Action("Index", "Tickets", new { showArchived = false })>
+                        <a href=@Url.Action("Index", "Tickets")>
                             <i class="fa fa-ticket"></i> <span>Tickets</span>
                         </a>
                     </li>
@@ -336,7 +336,13 @@
 
                         <li>
                             <a href=@Url.Action("Index", "Stages")>
-                                <i class="fa fa-line-chart"></i> <span>Project Stages</span>
+                                <i class="fa fa-line-chart"></i> <span>Ticket Stages</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href=@Url.Action("Index", "ProjectStages")>
+                                <i class="fa fa-building-o"></i> <span>Project Stages</span>
                             </a>
                         </li>
 
@@ -347,8 +353,8 @@
                         </li>
                         
                         <li>
-                            <a href=@Url.Action("Index", "Tickets", new { showArchived = true })>
-                                <i class="fa fa-eye"></i> <span>Archived Tickets</span>
+                            <a href=@Url.Action("Index", "Tickets", new { showArchived = true})>
+                                <i class="fa fa-file-archive-o"></i> <span>Archived Tickets</span>
                             </a>
                         </li>
                     }

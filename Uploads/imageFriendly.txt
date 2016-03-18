@@ -1,0 +1,16 @@
+public static class ImageUploadValidator
+{
+	pulbic static bool IsWebFriendlyImange(HttpPostedFileBase file)
+	{
+		// check for actual object
+		if (file == null)
+			return false;
+
+		// check size less than 2MB and greater than 1KB
+		if (file.Content < 1024 || file.ContentLength > 2 * 1024 * 1024)
+			return false;
+
+		try
+		{
+			using (var img = Image.FromStream(fil.InputStream))
+			{

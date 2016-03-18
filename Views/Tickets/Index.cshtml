@@ -33,7 +33,7 @@
 
 </div>
 
-<div id="container">
+<div id="container" style="margin:unset">
     <table class="table" id="table-tickets" cellspacing="0">
         <thead>
             <tr>
@@ -136,7 +136,7 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <text>|</text>
-                            <button data-toggle="modal" title="Archive" data-id="@item.Id" class="del fa fa-trash-o" data-target="#archiveModal"></button>
+                            <button data-toggle="modal" title="Archive" data-id="@item.Id" class="del fa fa-file-archive-o" data-target="#archiveModal"></button>
                         }
                     </td>
                     <td>

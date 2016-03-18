@@ -34,8 +34,7 @@ namespace TgpBugTracker.Models
         public bool IsArchived { get; set; }
 
         [DataType(DataType.Text)]
-        [Display(Name = "Media URL")]
-        public string MediaURL { get; set; }
+        public string Attachment { get; set; }
 
         [Required]
         public string Title { get; set; }

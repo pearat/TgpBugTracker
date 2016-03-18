@@ -139,11 +139,11 @@
                     </dd>
 
                     <dt>
-                        @Html.DisplayNameFor(model => model.MediaURL)
+                        @Html.DisplayNameFor(model => model.Attachment)
                     </dt>
 
                     <dd>
-                        @Html.DisplayFor(model => model.MediaURL)
+                        @Html.DisplayFor(model => model.Attachment)
                     </dd>
                 </dl>
             </div>
@@ -202,7 +202,7 @@
     </div>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "Index", new { showArchived = false });
+    @Html.ActionLink("Back to List", "Index");
 
     @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || ViewBag.UserId == Model.AuthorId || ViewBag.UserId == Model.LeaderId)
     {

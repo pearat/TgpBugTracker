@@ -1,0 +1,437 @@
+﻿@model TgpBugTracker.Models.Ticket
+
+<style>
+    dl {
+        padding: 0.1em;
+    }
+
+    dt {
+        float: left;
+        clear: left;
+        width: 30%;
+        text-align: right;
+        font-weight: bold;
+        /*color: green;*/
+    }
+
+        dt:after {
+            content: ":";
+        }
+
+    dd {
+        margin: 0 0 0 110px;
+        padding: 0 0 0.5em 0;
+    }
+
+    .dl-horizontal dt {
+        /*width: 80px;*/
+        width: 24%;
+    }
+
+    .dl-horizontal dd {
+        /* margin-left: 90px;*/
+        margin-left: 27%;
+    }
+
+    .table tbody > tr > td {
+        padding: 4px;
+    }
+
+    .modal-body input, textarea {
+        width: 95%;
+        max-width: none;
+    }
+</style>
+
+<div class="container">
+    <div class="col-md-4">
+        <div row>
+            <h2>Ticket Detail</h2>
+
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.ProjectId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Project.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.IssueTypeId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.IssueType.Name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.PriorityId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Priority.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.StageId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Stage.Name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Date)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Date)
+                </dd>
+
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Title)
+                </dt>
+
+                <dd width="inherit" style="font-weight:bold">
+                    @Html.DisplayFor(model => model.Title)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.AuthorId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Author.DisplayName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.LeaderId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Leader.DisplayName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Deadline)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Deadline)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Attachment)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Attachment)
+                </dd>
+            </dl>
+
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">Comments</a></li>
+                <li><a href="#tabs-2">Change Log</a></li>
+            </ul>
+
+            <div id="tabs-1">
+
+                @using (Html.BeginForm("Create", "Comments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+            {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="TicketId" value="@Model.Id" />
+                    <input type="hidden" name="AuthorId" value="@Model.AuthorId" />
+
+                    <div class="form-horizontal">
+                        <h4>New Comment</h4>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                Title
+                            </div>
+                            <div class="col-md-10">
+                                <input type="text" name="Title" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                Details
+                            </div>
+                            <div class="col-md-10">
+                                <textarea style="max-width:90%; width:90%" name="Detail" rows="2"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                Media URL
+                            </div>
+                            <div class="col-md-10">
+                                @*@Html.Editor("Attachment", new { htmlAttributes = new { @class = "form-control" } })*@
+                                <input name="upLoadFile" type="file" class="form-control" id="fileUpload" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Create" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                    }
+
+                <table class="table" style="table-layout:fixed">
+                    <tr width="100%">
+                        <th style="width:15%">
+                            Actions
+                        </th>
+                        <th style="width:10%">
+                            Date
+                        </th>
+                        <th style="width:20%">
+                            Title
+                        </th>
+                        <th style="width:40%">
+                            Details
+                        </th>
+                        <th style="width:15%; max-width:15%">
+                            Media URL
+                        </th>
+
+                    </tr>
+                    @if (Model != null)
+                        {
+                            foreach (var item in Model.Comments.OrderByDescending(c => c.Date))
+                            {
+                        <tr style="width:inherit">
+                            <td style="width:15%">
+                                @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || ViewBag.UserId == item.AuthorId)
+                                        {
+
+                                        @*<a data-id="@item.Id" data-toggle="modal tooltip" data-target="#editCommentModal" title="Edit" href="#"><span class="fa fa-pencil-square-o"></span></a>*@
+
+
+                                        <a data-id="@item.Id" data-title="@item.Title" data-date="@item.Date"
+                                           data-detail="@item.Detail" data-media="@item.Attachment"
+                                           data-authorid="@item.AuthorId" data-ticketid="@item.TicketId"
+                                           class="btn btn-lg btn-skin xtra-btn del"
+                                           data-toggle="modal" title="Edit" data-target="#editCommentModal">
+                                            <span class="fa fa-pencil-square-o"></span>
+                                        </a>
+
+                                        }
+                                @if (User.IsInRole("Admin"))
+                                        {
+                                        <text>|</text>
+                                        <button data-toggle="modal tooltip" title="Delete" data-id="@item" class="del fa fa-trash-o" data-target="#archiveModal"></button>
+                                        }
+                            </td>
+
+                            <td style="width:10%">
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td style="width:20%">
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td style="width:40%">
+                                @Html.DisplayFor(modelItem => item.Detail)
+
+                            </td>
+                            <td style="width:15%; word-wrap:break-word; max-width:15%">
+
+                                <a href=@Html.DisplayFor(modelItem => item.Attachment) target="_blank">@Html.DisplayFor(modelItem => item.Attachment)</a>
+                            </td>
+
+                        </tr>
+                            }
+                        }
+
+                </table>
+
+            </div>
+            <div id="tabs-2">
+
+                <table class="table" style="table-layout:fixed">
+                    <tr width="100%">
+                        <th style="width:15%">
+                            Author
+                        </th>
+                        <th style="width:20%">
+                            Date
+                        </th>
+                        <th style="width:15%">
+                            Property
+                        </th>
+                        <th style="width:25%">
+                            Old Value
+                        </th>
+                        <th style="width:25%">
+                            New Value
+                        </th>
+
+                    </tr>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model.Logs.OrderByDescending(c => c.Date))
+                        {
+                            <tr style="width:inherit">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AuthorName)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Property)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OldValue)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NewValue)
+                                </td>
+
+                            </tr>
+                        }
+                    }
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index");
+</p>
+
+<!-- vvvvv Start of Modal vvvvv -->
+
+<div class="modal fade" id="editCommentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="align-content:center">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" 
+                        aria-hidden="true">
+                    ×
+                </button>
+                <h4 class="modal-title" style="text-align:center; color:#ffd800"
+                    id="myModalLabel">
+                    Edit the Comment
+                </h4>
+            </div>
+
+            @using (Html.BeginForm("Edit", "Comments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+            {
+            @Html.AntiForgeryToken()
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            Title
+                        </div>
+                        <div class="col-md-10">
+                            <input id="modal-title" name="Title" value="change Me" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            Details
+                        </div>
+                        <div class="col-md-10">
+                            <textarea id="modal-detail" name="Detail" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Current Attachment", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-4">
+                            <span id="modal-media" name="Attachment" value="changeMe">No file chosen</span>
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <input name="upLoadFile" type="file" class="form-control" id="fileUpload" />
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer" style="align-content:center">
+
+                <button type="button" data-dismiss="modal" class="btn btn-skin xtra-btn">Dismiss</button>
+
+                <input type="hidden" id="modal-id" name="Id" value="" />
+                <input type="hidden" id="modal-authorId" name="AuthorId" value="change Me" />
+                <input type="hidden" id="modal-ticketId" name="TicketId" value="change Me" />
+                <input type="hidden" id="modal-date" name="Date" value="change Me" />
+
+                <button type="submit" class="btn btn-skin xtra-btn">Submit</button>
+            </div>
+
+            }
+        </div>
+    </div>
+</div>
+<!-- ^^^^^ Modal end ^^^^^ -->
+
+
+@section scripts{
+    <script>
+
+        $(window).load(function () {
+            $(function () {
+                $("#tabs").tabs();
+            });
+        });
+
+
+        var commentId = 0;
+        $('#editCommentModal').on('shown.bs.modal', function (e) {
+            var i = $(e.relatedTarget).data('id');
+            var t = $(e.relatedTarget).data('title');
+            var d = $(e.relatedTarget).data('detail');
+            var da = $(e.relatedTarget).data('date');
+            var m = $(e.relatedTarget).data('media');
+            var au = $(e.relatedTarget).data('authorid');
+            var tk = $(e.relatedTarget).data('ticketid');
+
+            console.log(' comment Item.Id: ' + i);
+            console.log(' comment Item.AuthorId: ' + au);
+            console.log(' comment Item.Title: ' + t);
+            console.log(' comment Item.Date: ' + da);
+            console.log(' comment Item.Detail: ' + d);
+            console.log(' comment Item.Media: ' + m);
+            console.log(' comment Item.Title: ' + tk);
+            $('#modal-id').val(i);
+            $('#modal-title').val(t);
+            $('#modal-detail').val(d);
+            $('#modal-date').val(da);
+            $('#modal-media').val(m);
+            $('#modal-authorId').val(au);
+            $('#modal-ticketId').val(tk);
+        });
+
+    </script>
+}

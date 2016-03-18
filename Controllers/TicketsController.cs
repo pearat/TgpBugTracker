@@ -23,20 +23,19 @@ namespace TgpBugTracker.Controllers
 
         // GET: Tickets
         [Authorize]
-        public ActionResult Index(bool showArchived)
+        public ActionResult Index(bool? showArchived)
         {
-            var user = db.Users.Find(User.Identity.GetUserId());
-            if (user == null)
+            var userId = User.Identity.GetUserId();
+            if (userId == null)
             {
                 ViewBag.FullName = "Pls login";
                 ViewBag.Greeting = "Hi, ???";
                 return RedirectToAction("Login", "Home");
             }
-            else
-            {
-                ViewBag.FullName = user.FullName;
-                ViewBag.Greeting = user.Greeting;
-            }
+
+            var user = db.Users.Find(userId);
+            ViewBag.FullName = user.FullName;
+            ViewBag.Greeting = user.Greeting;
 
             var uHelper = new ProjectUsersHelper();
             var rHelper = new UserRolesHelper();
@@ -44,8 +43,8 @@ namespace TgpBugTracker.Controllers
 
             ViewBag.SubmitterOnly = (UserRank == (int)UserRolesHelper.RoleRank.Submitter) ? true : false;
             ViewBag.UserId = user.Id;
-
-            var TicketList = uHelper.ListTicketsForUser(ViewBag.UserId, showArchived);
+            showArchived = (showArchived == null) ? false : true;
+            var TicketList = uHelper.ListTicketsForUser(ViewBag.UserId, (bool)showArchived);
 
             if (TicketList == null)
             {
@@ -54,23 +53,6 @@ namespace TgpBugTracker.Controllers
             }
             else
                 return View(TicketList);
-        }
-
-
-        // GET: Tickets/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Ticket ticket = db.Tickets.Find(id);
-            if (ticket == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.UserId = User.Identity.GetUserId();
-            return View(ticket);
         }
 
 
@@ -122,9 +104,21 @@ namespace TgpBugTracker.Controllers
             ViewBag.IssueTypeId = new SelectList(db.IssueTypes, "Id", "Name", defaultIssue);
             TempData["defaultIssue"] = defaultIssue;
 
+
+
+            var devId = db.Roles.FirstOrDefault(r => r.Name == "Developer").Id;
+            var unassignedId = db.Roles.FirstOrDefault(r => r.Name == "Unassigned").Id;
+            var possibleTeamMembers = db.Users.Where(
+                u => u.IsGuest == false &&
+                u.Roles.Any(z => z.RoleId == devId || z.RoleId == unassignedId)
+            ).Select(p => new { p.Id, p.DisplayName });
+
+
+
             string defaultLeader = db.Users.Where(z => z.LastName == "Unassigned").Select(p => p.Id).FirstOrDefault();
-            var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName });
-            ViewBag.LeaderId = new SelectList(users, "Id", "DisplayName", defaultLeader);
+
+            // var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName });
+            ViewBag.LeaderId = new SelectList(possibleTeamMembers, "Id", "DisplayName", defaultLeader);
             TempData["defaultLeader"] = defaultLeader;
 
             int defaultPriority = (int)db.Priorities.Where(z => z.Name == "Unassessed").Select(p => p.Id).FirstOrDefault();
@@ -161,10 +155,10 @@ namespace TgpBugTracker.Controllers
                         }
                         catch (Exception e)
                         {
-                            fileName= "Tried to save["+fullPathName+", but this error occurred :" + e;
+                            fileName = "Tried to save[" + fullPathName + ", but this error occurred :" + e;
                             Debug.WriteLine(fileName);
                             return fileName;
-                            
+
                         }
 
                         if (docFileType)
@@ -174,7 +168,7 @@ namespace TgpBugTracker.Controllers
                             Debug.WriteLine("MimeType: " + mimeType);
                         }
                         // prepare a relative path to be stored in the database and used to display later on.
-                        // ticket.MediaURL = 
+                        // ticket.Attachment = 
 
 
                         return "/Uploads/" + fileName;
@@ -189,7 +183,7 @@ namespace TgpBugTracker.Controllers
         }
 
 
-        
+
 
         // POST: Tickets/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -197,23 +191,46 @@ namespace TgpBugTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include =
-                "Id,Date,Deadline,Description,MediaURL,Title,AuthorId,IssueTypeId,LeaderId,PriorityId,ProjectId,StageId")]
+                "Id,Date,Deadline,Description,Attachment,Title,AuthorId,IssueTypeId,LeaderId,PriorityId,ProjectId,StageId")]
                 Ticket ticket, HttpPostedFileBase upLoadFile)
         {
             if (ModelState.IsValid)
             {
-                var fileName = Path.GetFileName(upLoadFile.FileName);
-                var fullPathName = Path.Combine(Server.MapPath("/Uploads"), fileName);
-                var fHelper = new FileUpLoadValidator();
-                ticket.MediaURL = fHelper.SaveUpLoadFile(upLoadFile, fullPathName);
-                    // SaveUpLoadFileZ(upLoadFile);
-
+                if (upLoadFile != null)
+                {
+                    var fileName = Path.GetFileName(upLoadFile.FileName);
+                    var fullPathName = Path.Combine(Server.MapPath("/Uploads"), fileName);
+                    var fHelper = new FileUpLoadValidator();
+                    ticket.Attachment = fHelper.SaveUpLoadFile(upLoadFile, fullPathName);
+                }
                 if (ticket.IssueTypeId == 0)
                     ticket.IssueTypeId = Convert.ToInt32(TempData["defaultIssue"]);
 
                 if (ticket.LeaderId == null)
+                {
                     ticket.LeaderId = (string)TempData["defaultLeader"];
+                }
+                else
+                {
+                    /* vvvvvvvv Notify Response Leader vvvvvvvv */
+                    if (ticket.AuthorId != ticket.LeaderId)  // Don't  notify, if leader has generated the ticket
+                    {
+                        var notifier = db.Users.Find(ticket.AuthorId);
+                        var nHelper = new Notifier();
+                        var leader = db.Users.Find(ticket.LeaderId);
 
+                        var ProjectName = db.Projects.Find(ticket.ProjectId).Name;
+                        string[] msgElements = new string[] {"Topic: <u>Assignment to New Ticket</u>",
+                        "Ticket's Title: <b>" +ticket.Title+"</b>",
+                        "For Project: <b>"+ProjectName+"</b>"};
+
+                        var sentEMail = nHelper.NotifyViaEMail(leader, ticket, msgElements, notifier);
+
+                        Debug.WriteLine("Notification sent to {0} that he/she will lead this ticket? {1}",
+                            leader.DisplayName, sentEMail);
+                    }
+                    /* ^^^^^^^ ^^^^^^^ ^^^^^^^ */
+                }
                 if (ticket.PriorityId == 0)
                     ticket.PriorityId = Convert.ToInt32(TempData["defaultPriority"]);
 
@@ -222,7 +239,9 @@ namespace TgpBugTracker.Controllers
 
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
-                return RedirectToAction("Index", new { showArchived = false });
+
+
+                return RedirectToAction("Index");
             }
             /*
             { "The INSERT statement conflicted with the FOREIGN KEY constraint \"FK_dbo.Tickets_dbo.IssueTypes_IssueTypeId\". 
@@ -237,7 +256,7 @@ namespace TgpBugTracker.Controllers
 
             ViewBag.IssueTypeId = new SelectList(db.IssueTypes, "Id", "Name", defaultIssue);
 
-            var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName });
+            var users = db.Users.Where(z => z.IsGuest == false).Select(p => new { p.Id, p.DisplayName }).OrderBy(n => n.DisplayName);
             ViewBag.LeaderId = new SelectList(users, "Id", "DisplayName");
 
             var defaultPriority = (int)db.Priorities.Where(z => z.Name == "Unassessed").Select(p => p.Id).FirstOrDefault();
@@ -246,6 +265,59 @@ namespace TgpBugTracker.Controllers
             var defaultStage = (int)db.Stages.Where(z => z.Name == "Unassigned").Select(p => p.Id).FirstOrDefault();
             ViewBag.StageId = new SelectList(db.Stages, "Id", "Name", defaultStage);
 
+
+            return View(ticket);
+        }
+
+
+        // GET: Tickets/Details/5
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Ticket ticket = db.Tickets.Find(id);
+        //    if (ticket == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    ViewBag.UserId = User.Identity.GetUserId();
+        //    return View(ticket);
+        //}
+
+        // GET: Tickets/Details + Edit
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Ticket ticket = db.Tickets.Find(id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.UserId = User.Identity.GetUserId();
+            var project = db.Projects.Find(ticket.ProjectId);
+            var devId = db.Roles.FirstOrDefault(r => r.Name == "Developer").Id;
+            var unassignedId = db.Roles.FirstOrDefault(r => r.Name == "Unassigned").Id;
+            var possibleTeamMembers = project.Users.Where(
+                u => u.IsGuest == false &&
+                u.Roles.Any(z => z.RoleId == devId || z.RoleId == unassignedId)
+            );
+
+            ViewBag.LeaderId = new SelectList(possibleTeamMembers, "Id", "DisplayName", ticket.LeaderId);
+
+            ViewBag.IssueTypeId = new SelectList(db.IssueTypes.OrderBy(p => p.Name), "Id", "Name", ticket.IssueTypeId);
+
+            ViewBag.PriorityId = new SelectList(db.Priorities.OrderBy(p => p.Name), "Id", "Name", ticket.PriorityId);
+
+            ViewBag.StageId = new SelectList(db.Stages.OrderBy(p => p.Name), "Id", "Name", ticket.StageId);
+            var rHelper = new UserRolesHelper();
+            var user = db.Users.Find(User.Identity.GetUserId());
+            var UserRank = rHelper.GetRoleRank(user.Id);
+            ViewBag.SubmitterOnly = (UserRank == (int)UserRolesHelper.RoleRank.Submitter) ? true : false;
 
             return View(ticket);
         }
@@ -293,7 +365,7 @@ namespace TgpBugTracker.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include =
-            "Id,Date,Deadline,Description,MediaURL,Title,AuthorId,IssueTypeId,LeaderId,PriorityId,ProjectId,StageId")]
+            "Id,Date,Deadline,Description,Attachment,Title,AuthorId,IssueTypeId,LeaderId,PriorityId,ProjectId,StageId")]
             Ticket ticket, HttpPostedFileBase upLoadFile)
         {
             if (ModelState.IsValid)
@@ -305,15 +377,48 @@ namespace TgpBugTracker.Controllers
                     var fileName = Path.GetFileName(upLoadFile.FileName);
                     var fullPathName = Path.Combine(Server.MapPath("/Uploads"), fileName);
                     var fHelper = new FileUpLoadValidator();
-                    ticket.MediaURL = fHelper.SaveUpLoadFile(upLoadFile, fullPathName);
+                    ticket.Attachment = fHelper.SaveUpLoadFile(upLoadFile, fullPathName);
                     // SaveUpLoadFileZ(upLoadFile);
                 }
-                
+
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
                 ticket = db.Tickets.Include("IssueType").Include("Leader").Include("Priority").Include("Project").Include("Stage").FirstOrDefault(t => t.Id == ticket.Id);
                 GenerateChangeLog(oldTicket, ticket);
-                return RedirectToAction("Index", new { showArchived = false });
+
+
+                /* vvvvvvvv Notify Response Leader vvvvvvvv */
+                var notifier = db.Users.Find(User.Identity.GetUserId());
+                if (notifier.Id != ticket.LeaderId)  // Don't  notify, if leader has modified the ticket
+                {
+                    var nHelper = new Notifier();
+                    var ProjectName = db.Projects.Find(ticket.ProjectId).Name;
+                    var leader = db.Users.Find(ticket.LeaderId);
+                    if (oldTicket.LeaderId != ticket.LeaderId)
+                    {
+                        var oldLeader = db.Users.Find(oldTicket.LeaderId);
+                        string[] msg = new string[] {"Topic: <u>Ticket Reassignment</u>",
+                            "Ticket's Title: <b>" +oldTicket.Title+"</b>",
+                            "For Project: <b>"+ProjectName+"</b>",
+                            "Has been reassigned to: <b>"+leader.DisplayName+"."};
+                        var reassignEMail = nHelper.NotifyViaEMail(oldLeader, oldTicket, msg, notifier);
+                        Debug.WriteLine("Notification sent to {0} that he/she will NO LONGER lead this ticket? {1}",
+                            oldLeader.DisplayName, reassignEMail);
+                    }
+
+                    string[] msgElements = new string[] {"Topic: <u>Changes to Existing Ticket</u>",
+                        "Ticket's Title: <b>" +ticket.Title+"</b>",
+                        "For Project: <b>"+ProjectName+"</b>"};
+
+                    var sentEMail = nHelper.NotifyViaEMail(leader, ticket, msgElements,notifier);
+                    Debug.WriteLine("Notification sent to {0} that he/she will lead this ticket? {1}",
+                        leader.DisplayName, sentEMail);
+                }
+                /* ^^^^^^^ ^^^^^^^ ^^^^^^^ */
+
+                // return RedirectToAction("Index");
+                return RedirectToAction("Details", "Tickets", new { id = ticket.Id });
+                // return View();
             }
 
             ViewBag.IssueTypeId = new SelectList(db.IssueTypes.OrderBy(p => p.Name), "Id", "Name", ticket.IssueTypeId);
@@ -331,9 +436,7 @@ namespace TgpBugTracker.Controllers
         public void GenerateChangeLog(Ticket oldTkt, Ticket newTkt)
         {
             var today = System.DateTimeOffset.Now;
-            // Ticket newTkt = db.Tickets.Find(oldTkt.Id);
             int id = 0;
-
             if (newTkt.ProjectId == 0)
             {
                 Debug.WriteLine("generateLog() error: new ProjectId equals 0");
@@ -356,8 +459,6 @@ namespace TgpBugTracker.Controllers
                 return;
             }
             string authorName = db.Users.Find(User.Identity.GetUserId()).DisplayName;
-
-            //string authorName = db.Users.Find(newTkt.Id).DisplayName;
 
             if (oldTkt?.Deadline != newTkt.Deadline)
             {
@@ -404,7 +505,7 @@ namespace TgpBugTracker.Controllers
                 db.Logs.Add(log2);
             }
 
-            if (oldTkt?.MediaURL != newTkt.MediaURL)
+            if (oldTkt?.Attachment != newTkt.Attachment)
             {
                 var log3 = new Log
                 {
@@ -412,13 +513,12 @@ namespace TgpBugTracker.Controllers
                     AuthorName = authorName,
                     AuthorId = newTkt.AuthorId,
                     TicketId = newTkt.Id,
-                    NewValue = newTkt.MediaURL,
-                    OldValue = oldTkt?.MediaURL,
-                    Property = "MediaURL"
+                    NewValue = newTkt.Attachment,
+                    OldValue = oldTkt?.Attachment,
+                    Property = "Attachment"
                 };
                 db.Logs.Add(log3);
             }
-
 
             if (oldTkt?.Title != newTkt.Title)
             {
@@ -458,7 +558,7 @@ namespace TgpBugTracker.Controllers
                 db.Logs.Add(log5);
             }
 
-            if (oldTkt?.LeaderId != newTkt.LeaderId)
+            if (oldTkt?.PriorityId != newTkt.PriorityId)
             {
                 string oldPriority = "";
                 if (oldTkt?.PriorityId == 0)
@@ -480,7 +580,6 @@ namespace TgpBugTracker.Controllers
                 };
                 db.Logs.Add(log6);
             }
-
 
             if (oldTkt?.LeaderId != newTkt.LeaderId)
             {
@@ -555,7 +654,7 @@ namespace TgpBugTracker.Controllers
             ticket.IsArchived = true;
             db.Entry(ticket).Property(p => p.IsArchived).IsModified = true;
             db.SaveChanges();
-            return RedirectToAction("Index", new { showArchived = false });
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

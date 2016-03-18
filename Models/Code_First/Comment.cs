@@ -13,7 +13,7 @@ namespace TgpBugTracker.Models
         public DateTimeOffset Date { get; set; }
         
         public string Detail { get; set; }
-        public string MediaURL { get; set; }
+        public string Attachment { get; set; }
         [Required]
         public string Title { get; set; }
         

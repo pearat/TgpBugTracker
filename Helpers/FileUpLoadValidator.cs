@@ -8,12 +8,12 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Web.Mvc;
 
 namespace TgpBugTracker.Helpers
 {
 
-
-
+    [RequireHttps]
     public class FileUpLoadValidator
     {
 
@@ -53,7 +53,7 @@ namespace TgpBugTracker.Helpers
                             Debug.WriteLine("MimeType: " + mimeType);
                         }
                         // prepare a relative path to be stored in the database and used to display later on.
-                        // ticket.MediaURL = 
+                        // ticket.Attachment = 
 
 
                         return "/Uploads/" + fileName;
@@ -109,6 +109,7 @@ namespace TgpBugTracker.Helpers
             }
             catch (Exception e)
             {
+                Debug.WriteLine("Error in getMimeFromFile(): " + e + " :");
                 return "unknown/unknown";
             }
         }

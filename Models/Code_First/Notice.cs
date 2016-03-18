@@ -5,20 +5,19 @@ namespace TgpBugTracker.Models
 {
     public class Notice
     {
-        [Required]
         public int Id { get; set; }
         [Required]
+        [DataType(DataType.Date)]
+        [Display(Name = "Due Date")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd}")]
         public DateTimeOffset Date { get; set; }
-        [Required]
+        [Required]        
         public string Detail { get; set; }
-        public string MediaURL { get; set; }
-        public string Title { get; set; }
         [Required]
         public string AuthorId { get; set; }
         [Required]  
-        public int LeaderId { get; set; }
-        [Required]
-        public int LogId { get; set; }
+        public string LeaderId { get; set; }
+
         [Required]
         public int TicketId { get; set; }
 

@@ -84,6 +84,7 @@ namespace TgpBugTracker.Models
         public DbSet<Priority> Priorities { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Stage> Stages { get; set; }
+        public DbSet<Phase> Phases { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         // public DbSet<UserProject> UserProjects { get; set; }
     }
