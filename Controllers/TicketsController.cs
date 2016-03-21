@@ -45,7 +45,7 @@ namespace TgpBugTracker.Controllers
             ViewBag.UserId = user.Id;
             showArchived = (showArchived == null) ? false : true;
             var TicketList = uHelper.ListTicketsForUser(ViewBag.UserId, (bool)showArchived);
-
+            ViewBag.ShowingArchived = showArchived;
             if (TicketList == null)
             {
                 TicketList = new List<Ticket>();
@@ -199,18 +199,32 @@ namespace TgpBugTracker.Controllers
                 if (upLoadFile != null)
                 {
                     var fileName = Path.GetFileName(upLoadFile.FileName);
-                    var fullPathName = Path.Combine(Server.MapPath("/Uploads"), fileName);
+                    var path = Server.MapPath("~/Uploads/");
+                    var fullPathName = Path.Combine(path, fileName);
                     var fHelper = new FileUpLoadValidator();
                     ticket.Attachment = fHelper.SaveUpLoadFile(upLoadFile, fullPathName);
                 }
                 if (ticket.IssueTypeId == 0)
                     ticket.IssueTypeId = Convert.ToInt32(TempData["defaultIssue"]);
 
+                var notifyLeader = false;
                 if (ticket.LeaderId == null)
                 {
                     ticket.LeaderId = (string)TempData["defaultLeader"];
                 }
                 else
+                    notifyLeader = true;
+
+                if (ticket.PriorityId == 0)
+                    ticket.PriorityId = Convert.ToInt32(TempData["defaultPriority"]);
+
+                if (ticket.StageId == 0)
+                    ticket.StageId = Convert.ToInt32(TempData["defaultStage"]);
+
+                db.Tickets.Add(ticket);
+                db.SaveChanges();
+
+                if (notifyLeader)
                 {
                     /* vvvvvvvv Notify Response Leader vvvvvvvv */
                     if (ticket.AuthorId != ticket.LeaderId)  // Don't  notify, if leader has generated the ticket
@@ -231,15 +245,6 @@ namespace TgpBugTracker.Controllers
                     }
                     /* ^^^^^^^ ^^^^^^^ ^^^^^^^ */
                 }
-                if (ticket.PriorityId == 0)
-                    ticket.PriorityId = Convert.ToInt32(TempData["defaultPriority"]);
-
-                if (ticket.StageId == 0)
-                    ticket.StageId = Convert.ToInt32(TempData["defaultStage"]);
-
-                db.Tickets.Add(ticket);
-                db.SaveChanges();
-
 
                 return RedirectToAction("Index");
             }

@@ -122,8 +122,8 @@
             {
                 <tr width="inherit">
                     <td>
-                        <a data-toggle="tooltip" title="Comment" href="@Url.Action("Details", new { id = item.Id })"><span class="fa fa-comment-o"></span></a>
-                        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || ViewBag.UserId == item.AuthorId || ViewBag.UserId == item.LeaderId)
+                        <a data-toggle="tooltip" title="Comment/Edit" href="@Url.Action("Details", new { id = item.Id })"><span class="fa fa-comment-o"></span></a>
+                        @*@if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || ViewBag.UserId == item.AuthorId || ViewBag.UserId == item.LeaderId)
                         {
                             <text>|</text>
                             <a data-toggle="tooltip" title="Edit/Assign" href="@Url.Action("Edit", new { id = item.Id })"><span class="fa fa-pencil-square-o"></span></a>
@@ -132,8 +132,8 @@
                                @:<text >|</ text>
                             <a data - toggle = "tooltip" title = "View Changes" href = "@Url.Action("Log", new { id = item.Id })" ><span class="fa fa-history"></span></a>
                             }
-                        }
-                        @if (User.IsInRole("Admin"))
+                        }*@
+                        @if (User.IsInRole("Admin") && !ViewBag.ShowingArchived)
                         {
                             <text>|</text>
                             <button data-toggle="modal" title="Archive" data-id="@item.Id" class="del fa fa-file-archive-o" data-target="#archiveModal"></button>

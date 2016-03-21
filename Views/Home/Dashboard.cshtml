@@ -64,7 +64,7 @@
 
     <!-- Main row -->
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-7">
             <section class="panel">
                 <header class="panel-heading">
                     Work Progress
@@ -83,39 +83,72 @@
                         </thead>
                         <tbody>
 
-                            @foreach (var p in Model.Pjts)
-                            {
+                            @{
+                                string displayClass = ""; string badgeClass = "";
+                                foreach (var p in Model.Pjts)
+                                {
+                                    switch ((int)Math.Round(6 * @p.ProgressPct))
+                                    {
+                                        case 1:
+                                            displayClass = "label label-success";
+                                            badgeClass = "badge badge-success";
+                                            break;
+                                        case 2:
+                                            displayClass = "label label-warning";
+                                            badgeClass = "badge badge-warning";
+                                            break;
+                                        case 3:
+                                            displayClass = "label label-info";
+                                            badgeClass = "badge badge-info";
+                                            break;
+                                        case 4:
+                                            displayClass = "label label-default";
+                                            badgeClass = "badge badge-important";
+                                            break;
+                                        case 5:
+                                            displayClass = "label label-inverse";
+                                            badgeClass = "badge badge-inverse";
+                                            break;
+                                        case 6:
+                                            displayClass = "label label-danger";
+                                            badgeClass = "badge badge-danger";
+                                            break;
+                                    }
 
-                                <tr width="inherit">
-                                    <td>
-                                        @Html.DisplayFor(item => p.ProjectName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(item => p.Version)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(item => p.Manager)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(item => p.Deadline)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(item => p.Phase)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(item => p.ProgressPct)
-                                    </td>
-                                </tr>
+                                    <tr width="inherit">
+                                        <td>
+                                            @Html.DisplayFor(item => p.ProjectName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(item => p.Version)
+                                        </td>
+                                        <td>
+                                            <span>
+                                                @Html.DisplayFor(item => p.Manager)
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(item => p.Deadline)
+                                        </td>
+
+                                        <td> <span class="@displayClass">
+                                            @Html.DisplayFor(item => p.Phase)
+                                            </span>
+                                        </td>
+                                        <td> <span class="@badgeClass">
+                                            @Html.DisplayFor(item => p.ProgressPct)
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
                             }
                         </tbody>
                     </table>
                 </div>
             </section>
-        </div><!--end col-8 -->
+        </div><!--end col-7 -->
 
-
-        <div class="col-lg-4">
-
+        <div class="col-lg-5">
             <!--chat start-->
             <section class="panel">
                 <header class="panel-heading">
@@ -124,35 +157,35 @@
                 <div class="panel-body" id="noti-box">
                     <!-- danger, success,info,warning-->
                     @{
-                        int i = 0; string displayClass = "";
+                        int ii = 0; string displayClass2 = "";
                         foreach (var n in Model.Ntcs)
                         {
-                            switch (i++ % 4)
+                            switch (ii++ % 4)
                             {
                                 case 0:
-                                    displayClass = "alert alert-block alert-danger";
+                                    displayClass2 = "alert alert-block alert-danger";
                                     break;
                                 case 1:
-                                    displayClass = "alert alert-success";
+                                    displayClass2 = "alert alert-success";
                                     break;
                                 case 2:
-                                    displayClass = "alert alert-info";
+                                    displayClass2 = "alert alert-info";
                                     break;
                                 case 3:
-                                    displayClass = "alert alert-warning";
+                                    displayClass2 = "alert alert-warning";
                                     break;
                             }
-                            <div class="@displayClass">
+                            <div class="@displayClass2">
                                 <button data-dismiss="alert" class="close close-sm" type="button">
                                     <i class="fa fa-times"></i>
                                 </button>
                                 <strong>
-                                    @Html.DisplayFor(item => @n.Date): 
+                                    @Html.DisplayFor(item => @n.Date):
                                     @Html.DisplayFor(item => @n.ProjectName)
                                 </strong>
                                 @Html.Raw(@n.Title)
                             </div>
-    
+
                         }
                     }
                 </div>
@@ -204,135 +237,85 @@
                     }
 
                 </ul>
-                
+
             </div>
         </div>
         <div class="col-md-7">
             <section class="panel tasks-widget">
                 <header class="panel-heading">
-                    To Do list
+                    Most Recent Tickets & Comments
                 </header>
                 <div class="panel-body">
 
                     <div class="task-content">
 
                         <ul class="task-list">
-                            <li>
-                                <div class="task-checkbox">
-                                    <!-- <input type="checkbox" class="list-child" value=""  /> -->
-                                    <input type="checkbox" class="flat-grey list-child" />
-                                    <!-- <input type="checkbox" class="square-grey"/> -->
-                                </div>
-                                <div class="task-title">
-                                    <span class="task-title-sp">Director is Modern Dashboard</span>
-                                    <span class="label label-success">2 Days</span>
-                                    <div class="pull-right hidden-phone">
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="task-checkbox">
-                                    <!-- <input type="checkbox" class="list-child" value=""  /> -->
-                                    <input type="checkbox" class="flat-grey" />
-                                </div>
-                                <div class="task-title">
-                                    <span class="task-title-sp">Fully Responsive & Bootstrap 3.0.2 Compatible</span>
-                                    <span class="label label-danger">Done</span>
-                                    <div class="pull-right hidden-phone">
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="task-checkbox">
-                                    <!-- <input type="checkbox" class="list-child" value=""  /> -->
-                                    <input type="checkbox" class="flat-grey" />
-                                </div>
-                                <div class="task-title">
-                                    <span class="task-title-sp">Latest Design Concept</span>
-                                    <span class="label label-warning">Company</span>
-                                    <div class="pull-right hidden-phone">
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="task-checkbox">
-                                    <!-- <input type="checkbox" class="list-child" value=""  /> -->
-                                    <input type="checkbox" class="flat-grey" />
-                                </div>
-                                <div class="task-title">
-                                    <span class="task-title-sp">Write well documentation for this theme</span>
-                                    <span class="label label-primary">3 Days</span>
-                                    <div class="pull-right hidden-phone">
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="task-checkbox">
-                                    <!-- <input type="checkbox" class="list-child" value=""  /> -->
-                                    <input type="checkbox" class="flat-grey" />
-                                </div>
-                                <div class="task-title">
-                                    <span class="task-title-sp">Don't bother to download this Dashbord</span>
-                                    <span class="label label-inverse">Now</span>
-                                    <div class="pull-right">
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="task-checkbox">
-                                    <!-- <input type="checkbox" class="list-child" value=""  /> -->
-                                    <input type="checkbox" class="flat-grey" />
-                                </div>
-                                <div class="task-title">
-                                    <span class="task-title-sp">Give feedback for the template</span>
-                                    <span class="label label-success">2 Days</span>
-                                    <div class="pull-right hidden-phone">
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="task-checkbox">
-                                    <!-- <input type="checkbox" class="list-child" value=""  /> -->
-                                    <input type="checkbox" class="flat-grey" />
-                                </div>
-                                <div class="task-title">
-                                    <span class="task-title-sp">Tell your friends about this admin template</span>
-                                    <span class="label label-danger">Now</span>
-                                    <div class="pull-right hidden-phone">
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
-                                        <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </li>
+                            @{
+                                int iii = 0;
+                                foreach (var tk in Model.Tkts)
+                                {
+                                    <li>
+                                        <div class="task-checkbox">
+                                            <!-- <input type="checkbox" class="list-child" value=""  /> -->
+                                            <input type="checkbox" class="flat-grey list-child" />
+                                            <!-- <input type="checkbox" class="square-grey"/> -->
+                                        </div>
+                                        <div class="task-title">
+                                            <span class="label label-success">@tk.Date.ToString("MM/dd")</span>
+                                            <span class="task-title-sp"><b>@Html.DisplayFor(item => @tk.Project.Name)</b>: </span>
+                                            @Html.DisplayFor(item => @tk.Title)
+                                            @if (@tk.Project.Deadline != null)
+                                            {
+                                            <span class="label label-warning">@tk.Project.Deadline.ToString("MM/dd")</span>
+                                            }
+                                            <div class="pull-right hidden-phone">
+                                                <a data-toggle="tooltip" title="Comment/Edit" href="@Url.Action("Details",
+                                                    "Tickets", new { id = tk.Id })"><span class="fa fa-comment-o"></span></a>
+                                                @*<button class="btn btn-default btn-xs"><i class="fa fa-check"></i></button>
+                                                <button class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></button>
+                                                <button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>*@
+                                            </div>
+                                        </div>
+                                    </li>
+                                    if (tk.Comments != null)
+                                    {
+                                        foreach (var c in tk.Comments)
+                                        {
+                                            <li>
+                                                <div class="task-checkbox">
+                                                    <input type="checkbox" class="flat-grey list-child" />
+                                                </div>
+                                                <div class="task-title">
+                                                    <span class="label label-primary">@Html.DisplayFor(item => @c.Date)</span>
+                                                    <span class="task-title-sp"><b>Comment</b>: </span>
+                                                    @Html.DisplayFor(item => @c.Title)
 
+                                                </div>
+                                            </li>
+                                            break;
+                                        }
+                                    }
+                                    if (++iii > 5)
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
                         </ul>
-                    </div>
 
-                    <div class="add-task-row">
-                        <a class="btn btn-success btn-sm pull-left" href="#">Add New Tasks</a>
-                        <a class="btn btn-default btn-sm pull-right" href="#">See All Tasks</a>
+                        <div class="add-task-row">
+                            <div class="btn btn-info btn-sm pull-left">
+                                @Html.ActionLink("Create New Ticket", "Create", "Tickets")
+                            </div>
+                            <div class="btn btn-default btn-sm pull-right">
+                                @Html.ActionLink("See All Tickets", "Index", "Tickets")
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </section>
+
         </div>
     </div>
     <!-- row end -->

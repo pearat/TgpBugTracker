@@ -113,11 +113,22 @@ namespace TgpBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                var fileName = Path.GetFileName(upLoadFile.FileName);
-                var fullPathName = Path.Combine(Server.MapPath("/Uploads"), fileName);
-                var fHelper = new FileUpLoadValidator();
-                comment.Attachment = fHelper.SaveUpLoadFile(upLoadFile, fullPathName);
+                if (upLoadFile != null)
+                {
+                    try
+                    {
+                        var fileName = Path.GetFileName(upLoadFile.FileName);
+                        var fullPathName = Path.Combine(Server.MapPath("/Uploads"), fileName);
+                        var fHelper = new FileUpLoadValidator();
+                        comment.Attachment = fHelper.SaveUpLoadFile(upLoadFile, fullPathName);
+                    }
+                    catch (Exception)
+                    {
+                        Debug.WriteLine("/Comment/Edit error trying to save attachment");
+                        // throw;
+                    }
 
+                }
                 db.Update(comment, "Title", "Detail", "Attachment");
 
                 db.SaveChanges();

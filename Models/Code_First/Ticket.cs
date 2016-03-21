@@ -61,8 +61,6 @@ namespace TgpBugTracker.Models
         [DataType(DataType.Text)]
         [Display(Name = "Tkt Stage")]
         public int StageId { get; set; }
-        
-
 
         public virtual IssueType IssueType { get; set; }
         public virtual ApplicationUser Leader { get; set; }

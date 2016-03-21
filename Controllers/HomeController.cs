@@ -112,7 +112,7 @@ namespace TgpBugTracker.Controllers
                 dashboard.Pjts.Add(progress);
             }
             
-            dashboard.Tkts = ProjectList.SelectMany(p => p.Tickets).ToList();
+            dashboard.Tkts = ProjectList.SelectMany(p => p.Tickets).OrderByDescending(q => q.Date).ToList();
             foreach (var item in dashboard.Tkts)
             {
                 if (item.Attachment != null)
@@ -135,7 +135,8 @@ namespace TgpBugTracker.Controllers
                 dashboard.Ntcs.Add(n);
             }
 
-            dashboard.Cmts = dashboard.Tkts.SelectMany(p => p.Comments).ToList();
+            dashboard.Cmts = dashboard.Tkts.SelectMany(p => p.Comments).OrderByDescending(q=>q.Date).ToList();
+
             ViewBag.Message = "Your Dashboard.";
 
             return View(dashboard);

@@ -1,7 +1,48 @@
 ﻿@{
-    ViewBag.Title = "About";
+    ViewBag.Title = "Welcome to TGP Bug Tracker App";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<div class="container ">
+    <div class="row">
+        <h2 class="" style="text-align:center;"><span>@ViewBag.Title</span></h2>
+        <br />
+        <hr />
+        <div class="col-sm-5 col-lg-offset-1">
+            <div class="card">
+                <section class="slider" style="padding:12px 8px">
+                    @*<div id="slider" class="flexslider .flexslider-attachments" style="background-color: #F1F4F1">*@
+                    @*<div id="slider" class="flexslider main-flex-slider" style="background-color: #F1F4F1">*@
+                    <ul class="slides">
+                        <li><img src="~/img/about/IzendaWebLogos.png" style="max-width:400px; max-height:210px;" /></li>
+                        <li><img src="~/img/about/AspCsSQL.png" style="max-width:400px; max-height:210px;" /></li>
+                        <li><img src="~/img/about/JQ-Bootstrap-AbdurPromy.png" style="max-width:400px; max-height:210px;" /></li>
+                    </ul>
+                    @*</div>*@
+                </section>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card" style="padding:12px 8px">
+                <h3>This website is built using:</h3>
+                <ul class="myFeatures">
+                    <li>HTML5 / CSS3 / JavaScript</li>
+                    <li>ASP.NET / C# / SQL Server</li>
+                    <li>jQuery / Bootstrap / Abdur Promy template</li>
+                </ul>
+                <h3>Features include:</h3>
+                <ul class="myFeatures">
+                    <li>MVC4 / jquery datatables &amp tabs </li>
+                    <li>LINQ / Email Notification </li>
+                    <li>One-Many &amp; Many-Many searches &amp; sorting</li>
+                    <li>User-Role Access</li>
+                    <li>Helper Functions</li>
+                    <li>Modals</li>
+                    <li>Data Archive</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!-- /.container -->
