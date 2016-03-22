@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "Bug Tracker Utilities";
 }
+<style>
+    .btn{
+        padding:2px;
+    }
+</style>
 
 <h2>@ViewBag.Title</h2>
 
@@ -12,10 +17,22 @@
             @Html.ActionLink("Create New", "Create")
         </p>
     </div>*@
-    <div class="col-md-4">
-        <p>
-            Big Red Button to reset Guest data
-        </p>
+    <div class="col-md-2 col-md-offset-1">
+
+        @using (Html.BeginForm("ResetGuestData", "Utilities", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <span class="fa fa-bolt"> </span>
+                        <input type="submit" value="Reset" class="btn btn-default" data-toggle="tooltip" 
+                               title="Reset Guest Data" >
+                    </div>
+                </div>
+            </div>
+        }
+
     </div>
 </div>
 
@@ -189,9 +206,15 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        <a data-toggle="tooltip" title="Edit" href="@Url.Action("EditStage", new { id = item.Id })"><span class="fa fa-pencil-square-o"></span></a>
+                        <a data-stid="@item.Id" data-stname="@item.Name" class="btn"
+                           data-toggle="modal" title="Edit" data-target="#editStageModal">
+                            <span class="fa fa-pencil-square-o"></span>
+                        </a>
                         <text>|</text>
-                        <a data-toggle="tooltip" title="Delete" href="@Url.Action("DeleteStage", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                        <a data-stdelid="@item.Id" data-stdelname="@item.Name" class="btn"
+                           data-toggle="modal" title="Edit" data-target="#deleteStageModal">
+                            <span class="fa fa-trash-o"></span>
+                        </a>
                     </td>
                 </tr>
             }
@@ -199,3 +222,109 @@
         </table>
     </div>
 </div>
+
+
+<!-- vvvvv Start of Edit Stage Modal vvvvv -->
+
+<div class="modal fade" id="editStageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="align-content:center">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+                <h4 class="modal-title" style="text-align:center; color:#ffd800"
+                    id="myModalLabel">
+                    Edit the Stage
+                </h4>
+            </div>
+
+            @using (Html.BeginForm("EditStage", "Utilities", FormMethod.Post ))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                Name
+                            </div>
+                            <div class="col-md-10">
+                                <input id="modal-stname" name="Name" value="a Stage" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="align-content:center">
+                    <button type="button" data-dismiss="modal" class="btn btn-skin xtra-btn">Dismiss</button>
+                    <input type="hidden" id="modal-stid" name="Id" value="" />
+                    <button type="submit" class="btn btn-skin xtra-btn">Submit</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- ^^^^^ Modal end ^^^^^ -->
+
+
+<!-- vvvvv Start of Delete Stage Modal vvvvv -->
+
+<div class="modal fade" id="deleteStageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="align-content:center">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+                <h4 class="modal-title" style="text-align:center; color:#ffd800"
+                    id="myModalLabel">
+                    Delete this stage?
+                </h4>
+            </div>
+
+            @using (Html.BeginForm("DeleteStage", "Utilities", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            Note: Tickets with this Stage-Name will become <i><u>Unassigned</u></i>.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="align-content:center">
+                    <button type="button" data-dismiss="modal" class="btn btn-skin xtra-btn">Dismiss</button>
+                    <input type="hidden" id="modal-stdelid" name="Id" value="" />
+                    <input type="hidden" id="modal-stdelname" name="Name" value="" />
+                    <button type="submit" class="btn tn-danger xtra-danger-btn">Delete!</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- ^^^^^ Modal end ^^^^^ -->
+
+
+@section scripts{
+    <script>
+        var commentId = 0;
+        $('#editStageModal').on('shown.bs.modal', function (e) {
+            var i = $(e.relatedTarget).data('stid');
+            var n = $(e.relatedTarget).data('stname');
+            console.log('Stage Item.Id: ' + i);
+            console.log('Stage Item.Name: ' + n);
+            $('#modal-stid').val(i);
+            $('#modal-stname').val(n);
+        });
+
+        $('#deleteStageModal').on('shown.bs.modal', function (e) {
+            var i = $(e.relatedTarget).data('stdelid');
+            var n = $(e.relatedTarget).data('stdelname');
+            console.log('Stage Delete Item.Id: ' + i);
+            console.log('Stage Delete Item.Name: ' + n);
+            $('#modal-stdelid').val(i);
+            $('#modal-stdelname').val(n);
+        });
+    </script>
+}

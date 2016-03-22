@@ -132,22 +132,5 @@ namespace TgpBugTracker.Controllers
 
             return RedirectToAction("Index", "Admin");
         }
-
-
-
-        //
-        // POST: /Manage/AssignRoleToUser to Users
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ResetGuestData()
-        {
-            var administrator = db.Users.Find(User.Identity.GetUserId());
-            if (!administrator.IsGuest)
-                db.Database.ExecuteSqlCommand("EXEC PrepareGuestData");
-            return View();
-        }
-
-
-
     }
 }

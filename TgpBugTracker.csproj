@@ -1609,9 +1609,6 @@
     <Content Include="Views\Tickets\Log.cshtml" />
     <Content Include="Views\Account\ResendEmailConfirmation.cshtml" />
     <Content Include="Views\Account\ConfirmationSent.cshtml" />
-    <Content Include="Views\Tickets\DetailsBckup.cshtml" />
-    <Content Include="Views\Tickets\DetailsHalfway.cshtml" />
-    <Content Include="Views\Tickets\DetailsWorking.cshtml" />
     <Content Include="Uploads\Doc1.docx" />
     <Content Include="Views\Utilities\Create.cshtml" />
     <Content Include="Views\Utilities\Delete.cshtml" />
