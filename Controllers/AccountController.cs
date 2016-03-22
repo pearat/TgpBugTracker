@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -97,8 +94,8 @@ namespace TgpBugTracker.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-
-                    return RedirectToLocal(returnUrl);
+                    // return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Dashboard", "Home");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:

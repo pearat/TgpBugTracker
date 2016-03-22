@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using TgpBugTracker.Models;
+﻿using TgpBugTracker.Models;
 
 namespace TgpBugTracker.Helpers
 {

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -64,6 +62,12 @@ namespace TgpBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                
+                var tkt = db.Tickets.Find(comment.TicketId);
+                var pjt = db.Projects.Find(tkt.ProjectId);
+                if ((pjt == null) || (db.Users.Find(User.Identity.GetUserId()).IsGuest) && (!pjt.IsGuest))
+                    return RedirectToAction("Details", "Tickets", new { id = comment.TicketId });
+
                 // var tHelper = new TicketsController();
                 if (upLoadFile != null)
                 {
@@ -113,6 +117,11 @@ namespace TgpBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                var tkt = db.Tickets.Find(comment.TicketId);
+                var pjt = db.Projects.Find(tkt.ProjectId);
+                if ((pjt == null) || (db.Users.Find(User.Identity.GetUserId()).IsGuest) && (!pjt.IsGuest))
+                    return RedirectToAction("Details", "Tickets", new { id = comment.TicketId });
+
                 if (upLoadFile != null)
                 {
                     try
@@ -155,7 +164,7 @@ namespace TgpBugTracker.Controllers
             }
             var errors = ModelState.Values.SelectMany(v => v.Errors);
 
-            return View("Index", "Tickets", new { archivedOnly = false });
+            return View("Index", "Tickets");
         }
 
         // GET: Comments/Delete/5
@@ -179,9 +188,14 @@ namespace TgpBugTracker.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Comment comment = db.Comments.Find(id);
+            var tkt = db.Tickets.Find(comment.TicketId);
+            var pjt = db.Projects.Find(tkt.ProjectId);
+            if ((pjt == null) || (db.Users.Find(User.Identity.GetUserId()).IsGuest) && (!pjt.IsGuest))
+                return RedirectToAction("Index","Tickets");
+
             db.Comments.Remove(comment);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Tickets");
         }
 
         protected override void Dispose(bool disposing)

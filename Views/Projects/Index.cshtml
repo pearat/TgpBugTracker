@@ -45,7 +45,10 @@
                         <table>
                             <thead>
                                 <tr style="text-decoration-line:underline; font-weight:bold">
-                                    <td width="30%"></td>
+                                    <td width="10%"></td>
+                                    <td width="20%">
+                                        Administrator
+                                    </td>
                                     <td width="20%">
                                         Project Manager
                                     </td>
@@ -63,6 +66,17 @@
                                     <tr class="list-group" width="inherit">
 
                                         <td></td>
+                                        <td>
+                                            @if (item.Admins[i] != null)
+                                            {
+                                                @Html.DisplayFor(modelItem => item.Admins[i])
+                                            }
+                                            else
+                                            {
+                                                <text>......</text>
+                                            }
+                                        </td>
+                                        
                                         <td>
                                             @if (item.PjtMgrs[i] != null)
                                             {

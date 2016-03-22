@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace TgpBugTracker.Models
@@ -32,6 +30,7 @@ namespace TgpBugTracker.Models
     {
         public string ProjectName { get; set; }
         public string[] Usrs { get; set; }
+        public string[] Admins { get; set; }
         public string[] PjtMgrs { get; set; }
         public string[] Developers { get; set; }
         public string[] Submitters { get; set; }
@@ -92,8 +91,21 @@ namespace TgpBugTracker.Models
         public string ProjectName { get; set; }
 
         public string Title { get; set; }
+    }
 
-
+    public class UtilitiesVM
+    {
+        public UtilitiesVM()
+        {
+            this.Issues     = new List<IssueType>();
+            this.Phases     = new List<Phase>();
+            this.Priorities = new List<Priority>();
+            this.Stages     = new List<Stage>();
+        }
+        public List<IssueType>  Issues { get; set; }
+        public List<Phase>      Phases { get; set; }
+        public List<Priority>   Priorities { get; set; }
+        public List<Stage>      Stages { get; set; }
     }
 }
 

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using TgpBugTracker.Models;
 using TgpBugTracker.Helpers;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using System.Diagnostics;
 
@@ -75,8 +73,6 @@ namespace TgpBugTracker.Controllers
             staff.DisplayName = user.DisplayName;
             var helper = new UserRolesHelper();
             staff.RoleRank = helper.GetRoleRank(userId);
-            //staff.AuthLevel = helper.GetUserAuthorizationLevel(staff.RoleRank);
-            //ViewBag.AuthLevel = new SelectList(db.Roles.OrderBy(p => p.Name), "Name", "Name", staff.AuthLevel);
 
             staff.Roles = helper.ListUserRoles(userId).ToArray();
             staff.Selected = new MultiSelectList(db.Roles, "Name", "Name", staff.Roles);

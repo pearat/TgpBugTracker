@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using TgpBugTracker.Helpers;
@@ -104,16 +103,12 @@ namespace TgpBugTracker.Controllers
             ViewBag.IssueTypeId = new SelectList(db.IssueTypes, "Id", "Name", defaultIssue);
             TempData["defaultIssue"] = defaultIssue;
 
-
-
             var devId = db.Roles.FirstOrDefault(r => r.Name == "Developer").Id;
             var unassignedId = db.Roles.FirstOrDefault(r => r.Name == "Unassigned").Id;
             var possibleTeamMembers = db.Users.Where(
                 u => u.IsGuest == false &&
                 u.Roles.Any(z => z.RoleId == devId || z.RoleId == unassignedId)
             ).Select(p => new { p.Id, p.DisplayName });
-
-
 
             string defaultLeader = db.Users.Where(z => z.LastName == "Unassigned").Select(p => p.Id).FirstOrDefault();
 
@@ -132,58 +127,55 @@ namespace TgpBugTracker.Controllers
             return View(tkt);
         }
 
-        public string SaveUpLoadFileZ(HttpPostedFileBase upLoadFile)
-        {
-            if (upLoadFile != null)
-            {
-                var fileName = Path.GetFileName(upLoadFile.FileName);
-                var OkFileName = Regex.IsMatch(fileName, "[a-zA-Z0-9]{1,200}\\.[a-zA-Z0-9]{1,10}", RegexOptions.IgnoreCase);
-                if (OkFileName)
-                {
-                    var extension = Path.GetExtension(upLoadFile.FileName);
-                    var docFileType = (extension == ".pdf" || extension == ".doc" || extension == ".docx" ||
-                                        extension == ".rtf" || extension == ".txt");
-                    var validImage = FileUpLoadValidator.IsWebFriendlyImage(upLoadFile);
+        //public string SaveUpLoadFileZ(HttpPostedFileBase upLoadFile)
+        //{
+        //    if (upLoadFile != null)
+        //    {
+        //        var fileName = Path.GetFileName(upLoadFile.FileName);
+        //        var OkFileName = Regex.IsMatch(fileName, "[a-zA-Z0-9]{1,200}\\.[a-zA-Z0-9]{1,10}", RegexOptions.IgnoreCase);
+        //        if (OkFileName)
+        //        {
+        //            var extension = Path.GetExtension(upLoadFile.FileName);
+        //            var docFileType = (extension == ".pdf" || extension == ".doc" || extension == ".docx" ||
+        //                                extension == ".rtf" || extension == ".txt");
+        //            var validImage = FileUpLoadValidator.IsWebFriendlyImage(upLoadFile);
 
-                    if (validImage || docFileType)
-                    {
-                        // code for saving the image file to a physical location.
-                        var fullPathName = Path.Combine(Server.MapPath("/Uploads"), fileName);
-                        try
-                        {
-                            upLoadFile.SaveAs(fullPathName);
-                        }
-                        catch (Exception e)
-                        {
-                            fileName = "Tried to save[" + fullPathName + ", but this error occurred :" + e;
-                            Debug.WriteLine(fileName);
-                            return fileName;
+        //            if (validImage || docFileType)
+        //            {
+        //                // code for saving the image file to a physical location.
+        //                var fullPathName = Path.Combine(Server.MapPath("/Uploads"), fileName);
+        //                try
+        //                {
+        //                    upLoadFile.SaveAs(fullPathName);
+        //                }
+        //                catch (Exception e)
+        //                {
+        //                    fileName = "Tried to save[" + fullPathName + ", but this error occurred :" + e;
+        //                    Debug.WriteLine(fileName);
+        //                    return fileName;
 
-                        }
+        //                }
 
-                        if (docFileType)
-                        {
-                            // test whether extension and mimeType are consistent
-                            var mimeType = FileUpLoadValidator.getMimeFromFile(fullPathName);
-                            Debug.WriteLine("MimeType: " + mimeType);
-                        }
-                        // prepare a relative path to be stored in the database and used to display later on.
-                        // ticket.Attachment = 
-
-
-                        return "/Uploads/" + fileName;
-                    }
-                }
-                else
-                {
-                    return "Problem with file name [[" + fileName + "]]";
-                }
-            }
-            return null;
-        }
+        //                if (docFileType)
+        //                {
+        //                    // test whether extension and mimeType are consistent
+        //                    var mimeType = FileUpLoadValidator.getMimeFromFile(fullPathName);
+        //                    Debug.WriteLine("MimeType: " + mimeType);
+        //                }
+        //                // prepare a relative path to be stored in the database and used to display later on.
+        //                // ticket.Attachment = 
 
 
-
+        //                return "/Uploads/" + fileName;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return "Problem with file name [[" + fileName + "]]";
+        //        }
+        //    }
+        //    return null;
+        //}
 
         // POST: Tickets/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -196,6 +188,10 @@ namespace TgpBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                var pjt = db.Projects.Find(ticket.ProjectId);
+                if ((pjt == null) || (db.Users.Find(User.Identity.GetUserId()).IsGuest) && (!pjt.IsGuest))
+                    return RedirectToAction("Index");
+
                 if (upLoadFile != null)
                 {
                     var fileName = Path.GetFileName(upLoadFile.FileName);
@@ -274,22 +270,6 @@ namespace TgpBugTracker.Controllers
             return View(ticket);
         }
 
-
-        // GET: Tickets/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Ticket ticket = db.Tickets.Find(id);
-        //    if (ticket == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.UserId = User.Identity.GetUserId();
-        //    return View(ticket);
-        //}
 
         // GET: Tickets/Details + Edit
         public ActionResult Details(int? id)
@@ -375,6 +355,10 @@ namespace TgpBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                var pjt = db.Projects.Find(ticket.ProjectId);
+                if ((pjt == null) || (db.Users.Find(User.Identity.GetUserId()).IsGuest) && (!pjt.IsGuest))
+                    return RedirectToAction("Index");
+
                 var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
 
                 if (upLoadFile != null)
@@ -656,6 +640,11 @@ namespace TgpBugTracker.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Ticket ticket = db.Tickets.Find(id);
+
+            var pjt = db.Projects.Find(ticket.ProjectId);
+            if ((pjt == null) || (db.Users.Find(User.Identity.GetUserId()).IsGuest) && (!pjt.IsGuest))
+                return RedirectToAction("Index");
+
             ticket.IsArchived = true;
             db.Entry(ticket).Property(p => p.IsArchived).IsModified = true;
             db.SaveChanges();

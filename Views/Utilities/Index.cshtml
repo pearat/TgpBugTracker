@@ -1,0 +1,201 @@
+﻿@model TgpBugTracker.Models.UtilitiesVM
+
+@{
+    ViewBag.Title = "Bug Tracker Utilities";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row" style="margin-bottom:5px;">
+    @*<div class="col-md-4">
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+    </div>*@
+    <div class="col-md-4">
+        <p>
+            Big Red Button to reset Guest data
+        </p>
+    </div>
+</div>
+
+
+<div class="row" style="margin-bottom:5px;">
+
+    <div class="col-md-3">
+        <div class="sm-st clearfix">
+            <span class="sm-st-icon st-violet"><i class="fa fa-moon-o"></i></span>
+            <div class="sm-st-info">
+                <span>
+                    @if (@Model.Phases != null)
+                    { @Model.Phases.Count();
+                    }
+                </span>
+                No. Phases
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="sm-st clearfix">
+            <span class="sm-st-icon st-red"><i class="fa fa-bug"></i></span>
+            <div class="sm-st-info">
+                <span>
+                    @if (@Model.Issues != null)
+                    { @Model.Issues.Count();
+                    }
+                </span>
+                No. Issues
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="sm-st clearfix">
+            <span class="sm-st-icon st-blue"><i class="fa fa-hourglass-start"></i></span>
+            <div class="sm-st-info">
+                <span>
+                    @if (@Model.Priorities != null)
+                    { @Model.Priorities.Count();
+                    }
+                </span>
+                No. Priorities
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="sm-st clearfix">
+            <span class="sm-st-icon st-green"><i class="fa fa-building-o"></i></span>
+            <div class="sm-st-info">
+                <span>
+                    @if (@Model.Stages != null)
+                    { @Model.Stages.Count();
+                    }
+                </span>
+                No. Stages
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-bottom:5px;">
+
+    <div class="col-md-3">
+        <table class="table">
+            <tr>
+                <th>
+                    %
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Phases)
+                </th>
+                <th>
+                    <a data-toggle="tooltip" title="New Phase" href="@Url.Action("NewPhase")"><span class="fa fa-moon-o"></span></a>
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Phases)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Step)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a data-toggle="tooltip" title="Edit" href="@Url.Action("EditPhase", new { id = item.Id })"><span class="fa fa-pencil-square-o"></span></a>
+                        <text>|</text>
+                        <a data-toggle="tooltip" title="Delete" href="@Url.Action("DeletePhase", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+    <div class="col-md-3">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Issues)
+                </th>
+                <th>
+                    <a data-toggle="tooltip" title="New Issue" href="@Url.Action("NewIssue")"><span class="fa fa-bug"></span></a>
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Issues)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a data-toggle="tooltip" title="Edit" href="@Url.Action("EditIssue", new { id = item.Id })"><span class="fa fa-pencil-square-o"></span></a>
+                    <text>|</text>
+                    <a data-toggle="tooltip" title="Delete" href="@Url.Action("DeleteIssue", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                </td>
+            </tr>
+            }
+
+        </table>
+    </div>
+
+
+    <div class="col-md-3">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Priorities)
+                </th>
+                <th>
+                    <a data-toggle="tooltip" title="New Priority" href="@Url.Action("NewPriority")"><span class="fa fa-hourglass-start"></span></a>
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Priorities)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a data-toggle="tooltip" title="Edit" href="@Url.Action("EditPriority", new { id = item.Id })"><span class="fa fa-pencil-square-o"></span></a>
+                        <text>|</text>
+                        <a data-toggle="tooltip" title="Delete" href="@Url.Action("DeletePriority", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+    <div class="col-md-3">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Stages)
+                </th>
+                <th>
+                    <a data-toggle="tooltip" title="New Stage" href="@Url.Action("NewStage")"><span class="fa fa-building-o"></span></a>
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Stages)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a data-toggle="tooltip" title="Edit" href="@Url.Action("EditStage", new { id = item.Id })"><span class="fa fa-pencil-square-o"></span></a>
+                        <text>|</text>
+                        <a data-toggle="tooltip" title="Delete" href="@Url.Action("DeleteStage", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

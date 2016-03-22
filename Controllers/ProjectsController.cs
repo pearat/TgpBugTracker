@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using TgpBugTracker.Helpers;
 using TgpBugTracker.Models;
@@ -33,7 +31,7 @@ namespace TgpBugTracker.Controllers
             var usrHelper = new UserRolesHelper();
             var allUsers = db.Users.OrderBy(r => r.DisplayName).Select(r => r.DisplayName).ToArray();
             var numAllUsers = allUsers.Count();
-            // var currentUserId = User.Identity.GetUserId();
+
             var authLevel = usrHelper.GetRoleRank(user.Id);
 
             foreach (var p in db.Projects.OrderBy(j=>j.Name))
@@ -51,12 +49,17 @@ namespace TgpBugTracker.Controllers
                         int pmCount = 0;
                         int devCount = 0;
                         int subCount = 0;
-                        projectVM.PjtMgrs = new string[projectVM.TeamCount];
-                        projectVM.Developers = new string[projectVM.TeamCount];
-                        projectVM.Submitters = new string[projectVM.TeamCount];
+                        projectVM.Admins        = new string[projectVM.TeamCount];
+                        projectVM.PjtMgrs       = new string[projectVM.TeamCount];
+                        projectVM.Developers    = new string[projectVM.TeamCount];
+                        projectVM.Submitters    = new string[projectVM.TeamCount];
 
                         for (int k = 0; k < projectVM.TeamCount; k++)
                         {
+                            if (usrHelper.IsUserInRole(teamMembers[k].Id, "Admin"))
+                            {
+                                projectVM.Admins[pmCount++] = teamMembers[k].DisplayName;
+                            }
                             if (usrHelper.IsUserInRole(teamMembers[k].Id, "Project Manager"))
                             {
                                 projectVM.PjtMgrs[pmCount++] = teamMembers[k].DisplayName;

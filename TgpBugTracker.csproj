@@ -224,6 +224,7 @@
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\StagesController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
+    <Compile Include="Controllers\UtilitiesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1612,6 +1613,11 @@
     <Content Include="Views\Tickets\DetailsHalfway.cshtml" />
     <Content Include="Views\Tickets\DetailsWorking.cshtml" />
     <Content Include="Uploads\Doc1.docx" />
+    <Content Include="Views\Utilities\Create.cshtml" />
+    <Content Include="Views\Utilities\Delete.cshtml" />
+    <Content Include="Views\Utilities\Details.cshtml" />
+    <Content Include="Views\Utilities\Edit.cshtml" />
+    <Content Include="Views\Utilities\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\styles\ui\images\flags\" />

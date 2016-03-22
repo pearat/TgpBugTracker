@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace TgpBugTracker.Models
 {
@@ -18,6 +16,7 @@ namespace TgpBugTracker.Models
 
         public DateTimeOffset Deadline { get; set; }
         public string Description { get; set; }
+        public bool IsGuest { get; set; }
         [Required]
         public string Name { get; set; }
         public DateTimeOffset Started { get; set; }

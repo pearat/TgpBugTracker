@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using TgpBugTracker.Helpers;
 using TgpBugTracker.Models;
@@ -53,21 +52,12 @@ namespace TgpBugTracker.Controllers
             var dashboard = new DashboardVM();
             var today = System.DateTimeOffset.Now;
 
-            // dashboard.Tickets = db.Tickets.Where(t=>t.Project .Intersect(user.Projects));
             var rHelper = new UserRolesHelper();
             var UserRank = rHelper.GetRoleRank(user.Id);
             var ProjectList = new List<Project>();
-            
-            //if (UserRank == (int)UserRolesHelper.RoleRank.Admin)
-            //{
-            //    ProjectList = db.Projects.OrderBy(n => n.Name).ToList();
-            //    dashboard.Team = db.Users.OrderBy(y => y.DisplayName).ToList();
-            //}
-            //else
-            //{
-                ProjectList = user.Projects.OrderBy(n => n.Name).ToList();
-                dashboard.Team = user.Projects.SelectMany(w => w.Users).Distinct().OrderBy(y => y.DisplayName).ToList();
-            //}
+
+            ProjectList = user.Projects.OrderBy(n => n.Name).ToList();
+
 
             var mgrId = db.Roles.FirstOrDefault(r => r.Name == "Project Manager").Id;
             var phases = db.Phases.OrderBy(f => f.Step).ToArray();
@@ -111,8 +101,38 @@ namespace TgpBugTracker.Controllers
                 }
                 dashboard.Pjts.Add(progress);
             }
-            
-            dashboard.Tkts = ProjectList.SelectMany(p => p.Tickets).OrderByDescending(q => q.Date).ToList();
+
+            if (UserRank == (int)UserRolesHelper.RoleRank.Submitter)
+            {
+                dashboard.Tkts = ProjectList.SelectMany(p => p.Tickets).
+                    Where(a => a.AuthorId == user.Id).OrderByDescending(q => q.Date).ToList();
+                dashboard.Cmts = dashboard.Tkts.SelectMany(p => p.Comments).
+                    Where(a => a.AuthorId == user.Id).OrderByDescending(q => q.Date).ToList();
+
+                //var subId = db.Roles.FirstOrDefault(r => r.Name == "Submitter").Id;
+                //var s1 = db.Users.Where(u => u.IsGuest == user.IsGuest);
+                //var s2 = s1.Where(u2 => u2.Roles.Any(z => z.RoleId == subId));
+                //var s3 = s2.Distinct().OrderBy(y => y.DisplayName).ToList();
+                dashboard.Team.Add(user);
+            }
+            else
+            {
+                dashboard.Tkts = ProjectList.SelectMany(p => p.Tickets).OrderByDescending(q => q.Date).ToList();
+                dashboard.Cmts = dashboard.Tkts.SelectMany(p => p.Comments).OrderByDescending(q => q.Date).ToList();
+                var firstCut = user.Projects.SelectMany(w => w.Users).Distinct().OrderBy(y => y.DisplayName).ToList();
+                dashboard.Team = firstCut.Where(u => u.LastName != "Unassigned").ToList();
+                var notices = dashboard.Tkts.SelectMany(p => p.Notices).OrderByDescending(q => q.Date).Take(8).ToList();
+                foreach (var item in notices)
+                {
+                    var n = new NoticeVM();
+                    n.Date = item.Date;
+                    n.Title = item.Detail;
+                    n.ProjectName = db.Tickets.Find(item.TicketId).Project.Name;
+                    if (n.ProjectName == null)
+                        n.ProjectName = "Check Pjt Name";
+                    dashboard.Ntcs.Add(n);
+                }
+            }
             foreach (var item in dashboard.Tkts)
             {
                 if (item.Attachment != null)
@@ -123,19 +143,9 @@ namespace TgpBugTracker.Controllers
                 if (item.Attachment != null)
                     dashboard.AttachmentCount++;
             }
-            var notices = dashboard.Tkts.SelectMany(p => p.Notices).OrderByDescending(q => q.Date).Take(8).ToList();
-            foreach (var item in notices)
-            {
-                var n = new NoticeVM();
-                n.Date = item.Date;
-                n.Title = item.Detail;
-                n.ProjectName = db.Tickets.Find(item.TicketId).Project.Name;
-                if (n.ProjectName == null)
-                    n.ProjectName = "Check Pjt Name";
-                dashboard.Ntcs.Add(n);
-            }
 
-            dashboard.Cmts = dashboard.Tkts.SelectMany(p => p.Comments).OrderByDescending(q=>q.Date).ToList();
+
+ 
 
             ViewBag.Message = "Your Dashboard.";
 
