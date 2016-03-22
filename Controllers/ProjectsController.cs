@@ -18,30 +18,15 @@ namespace TgpBugTracker.Controllers
     {
 
         private ApplicationDbContext db = new ApplicationDbContext();
-        private enum AuthLevel
-        {
-            None = 0,
-            Admin = 100,
-            PjtMgr = 80,
-            Developer = 40,
-            Submitter = 20
-        }
+
 
         // GET: Projects
 
         public ActionResult Index()
         {
             var user = db.Users.Find(User.Identity.GetUserId());
-            if (user == null)
-            {
-                ViewBag.FullName = "Pls login";
-                ViewBag.Greeting = "Hi, ???";
-            }
-            else
-            {
-                ViewBag.FullName = user.FullName;
-                ViewBag.Greeting = user.Greeting;
-            }
+            ViewBag.FullName = user.FullName;
+            ViewBag.Greeting = user.Greeting;
 
             var assignedProjects = new List<ProjectUsersVM>();
             var pjtHelper = new ProjectUsersHelper();
@@ -53,14 +38,14 @@ namespace TgpBugTracker.Controllers
 
             foreach (var p in db.Projects.OrderBy(j=>j.Name))
             {
-                if (authLevel == (int)AuthLevel.Admin || pjtHelper.DoesProjectIncludeUser(user.Id, p.Name))
+                if (authLevel == (int)UserRolesHelper.RoleRank.Admin || pjtHelper.DoesProjectIncludeUser(user.Id, p.Name))
                 {
                     var projectVM = new ProjectUsersVM();
                     projectVM.ProjectId = p.Id;
                     projectVM.ProjectName = p.Name;
 
                     var teamMembers = pjtHelper.ListProjectUsersIds(p.Id);
-                    if (teamMembers != null && authLevel > (int)AuthLevel.Submitter)
+                    if (teamMembers != null && authLevel > (int)UserRolesHelper.RoleRank.Submitter)
                     {
                         projectVM.TeamCount = teamMembers.Count();
                         int pmCount = 0;
@@ -131,6 +116,9 @@ namespace TgpBugTracker.Controllers
             {
                 return View(Pjt.ProjectId);
             }
+            var user = db.Users.Find(User.Identity.GetUserId());
+            if (user.IsGuest)
+                return RedirectToAction("Index", "Projects");
             // (Re-)Assign users for this Project
             var helper = new ProjectUsersHelper();
             var project = db.Projects.Find(Pjt.ProjectId);
@@ -188,6 +176,9 @@ namespace TgpBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = db.Users.Find(User.Identity.GetUserId());
+                if (user.IsGuest)
+                    return RedirectToAction("Index", "Projects");
                 db.Projects.Add(project);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -222,6 +213,9 @@ namespace TgpBugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = db.Users.Find(User.Identity.GetUserId());
+                if (user.IsGuest)
+                    return RedirectToAction("Index", "Projects");
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -251,6 +245,9 @@ namespace TgpBugTracker.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
+            var user = db.Users.Find(User.Identity.GetUserId());
+            if (user.IsGuest)
+                return RedirectToAction("Index", "Projects");
             Project project = db.Projects.Find(id);
             db.Projects.Remove(project);
             db.SaveChanges();

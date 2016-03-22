@@ -58,16 +58,16 @@ namespace TgpBugTracker.Controllers
             var UserRank = rHelper.GetRoleRank(user.Id);
             var ProjectList = new List<Project>();
             
-            if (UserRank == (int)UserRolesHelper.RoleRank.Admin)
-            {
-                ProjectList = db.Projects.OrderBy(n => n.Name).ToList();
-                dashboard.Team = db.Users.OrderBy(y => y.LastName).ToList();
-            }
-            else
-            {
+            //if (UserRank == (int)UserRolesHelper.RoleRank.Admin)
+            //{
+            //    ProjectList = db.Projects.OrderBy(n => n.Name).ToList();
+            //    dashboard.Team = db.Users.OrderBy(y => y.DisplayName).ToList();
+            //}
+            //else
+            //{
                 ProjectList = user.Projects.OrderBy(n => n.Name).ToList();
-                dashboard.Team = user.Projects.SelectMany(w => w.Users).Distinct().OrderBy(y => y.LastName).ToList();
-            }
+                dashboard.Team = user.Projects.SelectMany(w => w.Users).Distinct().OrderBy(y => y.DisplayName).ToList();
+            //}
 
             var mgrId = db.Roles.FirstOrDefault(r => r.Name == "Project Manager").Id;
             var phases = db.Phases.OrderBy(f => f.Step).ToArray();

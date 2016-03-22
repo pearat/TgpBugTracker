@@ -1507,6 +1507,22 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Uploads\20151214_163007.jpg" />
+    <Content Include="Uploads\Dilbert3.jpg" />
+    <Content Include="Uploads\FAN.png" />
+    <Content Include="Uploads\Geostrophic_Wind_fig05.jpg" />
+    <Content Include="Uploads\imageFriendly.txt" />
+    <Content Include="Uploads\Learn2Code.jpg" />
+    <Content Include="Uploads\New.txt" />
+    <Content Include="Uploads\NoImageFound.png" />
+    <Content Include="Uploads\NoImageFound5.png" />
+    <Content Include="Uploads\quasimodo.jpg" />
+    <Content Include="Uploads\RiaComments.txt" />
+    <Content Include="Uploads\s9s.JPG" />
+    <Content Include="Uploads\stencil-letter-p.jpg" />
+    <Content Include="Uploads\u.txt" />
+    <Content Include="Uploads\wulfenite_0.jpg" />
+    <Content Include="Uploads\xtra-danger.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1577,32 +1593,28 @@
     <Content Include="Views\Projects\Delete.cshtml" />
     <Content Include="Views\Projects\Details.cshtml" />
     <Content Include="Views\Projects\Edit.cshtml" />
-    <Content Include="Views\Projects\IndexBckup.cshtml" />
     <Content Include="Views\Tickets\Create.cshtml" />
     <Content Include="Views\Tickets\Archive.cshtml" />
     <Content Include="Views\Tickets\Details.cshtml" />
     <Content Include="Views\Tickets\Edit.cshtml" />
     <Content Include="Views\Tickets\Index.cshtml" />
     <Content Include="Views\Account\LoginBckup.cshtml" />
-    <Content Include="Views\Home\IndexBckUp.cshtml" />
     <Content Include="Views\Admin\AssignRoleToUser.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Projects\AssignUsersToProject.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
-    <Content Include="Views\Projects\Index - Copy.cshtml" />
     <Content Include="Views\Shared\_ChooseProject.cshtml" />
-    <Content Include="Views\Comments\DetailsBckUp.cshtml" />
     <Content Include="Views\Tickets\Log.cshtml" />
     <Content Include="Views\Account\ResendEmailConfirmation.cshtml" />
     <Content Include="Views\Account\ConfirmationSent.cshtml" />
     <Content Include="Views\Tickets\DetailsBckup.cshtml" />
     <Content Include="Views\Tickets\DetailsHalfway.cshtml" />
     <Content Include="Views\Tickets\DetailsWorking.cshtml" />
+    <Content Include="Uploads\Doc1.docx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\styles\ui\images\flags\" />
-    <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

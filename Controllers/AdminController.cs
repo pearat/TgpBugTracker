@@ -22,16 +22,9 @@ namespace TgpBugTracker.Controllers
         public ActionResult Index()
         {
             var user = db.Users.Find(User.Identity.GetUserId());
-            if (user == null)
-            {
-                ViewBag.FullName = "Pls login";
-                ViewBag.Greeting = "Hi, ???";
-            }
-            else
-            {
-                ViewBag.FullName = user.FullName;
-                ViewBag.Greeting = user.Greeting;
-            }
+
+            ViewBag.FullName = user.FullName;
+            ViewBag.Greeting = user.Greeting;
 
             var fullStaff = new List<UserRolesVM>();
             var helper = new UserRolesHelper();
@@ -43,11 +36,7 @@ namespace TgpBugTracker.Controllers
                 staff.UserId = u.Id;
                 staff.DisplayName = u.DisplayName;
                 staff.IsGuest = u.IsGuest;
-
                 staff.Roles = new string[numAllRoles];
-
-
-
                 var sRoles = helper.ListUserRoles(u.Id).ToArray();
                 var sRc = sRoles.Count();
                 for (int i = 0; i < sRc; i++)
@@ -59,22 +48,6 @@ namespace TgpBugTracker.Controllers
                     if (sRoles[i].Equals("Unassigned", StringComparison.Ordinal)) staff.Roles[4] = "U";
                 }
 
-
-                //switch (u.RoleRank)
-                //{
-                //    case (int)UserRolesHelper.RoleRank.Admin: staff.Roles[0] = "A"; break;
-                //    case (int)UserRolesHelper.RoleRank.PjtMgr: staff.Roles[1] = "P"; break;
-                //    case (int)UserRolesHelper.RoleRank.Developer: staff.Roles[2] = "D"; break;
-                //    case (int)UserRolesHelper.RoleRank.Submitter: staff.Roles[3] = "S"; break;
-                //    case (int)UserRolesHelper.RoleRank.Unassigned: staff.Roles[4] = "U"; break;
-                //    default:
-                //        staff.Roles[4] = "U";
-                //        break;
-                //}
-
-                //if (sRoles[i].Equals("Developer", StringComparison.Ordinal)) staff.Roles[2] = "D";
-                //    if (sRoles[i].Equals("Submitter", StringComparison.Ordinal)) staff.Roles[3] = "S";
-                //}
                 fullStaff.Add(staff);
             }
             ViewBag.NumRoles = 5;
@@ -90,6 +63,7 @@ namespace TgpBugTracker.Controllers
                 userId = User.Identity.GetUserId();
             // find user; create, populate and then send staff object
             var user = db.Users.Find(userId);
+            
             if (user == null)
             {
                 ModelState.AddModelError("", "User Id not found.");
@@ -122,6 +96,10 @@ namespace TgpBugTracker.Controllers
                 Debug.WriteLine("AssignRoleToUser() invalid model, errors:" +errors);
                 return View(staff.UserId);
             }
+            var administrator = db.Users.Find(User.Identity.GetUserId());
+            if (administrator.IsGuest)
+                return RedirectToAction("Index", "Admin");
+
             // (Re-)Assign roles for this user
             var rHelper = new UserRolesHelper();
             //var staffRoles = db.Roles.Find(staff.UserId);
@@ -158,6 +136,22 @@ namespace TgpBugTracker.Controllers
 
             return RedirectToAction("Index", "Admin");
         }
+
+
+
+        //
+        // POST: /Manage/AssignRoleToUser to Users
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetGuestData()
+        {
+            var administrator = db.Users.Find(User.Identity.GetUserId());
+            if (!administrator.IsGuest)
+                db.Database.ExecuteSqlCommand("EXEC PrepareGuestData");
+            return View();
+        }
+
+
 
     }
 }
