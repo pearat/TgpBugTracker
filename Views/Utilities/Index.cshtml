@@ -107,6 +107,10 @@
                     @Html.DisplayNameFor(model => model.Phases)
                 </th>
                 <th>
+                    <a data-type="Phase"
+                       class="btn" data-toggle="modal" title="New Phase" data-target="#createModal">
+                        <span class="fa fa-moon-o"></span>
+                    </a>
                     <a data-toggle="tooltip" title="New Phase" href="@Url.Action("NewPhase")"><span class="fa fa-moon-o"></span></a>
                 </th>
             </tr>
@@ -121,9 +125,17 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        <a data-toggle="tooltip" title="Edit" href="@Url.Action("EditPhase", new { id = item.Id })"><span class="fa fa-pencil-square-o"></span></a>
+
+                        <a data-id="@item.Id" data-name="@item.Name" data-type="Phase" data-step="@item.Step"
+                           class="btn" data-toggle="modal" title="Edit" data-target="#editModal">
+                            <span class="fa fa-pencil-square-o"></span>
+                        </a>
                         <text>|</text>
-                        <a data-toggle="tooltip" title="Delete" href="@Url.Action("DeletePhase", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                        <a data-id="@item.Id" data-name="@item.Name" data-type="Phase" data-step="@item.Step"
+                           class="btn" data-toggle="modal" title="Delete" data-target="#deleteModal">
+                            <span class="fa fa-trash-o"></span>
+                        </a>
+
                     </td>
                 </tr>
             }
@@ -138,7 +150,10 @@
                     @Html.DisplayNameFor(model => model.Issues)
                 </th>
                 <th>
-                    <a data-toggle="tooltip" title="New Issue" href="@Url.Action("NewIssue")"><span class="fa fa-bug"></span></a>
+                    <a data-type="Issue"
+                       class="btn" data-toggle="modal" title="New Issue" data-target="#createModal">
+                        <span class="fa fa-bug"></span>
+                    </a>
                 </th>
             </tr>
 
@@ -149,9 +164,17 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    <a data-toggle="tooltip" title="Edit" href="@Url.Action("EditIssue", new { id = item.Id })"><span class="fa fa-pencil-square-o"></span></a>
+
+                    <a data-id="@item.Id" data-name="@item.Name" data-type="Issue" data-step="-1"
+                       class="btn" data-toggle="modal" title="Edit" data-target="#editModal">
+                        <span class="fa fa-pencil-square-o"></span>
+                    </a>
                     <text>|</text>
-                    <a data-toggle="tooltip" title="Delete" href="@Url.Action("DeleteIssue", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                    <a data-id="@item.Id" data-name="@item.Name" data-type="Issue" data-step="-1"
+                       class="btn" data-toggle="modal" title="Delete" data-target="#deleteModal">
+                        <span class="fa fa-trash-o"></span>
+                    </a>
+
                 </td>
             </tr>
             }
@@ -167,7 +190,11 @@
                     @Html.DisplayNameFor(model => model.Priorities)
                 </th>
                 <th>
-                    <a data-toggle="tooltip" title="New Priority" href="@Url.Action("NewPriority")"><span class="fa fa-hourglass-start"></span></a>
+                    <a data-type="Priority"
+                       class="btn" data-toggle="modal" title="New Priority" data-target="#createModal">
+                        <span class="fa fa-hourglass-start"></span>
+                    </a>
+
                 </th>
             </tr>
 
@@ -178,9 +205,17 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        <a data-toggle="tooltip" title="Edit" href="@Url.Action("EditPriority", new { id = item.Id })"><span class="fa fa-pencil-square-o"></span></a>
+                        <a data-id="@item.Id" data-name="@item.Name" data-type="Priority" data-step="-1"
+                           class="btn" data-toggle="modal" title="Edit" data-target="#editModal">
+                            <span class="fa fa-pencil-square-o"></span>
+                        </a>
                         <text>|</text>
-                        <a data-toggle="tooltip" title="Delete" href="@Url.Action("DeletePriority", new { id = item.Id })"><span class="fa fa-trash-o"></span></a>
+                        <a data-id="@item.Id" data-name="@item.Name" data-type="Priority" data-step="-1"
+                           class="btn" data-toggle="modal" title="Delete" data-target="#deleteModal">
+                            <span class="fa fa-trash-o"></span>
+                        </a>
+
+                    
                     </td>
                 </tr>
             }
@@ -195,7 +230,11 @@
                     @Html.DisplayNameFor(model => model.Stages)
                 </th>
                 <th>
-                    <a data-toggle="tooltip" title="New Stage" href="@Url.Action("NewStage")"><span class="fa fa-building-o"></span></a>
+                    <a data-type="Stage" 
+                       class="btn" data-toggle="modal" title="New Stage" data-target="#createModal">
+                        <span class="fa fa-building-o"></span>
+                    </a>
+
                 </th>
             </tr>
 
@@ -206,13 +245,13 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        <a data-stid="@item.Id" data-stname="@item.Name" class="btn"
-                           data-toggle="modal" title="Edit" data-target="#editStageModal">
+                        <a data-id="@item.Id" data-name="@item.Name" data-type="Stage" data-step="-1"
+                           class="btn" data-toggle="modal" title="Edit" data-target="#editModal">
                             <span class="fa fa-pencil-square-o"></span>
                         </a>
                         <text>|</text>
-                        <a data-stdelid="@item.Id" data-stdelname="@item.Name" class="btn"
-                           data-toggle="modal" title="Edit" data-target="#deleteStageModal">
+                        <a data-id="@item.Id" data-name="@item.Name" data-type="Stage" data-step="-1" 
+                           class="btn" data-toggle="modal" title="Delete" data-target="#deleteModal">
                             <span class="fa fa-trash-o"></span>
                         </a>
                     </td>
@@ -223,108 +262,216 @@
     </div>
 </div>
 
-
-<!-- vvvvv Start of Edit Stage Modal vvvvv -->
-
-<div class="modal fade" id="editStageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<!-- vvvvv Start of CREATE Modal vvvvv -->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content" style="align-content:center">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    ×
-                </button>
-                <h4 class="modal-title" style="text-align:center; color:#ffd800"
-                    id="myModalLabel">
-                    Edit the Stage
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 id="modal-ctitle" class="text-primary" style="text-align:center">
+                    CREATE
                 </h4>
             </div>
 
-            @using (Html.BeginForm("EditStage", "Utilities", FormMethod.Post ))
+            @using (Html.BeginForm("Create", "Utilities", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
                 <div class="modal-body">
+                    <div class="row" id="stepCreateInput">
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                Step
+                            </div>
+                            <div class="col-md-10">
+                                <input id="modal-cstep" name="Step" value="" />
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-2">
                                 Name
                             </div>
                             <div class="col-md-10">
-                                <input id="modal-stname" name="Name" value="a Stage" />
+                                <input id="modal-cname" name="Name" value="" />
                             </div>
                         </div>
                     </div>
                 </div>
+                <p> Note: duplicate entries are not allowed.</p>
                 <div class="modal-footer" style="align-content:center">
                     <button type="button" data-dismiss="modal" class="btn btn-skin xtra-btn">Dismiss</button>
-                    <input type="hidden" id="modal-stid" name="Id" value="" />
+                    <input type="hidden" id="modal-cdatatype" name="Datatype" value="" />
+                    @*<input type="hidden" id="modal-cid" name="Id" value="" />*@
                     <button type="submit" class="btn btn-skin xtra-btn">Submit</button>
                 </div>
             }
         </div>
     </div>
 </div>
-<!-- ^^^^^ Modal end ^^^^^ -->
+<!-- ^^^^^ CREATE Modal end ^^^^^ -->
 
-
-<!-- vvvvv Start of Delete Stage Modal vvvvv -->
-
-<div class="modal fade" id="deleteStageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<!-- vvvvv Start of EDIT Modal vvvvv -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content" style="align-content:center">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    ×
-                </button>
-                <h4 class="modal-title" style="text-align:center; color:#ffd800"
-                    id="myModalLabel">
-                    Delete this stage?
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 id="modal-title" class="text-primary" style="text-align:center">EDIT
                 </h4>
             </div>
 
-            @using (Html.BeginForm("DeleteStage", "Utilities", FormMethod.Post))
+            @using (Html.BeginForm("Edit", "Utilities", FormMethod.Post ))
             {
                 @Html.AntiForgeryToken()
                 <div class="modal-body">
+                    <div class="row" id="stepInput">
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                Step
+                            </div>
+                            <div class="col-md-10">
+                                <input id="modal-step" name="Step" value="Replace-Me" />
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group">
-                            Note: Tickets with this Stage-Name will become <i><u>Unassigned</u></i>.
+                            <div class="col-md-2">
+                                Name
+                            </div>
+                            <div class="col-md-10">
+                                <input id="modal-name" name="Name" value="Replace-Me" />
+                            </div>
                         </div>
                     </div>
                 </div>
+                <p> Note: It is not possible to edit this table's default value: <i>(unassessed/unassigned)</i></p>
                 <div class="modal-footer" style="align-content:center">
                     <button type="button" data-dismiss="modal" class="btn btn-skin xtra-btn">Dismiss</button>
-                    <input type="hidden" id="modal-stdelid" name="Id" value="" />
-                    <input type="hidden" id="modal-stdelname" name="Name" value="" />
-                    <button type="submit" class="btn tn-danger xtra-danger-btn">Delete!</button>
+                    <input type="hidden" id="modal-id" name="Id" value="" />
+                    <input type="hidden" id="modal-datatype" name="Datatype" value="" />
+                    <button type="submit" class="btn btn-skin xtra-btn">Submit</button>
                 </div>
             }
         </div>
     </div>
 </div>
-<!-- ^^^^^ Modal end ^^^^^ -->
+<!-- ^^^^^ EDIT Modal end ^^^^^ -->
+
+
+<!-- vvvvv Start of DELETE Stage Modal vvvvv -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="align-content:center">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 id="modal-deltitle" style="text-align:center; color:red">
+                    DELETE
+                </h4>
+            </div>
+
+            @using (Html.BeginForm("Delete", "Utilities", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            Note: Any tickets/projects with this attribute will be <i><u>re-assigned</u></i> 
+                            to the default category <i>(unassessed/unassigned)</i> which cannot be deleted.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="align-content:center">
+                    <button type="button" data-dismiss="modal" class="btn btn-skin xtra-btn">Dismiss</button>
+                    
+                    <input type="hidden" id="modal-delid" name="Id" value="" />
+                    <input type="hidden" id="modal-delname" name="Name" value="" />
+                    <input type="hidden" id="modal-delstep" name="Step" value="" />
+                    <input type="hidden" id="modal-deldatatype" name="Datatype" value="" />
+                    <button type="submit" class="btn btn-danger xtra-danger-btn">Delete!</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- ^^^^^ DELETE Modal end ^^^^^ -->
 
 
 @section scripts{
     <script>
-        var commentId = 0;
-        $('#editStageModal').on('shown.bs.modal', function (e) {
-            var i = $(e.relatedTarget).data('stid');
-            var n = $(e.relatedTarget).data('stname');
-            console.log('Stage Item.Id: ' + i);
-            console.log('Stage Item.Name: ' + n);
-            $('#modal-stid').val(i);
-            $('#modal-stname').val(n);
+        
+
+        $('#createModal').on('shown.bs.modal', function (e) {
+            var t = $(e.relatedTarget).data('type');
+            var z = 'Create a new ' + t + '.';
+            if (t == "Phase") {
+                $("#stepCreateInput").show();
+            }
+            else {
+                $('#modal-cstep').val(0);
+                $("#stepCreateInput").hide();
+            }
+            console.log('Item.Datatype: ' + t);
+            console.log('Item.title:' + z);
+            $('#modal-cdatatype').val(t);
+            $('#modal-cid').val(0);
+            $('#modal-cstep').val(0);
+            $('#modal-ctitle').text(z);
         });
 
-        $('#deleteStageModal').on('shown.bs.modal', function (e) {
-            var i = $(e.relatedTarget).data('stdelid');
-            var n = $(e.relatedTarget).data('stdelname');
-            console.log('Stage Delete Item.Id: ' + i);
-            console.log('Stage Delete Item.Name: ' + n);
-            $('#modal-stdelid').val(i);
-            $('#modal-stdelname').val(n);
+
+
+        $('#editModal').on('shown.bs.modal', function (e) {
+            
+            var i = $(e.relatedTarget).data('id');
+            var n = $(e.relatedTarget).data('name');
+            var s = $(e.relatedTarget).data('step');
+            var t = $(e.relatedTarget).data('type');
+            var z = 'Edit this ' + t;
+            if (t == "Phase")
+            {
+                $("#stepInput").show();
+            }
+            else {
+                s = -1;
+                $("#stepInput").hide();
+            }
+            console.log('Item.Id: ' + i);
+            console.log('Item.Name: ' + n);
+            console.log('Item.Step: ' + s);
+            console.log('Item.Datatype: ' + t);
+            console.log('Item.title:' + z);
+            
+            $('#modal-id').val(i);
+            $('#modal-name').val(n);
+            $('#modal-step').val(s);
+            $('#modal-datatype').val(t);
+            $('#modal-title').text(z);
+        });
+
+        $('#deleteModal').on('shown.bs.modal', function (e) {
+            
+            var i = $(e.relatedTarget).data('id');
+            var n = $(e.relatedTarget).data('name');
+            var s = $(e.relatedTarget).data('step');
+            var t = $(e.relatedTarget).data('type');
+            var z = 'Delete "' + n + '" as a ' + t + '?';
+            
+            console.log('Delete Item.Id: ' + i);
+            console.log('Delete Item.Name: ' + n);
+            console.log('Delete Item.Step: ' + s);
+            console.log('Delete Item.Datatype: ' + t);
+            console.log('Delete Item.title: ' + z);
+            
+            $('#modal-delid').val(i);
+            $('#modal-delname').val(n);
+            $('#modal-delstep').val(s);
+            $('#modal-deldatatype').val(t);
+            $('#modal-deltitle').text(z);
         });
     </script>
 }

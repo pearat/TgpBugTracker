@@ -122,7 +122,8 @@
             {
                 <tr width="inherit">
                     <td>
-
+                        <a data-toggle="tooltip" title="Comment/Edit" href="@Url.Action("Details", new { id = item.Id })"><span class="fa fa-comment-o"></span></a>
+                        
                         @if (User.IsInRole("Admin") && !ViewBag.ShowingArchived)
                         {
                             <text>|</text>

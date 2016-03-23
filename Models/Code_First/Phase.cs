@@ -1,4 +1,6 @@
-﻿namespace TgpBugTracker.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TgpBugTracker.Models
 {
     public class Phase
     {

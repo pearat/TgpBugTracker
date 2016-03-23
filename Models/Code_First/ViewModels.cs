@@ -107,5 +107,19 @@ namespace TgpBugTracker.Models
         public List<Priority>   Priorities { get; set; }
         public List<Stage>      Stages { get; set; }
     }
+
+    public class UtilityVM
+    {
+        public string Datatype { get; set; }
+        public int    Id { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name="Field Name")]
+        [StringLength(20, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 3)]
+        public string Name { get; set; }
+        [Range(-1,100)]
+        public int    Step { get; set; }
+    }
 }
 
