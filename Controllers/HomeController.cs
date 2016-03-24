@@ -46,6 +46,7 @@ namespace TgpBugTracker.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Dashboard()
         {
             var user = db.Users.Find(User.Identity.GetUserId());

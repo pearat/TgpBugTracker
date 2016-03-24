@@ -48,7 +48,7 @@
                     { @Model.Phases.Count();
                     }
                 </span>
-                No. Phases
+                No. Project Phases
             </div>
         </div>
     </div>
@@ -89,7 +89,7 @@
                     { @Model.Stages.Count();
                     }
                 </span>
-                No. Stages
+                No. Ticket Stages
             </div>
         </div>
     </div>
@@ -111,7 +111,7 @@
                        class="btn" data-toggle="modal" title="New Phase" data-target="#createModal">
                         <span class="fa fa-moon-o"></span>
                     </a>
-                    <a data-toggle="tooltip" title="New Phase" href="@Url.Action("NewPhase")"><span class="fa fa-moon-o"></span></a>
+                    
                 </th>
             </tr>
 
@@ -303,7 +303,7 @@
                 <div class="modal-footer" style="align-content:center">
                     <button type="button" data-dismiss="modal" class="btn btn-skin xtra-btn">Dismiss</button>
                     <input type="hidden" id="modal-cdatatype" name="Datatype" value="" />
-                    @*<input type="hidden" id="modal-cid" name="Id" value="" />*@
+                    
                     <button type="submit" class="btn btn-skin xtra-btn">Submit</button>
                 </div>
             }
@@ -348,7 +348,7 @@
                         </div>
                     </div>
                 </div>
-                <p> Note: It is not possible to edit this table's default value: <i>(unassessed/unassigned)</i></p>
+                <p> Note: It is not possible to edit this table's default value: <i>(Unassessed)</i></p>
                 <div class="modal-footer" style="align-content:center">
                     <button type="button" data-dismiss="modal" class="btn btn-skin xtra-btn">Dismiss</button>
                     <input type="hidden" id="modal-id" name="Id" value="" />
@@ -380,8 +380,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group">
-                            Note: Any tickets/projects with this attribute will be <i><u>re-assigned</u></i> 
-                            to the default category <i>(unassessed/unassigned)</i> which cannot be deleted.
+                            Note: Any tickets/projects with this attribute will become <i><u>unassessed or unassigned</u></i>.
                         </div>
                     </div>
                 </div>
@@ -404,7 +403,6 @@
 @section scripts{
     <script>
         
-
         $('#createModal').on('shown.bs.modal', function (e) {
             var t = $(e.relatedTarget).data('type');
             var z = 'Create a new ' + t + '.';

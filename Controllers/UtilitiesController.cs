@@ -150,9 +150,7 @@ namespace TgpBugTracker.Controllers
             return RedirectToAction("Index");
         }
 
-
-
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete([Bind(Include = "Datatype,Id,Name,Step")] UtilityVM util)

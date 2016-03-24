@@ -116,7 +116,7 @@ namespace TgpBugTracker.Models
         [Required]
         [DataType(DataType.Text)]
         [Display(Name="Field Name")]
-        [StringLength(20, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 3)]
+        [StringLength(15, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters long.", MinimumLength = 3)]
         public string Name { get; set; }
         [Range(-1,100)]
         public int    Step { get; set; }
