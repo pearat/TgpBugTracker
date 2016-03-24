@@ -1063,6 +1063,8 @@
     <Content Include="img\about\jQueryNgUI.png" />
     <Content Include="img\about\jQurery.gif" />
     <Content Include="img\about\Mvc1.png" />
+    <Content Include="img\about\NotAnImageFile.jpg" />
+    <Content Include="img\about\NotAnImageFile.png" />
     <Content Include="img\about\slider_overnight-test.jpg" />
     <Content Include="img\about\software-testing-nw1.jpg" />
     <Content Include="img\about\SoftwareEngineering.png" />

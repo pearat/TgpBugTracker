@@ -62,7 +62,7 @@ namespace TgpBugTracker.Controllers
 
             var mgrId = db.Roles.FirstOrDefault(r => r.Name == "Project Manager").Id;
             var phases = db.Phases.OrderBy(f => f.Step).ToArray();
-            double x;
+            double percentageCompleted;
             foreach (var p in ProjectList)
             {
                 Progress progress = new Progress();
@@ -85,18 +85,18 @@ namespace TgpBugTracker.Controllers
                     progress.Manager = "Unassigned";
 
                 progress.Deadline = p.Deadline.LocalDateTime;
-                x = (today - p.Started).TotalDays / (p.Deadline - p.Started).TotalDays;
+                percentageCompleted = (today - p.Started).TotalDays / (p.Deadline - p.Started).TotalDays;
 
-                if (x < 0 || x > 1)
+                if (percentageCompleted < 0 || percentageCompleted > 1)
                 {
                     progress.ProgressPct = 0;
                     progress.Phase = "Unknown";
                 }
                 else
                 {
-                    progress.ProgressPct = Math.Round(x, 2);
-                    int xi = Convert.ToInt32(x * 100);
-                    progress.Phase = phases.FirstOrDefault(q => q.Step >= xi).Name;
+                    progress.ProgressPct = Math.Round(percentageCompleted, 2);
+                    int amountCompleted = Convert.ToInt32(percentageCompleted * 100);
+                    progress.Phase = phases.FirstOrDefault(q => q.Step >= amountCompleted).Name;
                     if (progress.Phase == null)
                         progress.Phase = "Fix-me!";
                 }
@@ -144,9 +144,6 @@ namespace TgpBugTracker.Controllers
                 if (item.Attachment != null)
                     dashboard.AttachmentCount++;
             }
-
-
- 
 
             ViewBag.Message = "Your Dashboard.";
 

@@ -127,59 +127,7 @@ namespace TgpBugTracker.Controllers
             return View(tkt);
         }
 
-        //public string SaveUpLoadFileZ(HttpPostedFileBase upLoadFile)
-        //{
-        //    if (upLoadFile != null)
-        //    {
-        //        var fileName = Path.GetFileName(upLoadFile.FileName);
-        //        var OkFileName = Regex.IsMatch(fileName, "[a-zA-Z0-9]{1,200}\\.[a-zA-Z0-9]{1,10}", RegexOptions.IgnoreCase);
-        //        if (OkFileName)
-        //        {
-        //            var extension = Path.GetExtension(upLoadFile.FileName);
-        //            var docFileType = (extension == ".pdf" || extension == ".doc" || extension == ".docx" ||
-        //                                extension == ".rtf" || extension == ".txt");
-        //            var validImage = FileUpLoadValidator.IsWebFriendlyImage(upLoadFile);
 
-        //            if (validImage || docFileType)
-        //            {
-        //                // code for saving the image file to a physical location.
-        //                var fullPathName = Path.Combine(Server.MapPath("/Uploads"), fileName);
-        //                try
-        //                {
-        //                    upLoadFile.SaveAs(fullPathName);
-        //                }
-        //                catch (Exception e)
-        //                {
-        //                    fileName = "Tried to save[" + fullPathName + ", but this error occurred :" + e;
-        //                    Debug.WriteLine(fileName);
-        //                    return fileName;
-
-        //                }
-
-        //                if (docFileType)
-        //                {
-        //                    // test whether extension and mimeType are consistent
-        //                    var mimeType = FileUpLoadValidator.getMimeFromFile(fullPathName);
-        //                    Debug.WriteLine("MimeType: " + mimeType);
-        //                }
-        //                // prepare a relative path to be stored in the database and used to display later on.
-        //                // ticket.Attachment = 
-
-
-        //                return "/Uploads/" + fileName;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            return "Problem with file name [[" + fileName + "]]";
-        //        }
-        //    }
-        //    return null;
-        //}
-
-        // POST: Tickets/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include =
@@ -291,6 +239,13 @@ namespace TgpBugTracker.Controllers
                 u => u.IsGuest == false &&
                 u.Roles.Any(z => z.RoleId == devId || z.RoleId == unassignedId)
             );
+            if (ticket.Attachment != null)
+            {
+                var extension = Path.GetExtension(ticket.Attachment);
+                ViewBag.notAnImage = (extension == ".pdf" || extension == ".doc" || extension == ".docx" ||
+                    extension == ".rtf" || extension == ".txt");
+            }
+                
 
             ViewBag.LeaderId = new SelectList(possibleTeamMembers, "Id", "DisplayName", ticket.LeaderId);
 
